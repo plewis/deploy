@@ -7,7 +7,7 @@ user = 'pol02003'
 #user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = False
+local = True
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate

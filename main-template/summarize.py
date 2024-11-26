@@ -14,7 +14,7 @@ def calcContourBreaksStr(cbmin, cbmax):
     while curr < cbmax:
         breaks.append('%.3f' % curr)
         curr += incr
-    return breaks
+    return ','.join(breaks)
     
 def calcRF(rep_plus_one, source, newick):
     simdir = os.path.join('./rep%d' % rep_plus_one, 'sim')
@@ -120,7 +120,7 @@ else:
             # extract lambda and theta mean
             fn = 'rep%d/sim/proj.conf' % rep_plus_one
             stuff = open(fn, 'r').read()
-            m = re.search('theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
+            m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
             assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
@@ -149,7 +149,7 @@ else:
         # Save true species tree
         fn = 'rep%d/sim/true-species-tree.tre' % rep_plus_one
         stuff = open(fn, 'r').read()
-        m = re.search('tree \S+ = \[&R\] (.+?);', stuff, re.M | re.S)
+        m = re.search(r'tree \S+ = \[&R\] (.+?);', stuff, re.M | re.S)
         assert m is not None, 'could not locate newick in file "%s"' % fn
         true_tree = m.group(1)
         true_tree = re.sub(':[.0-9]+', '', true_tree)
