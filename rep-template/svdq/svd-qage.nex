@@ -1,0 +1,12 @@
+#NEXUS
+
+begin paup;
+  log start file=svdout.txt replace;
+  exe ../sim/sim.nex;
+  taxpartition species (vector) = __PARTITION__;
+  svd taxpartition=species;
+  roottrees;
+  qage taxpartition=species patprob=exactjc outUnits=substitutions treefile=svd.tre replace;
+  log stop;
+  quit;
+end;

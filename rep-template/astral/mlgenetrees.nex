@@ -1,0 +1,11 @@
+#NEXUS
+
+begin paup;
+  log start file=pauplog.txt replace;
+  
+  [code for estimating gene trees from all loci]
+__MLGENETREES__
+
+  log stop;
+  quit;
+end;

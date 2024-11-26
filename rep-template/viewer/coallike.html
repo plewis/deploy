@@ -1,0 +1,791 @@
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2017-2023 Paul O. Lewis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Multigene Tree Viewer</title>
+        <!-- <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>-->
+		<script type="text/javascript" src="/Users/plewis/Documents/software/d3/lib/d3v4/d3.js"></script>
+        <!-- <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script> -->
+		<script type="text/javascript" src="coaltree.js"></script>
+		<script type="text/javascript" src="newicks.js"></script>
+		<!-- <script type="text/javascript" src="gene-newick-5-final.js"></script> -->
+		<!-- <script type="text/javascript" src="../../lib/simjs/random-0.26.js"></script> -->
+		<!-- <script type="text/javascript" src="../../lib/mathjs/math.min.js"></script> -->
+
+		<style type="text/css">
+
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+
+            #tooltip {
+                position: absolute;
+                width: 200px;
+                height: auto;
+                padding: 10px;
+                background-color: white;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px;
+                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                pointer-events: none;
+            }
+
+            #tooltip.hidden {
+                display: none;
+            }
+
+            #tooltip p {
+                margin: 0;
+                font-family: sans-serif;
+                font-size: 16px;
+                line-height: 20px;
+            }
+
+		</style>
+	</head>
+	<body>
+        <div id="tooltip" class="hidden">
+            <p><span id="treeinfo">x</span></p>
+        </div>
+        <div id="container"></div>
+		<script type="text/javascript">
+            // Dimensions of plot area
+            // ______________________________________ ___ ___
+            // |                                    |  |  _|_ padding
+            // |                     +--- alpha     |  |
+            // |       +-------------|              |  |
+            // |       |             +--- beta      |  |
+            // |  +----|                            |  |
+            // |  |    |        +-------- gamma     |  h
+            // |  |    +--------|                   |  |
+            // |  |             +-------- delta     |  |
+            // |  |                                 |  |
+            // |  +---------------------- epsilon   |  |  ___
+            // |____________________________________| _|_ _|_ padding
+            // <--> padding                      <--> padding
+            //                           <------> widest_taxon_name
+            // <--------------- w ------------------> 
+            //
+            // width of tree itself (without taxon names) in pixels is 
+            //   w - 2*padding - widest_taxon_name
+            // width of tree itself in branch length units is limits.xmax
+            //   (limits is returned from tree.setNodeXY)
+            // spacer is incorporated into widest_taxon_name and is
+            //   the space between the right edge of the tree and the 
+            //   left edge of the taxon labels
+            let w = 1000;
+            let h = 800;
+            let padding = 20;
+            let jigger_max = 0; //50;
+            let spacer = 5;
+            let stroke_width_min = 2;
+            let stroke_width_max = 5;
+            let taxon_label_font_size = 14;
+            let species_barrier_line_width = 5;
+            
+            // If is_max_fixed is true, then things are scaled so that the tallest tree
+            // is xmax_fixed in height
+            let is_xmax_fixed = false;
+            let xmax_fixed = 0.5;
+            
+            let coalescent_theta = 0.1;
+            
+            // Set up gene tree choices
+            const gene_tree_choices = Array.from(Array(gene_newicks.length).keys());
+            let gene_tree_starting_index = 0;
+            
+            
+            // Set up gene tree stuff
+            let which_gene_tree = 0;  
+            let which_epoch = 0;  
+            let epoch_starting_index = 0; 
+            let epoch_choices = [];
+            let epochs = [];
+            
+            let tallest_taxon_name = 0;
+            let widest_taxon_name = 0;
+            let tallest_gene = "";
+            let xmax = (is_xmax_fixed ? xmax_fixed : 0.0);
+            let ymax = 0.0;
+            let nlvs = 0;
+            let linedata = [];
+            let gene_index = {};
+            let jigger = {};
+            
+            // Create scales for X and Y axes
+            let xscale = d3.scaleLinear();
+            let yscale = d3.scaleLinear();
+            
+            // Latch onto container div already created above
+            let container_div = d3.select("div#container");
+
+            // Create color scale
+            let color_scale = d3.scaleOrdinal(d3.schemeCategory10);
+
+            // Create SVG element
+            let svg = container_div.append("svg")
+                .attr("width", w)
+                .attr("height", h);
+
+            // This rect is mostly for debugging (shows extent of plot area)
+            svg.append("rect")
+                .attr("id", "plotarea")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", w)
+                .attr("height", h)
+                .style("fill", "lavender")
+                .attr("visibility", "hidden");
+
+            let addDropdown = function(panel, id, label, choices, selected_index, onfunc) {
+                let control_div = panel.append("div").append("div")
+                    .attr("class", "control");
+                control_div.append("select")
+                    .attr("id", id)
+                    .on("change", onfunc)
+                    .selectAll("option")
+                    .data(choices)
+                    .enter()
+                    .append("option")
+                    .text(function(d) {return d.toFixed(0);});
+                d3.select("select#" + id).property("selectedIndex", selected_index);
+                control_div.append("label")
+                    .html("&nbsp;" + label);
+                }
+
+            // Adds taxon labels to the plot (using leaf_order object built from species_order)
+            // Computes and returns width of widest taxon label bounding box
+            let addLabelsToSVG = function(svg, labels, yscale) {
+                let taxon_names = svg.selectAll("text.taxonlabel")
+                    .data(d3.entries(labels))
+                    .enter()
+                    .append("text")
+                    .attr("class", "taxonlabel")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    //.attr("y", function(d) {return yscale(2*(d.key-1));})
+                    .attr("font-family", "Times")
+                    .attr("font-style", "italic")
+                    .attr("font-size", taxon_label_font_size)
+                    .text(function(d) {return d.value;});
+
+                // Determine the widest bounding box width for any taxon name
+                taxon_names.each(function() {
+                    let h = this.getBBox(clipped=true).height;
+                    if (h > tallest_taxon_name)
+                        tallest_taxon_name = h;
+                    let w = this.getBBox(clipped=true).width;
+                    if (w > widest_taxon_name)
+                        widest_taxon_name = w;
+                    });
+                widest_taxon_name += spacer; // leave space between leaf nodes of tree and start of name
+                return {w:widest_taxon_name, h:tallest_taxon_name};
+            }
+
+            // Adds lines representing the phylogenetic trees to the plot
+            // thedata is a vector of objects having keys genename, treeheight, and edgelines
+            // Each line defined in thedata is an L-shaped polyline extending from a descendant
+            // node back to the ancestor (each edgelines is a vector of three x,y points).
+            // gene_newicks input from newicks.js shown with stroke width stroke_width_min in color depending on gene (these have gene indices >= 0)
+            // gene_forests input from gene-newick-2-final.js with stroke width 1 in lightgray (these have gene indices equal to -1)
+            let addLinesToSVG = function(svg, thedata, xscale, yscale, gene_index, jigger) {
+                const verbose = false;
+                
+                if (verbose) {
+                    console.log("");
+                    console.log("addLinesToSVG:");
+                }
+
+                svg.selectAll("polyline")
+                    .data(thedata)
+                    .enter()
+                    .append("polyline")
+                    .attr("class", function(d) {return d.genename + " " + d.edgename;})
+                    .attr("points", function(d) {
+                        if (verbose) 
+                            console.log("---------------" + d.nodenumber + "---------------");
+                        let points = "";
+                        for (let p = 0; p < d.edgelines.length; p++) {
+                            let x = xscale(d.edgelines[p].x);
+                            if (verbose) 
+                                console.log("  " + d.edgelines[p].x.toFixed(6) + " --> " + x.toFixed(6));
+                            let y = yscale(d.edgelines[p].y) + jigger[d.genename];
+                            if (y < 0)
+                                y = 0;
+                            if (y > h)
+                                y = h; // - stroke_width_max;
+                            points += " " + x.toFixed(6) + "," + y.toFixed(6);
+                            }
+                        return points;
+                    })
+                    .style("fill", "none")
+                    //.style("stroke-width", function(d) {return (d.genename == "petD" ? stroke_width_max : stroke_width_min);})
+                    .style("stroke-width", function(d) {return gene_index[d.genename] < 0 ? 1 : stroke_width_min;})
+                    .style("stroke", function(d) {return gene_index[d.genename] < 0 ? "lightgray" : color_scale(gene_index[d.genename]);})
+                    .attr("transform", function(d) {return "translate(" + (w - widest_taxon_name - padding - xscale(d.treeheight)) + ",0)";})
+                    .on("mouseover", function(d) {
+                        // ensure all polylines start thin
+                        d3.selectAll("polyline")
+                            .style("stroke-width", stroke_width_min)
+                            .style("stroke", d3.rgb(128,128,128,0.3));
+                        // thicken only polyline selected
+                        d3.selectAll("polyline." + d.genename + "." + d.edgename)
+                            .style("stroke-width", stroke_width_max)
+                            .style("stroke", function(d) {return color_scale(gene_index[d.genename]);});
+                        //d3.select("text." + d.genename)
+                        //    .style("visibility", "visible");
+                        // hide all text except text.segment
+                        d3.selectAll("text.epoch").style("visibility", "hidden")
+                        d3.select("text.segment.gene" + d.genename + "-edge" + d.edgename)
+                            .style("visibility", "visible");
+                        })
+                    .on("mouseout", function(d) {
+                        d3.selectAll("polyline")
+                            //.style("stroke-width", function(d) {return (d.genename == "petD" ? stroke_width_max : stroke_width_min);})
+                            .style("stroke-width", stroke_width_min)
+                            .style("stroke", function(d) {return color_scale(gene_index[d.genename]);});
+                        //d3.select("text." + d.genename)
+                        //    .style("visibility", "hidden");
+                        d3.select("text.segment.gene" + d.genename + "-edge" + d.edgename)
+                            .style("visibility", "hidden");
+                        });
+                }
+                            
+            // Determine order of species encountered in species_newick (preorder sequence)
+            let speciestree = new Tree();
+            speciestree.buildFromNewick(species_translate, species_newick);
+
+            //console.log("species tree:");
+
+            let species_order = speciestree.recalcLeafOrder();
+            //console.log("species_order object:");
+            //console.log(species_order);
+            let valley_depths = speciestree.recalcValleyDepths();
+            //console.log("valley_depths object:");
+            //console.log(valley_depths);
+            let names_and_joins = speciestree.listSpeciesJoins(species_order);
+            
+            // Determine order in which taxa should be displayed based on species_order
+            // Also create barriers to gene flow implied by the species tree
+            //console.log("Determining leaf ordering:");
+            
+            // If species_order = ["s1", "s2", "s0"], and if 
+            // gene_translate =
+            //    1: "i0^s0", <-- index 0
+            //    2: "i1^s0", <-- index 1
+            //    3: "i2^s0", <-- index 2
+            //    4: "i0^s1", <-- index 3
+            //    5: "i1^s1", <-- index 4
+            //    6: "i2^s1", <-- index 5
+            //    7: "i0^s2", <-- index 6
+            //    8: "i1^s2", <-- index 7
+            //    9: "i2^s2"  <-- index 8 <--+
+            //                               |
+            //  +----------------------------+
+            //  |
+            //  | leaf_order = 
+            //  |     0: 6,       
+            //  |     1: 7,       
+            //  |     2: 8,       
+            //  |     3: 0,  <-- taxon at index 3 in gene_translate ("i0^s1")
+            //  |     4: 1,      is shown at index 0 (where 0 is the top position)
+            //  |     5: 2,       
+            //  |     6: 3,  <-- taxon at index 6 in gene_translate ("i0^s2")     
+            //  |     7: 4,      will be shown at index 3 from the top
+            //  +---> 8: 5 <--+       
+            //                |   
+            //  +-------------+ 
+            //  |
+            //  | leaf_names = 
+            //  |     0: "i0^s1",
+            //  |     1: "i1^s1",
+            //  |     2: "i2^s1",
+            //  |     3: "i0^s2",
+            //  |     4: "i1^s2",
+            //  +---> 5: "i2^s2",  <-- taxon shown at index 5 from the top has
+            //        6: "i0^s0",      name "i2^s2" (index 8 in gene_translate)
+            //        7: "i1^s0",
+            //        8: "i2^s0"
+
+            let leaf_order = {}
+            let leaf_names = {}
+            let barriers = []
+            let k = 0;
+            for (let i = 0; i < species_order.length; i++) {
+                species_name = species_order[i];
+                //console.log("  species " + species_name + ":");
+                
+                // Add all taxa in this species to leaf_order
+                let leaf_key_value_pairs = d3.entries(gene_translate);
+                for (let j in leaf_key_value_pairs) {
+                    let leaf_number = parseInt(leaf_key_value_pairs[j].key) - 1;
+                    let leaf_name = leaf_key_value_pairs[j].value;
+                    
+                    // get species name from leaf_name
+                    let m = leaf_name.match(/[a-zA-Z0-9]+\^([a-zA-Z0-9]+)/);
+                    if (m == null) {
+                        throw "was expecting the leaf name (" + leaf_name + ") to contain the species name after a caret";
+                    }
+                    if (m[1] == species_name) {
+                        leaf_order[leaf_number] = k;
+                        leaf_names[k] = leaf_name;
+                        //console.log("    leaf " + leaf_number + " (" + leaf_name + ") is in position " + k);
+                        k++;
+                    }
+                }
+                
+                // Leaving species i (species_name), so add barrier
+                if (i < valley_depths.length) {
+                    barriers.push({name:species_name, x1:0.0, x2:valley_depths[i], y1:(2.*k-1.), y2:(2.*k-1.)});
+                } 
+            }  
+
+            // Add taxon labels to svg
+            let label_dims = addLabelsToSVG(svg, leaf_names);
+            widest_taxon_name = label_dims.w;
+            tallest_taxon_name = label_dims.h;
+            //console.log("widest_taxon_name = " + widest_taxon_name);
+            //console.log("tallest_taxon_name = " + tallest_taxon_name);
+            
+            // Labels for each gene flow barrier
+            svg.selectAll("text.barrier")
+                .data(barriers)
+                .enter()
+                .append("text")
+                .attr("class", "barrier")
+                .attr("id", function(d) {return d.name;})
+                .attr("x", w/2)
+                .attr("y", h - 1)
+                .style("fill", "black")
+                .style("font-family", "Verdana")
+                .style("font-size", "12pt")
+                .text(function(d) {return "depth = " + d.x2;})
+                .style("visibility", "hidden");
+                
+            let describeEpoch = function(i) {
+                let description = "";
+                description += (epochs[i].node !== null ? "coalescence of " + epochs[i].node.lchild.number + " and " + epochs[i].node.lchild.rsib.number + ":" : "no coalescence:");
+                description += " from " + epochs[i].start.toFixed(9);
+                description += " to " + epochs[i].finish.toFixed(9);
+                description += ", width " + epochs[i].delta.toFixed(9);
+                description += ", logprob = " + epochs[i].logpr.toFixed(9);
+                return description;
+            }
+                        
+            let chooseGeneTree = function() {
+                linedata = [];
+                
+                // Throw away any gene tree visual elements that currently exist
+                svg.selectAll("text.genetree").remove();
+                svg.selectAll("rect.epoch").remove();
+                svg.selectAll("text.epoch").remove();
+                svg.selectAll("polyline").remove();
+                svg.selectAll("rect.leaf").remove();
+                svg.selectAll("circle.leaf").remove();
+                svg.selectAll("text.nodenum").remove();
+                svg.selectAll("text.segment").remove();
+                svg.selectAll("line.barrier").remove();
+                
+                let i = which_gene_tree;
+                tree = new Tree();
+                tree.buildFromNewick(gene_translate, gene_newicks[i].newick);
+            
+                //console.log("gene tree " + (i+1) + ":");
+            
+                tree.imposeSpeciesOrder(species_order);
+                const coal_like_result = tree.coalescentLikelihood(names_and_joins.names, names_and_joins.joins, coalescent_theta)
+            
+                let limits = tree.setNodeXY(gene_newicks[i].relrate, leaf_order);
+                console.log("limits");
+                console.log(limits);
+                tree.addTreeLines(gene_newicks[i].name, linedata, true); // true means add root edge
+                let gene_name = gene_newicks[i].name;
+                
+                if (!is_xmax_fixed)
+                    console.log("xmax for gene " + gene_name + " = " + limits.xmax);
+                
+                gene_index[gene_name] = i;
+                jigger[gene_name] = (Math.random() - 0.5)*jigger_max;
+                if (!is_xmax_fixed && limits.xmax > xmax) {
+                    tallest_gene = gene_newicks[i].name;
+                    xmax = limits.xmax;
+                    console.log("new tallest gene is " + tallest_gene + ": height = " + xmax);
+                }
+                if (limits.ymax > ymax)
+                    ymax = limits.ymax;
+                if (tree.nleaves > nlvs)
+                    nlvs = tree.nleaves;
+
+                //console.log("xmax = " + xmax);
+
+                // // Labels for each gene tree
+                // svg.selectAll("text.genetree")
+                //     .data(gene_newicks)
+                //     .enter()
+                //     .append("text")
+                //     .attr("class", function(d) {return "genetree " + d.name;})
+                //     .attr("x", w/2)
+                //     .attr("y", h - 30)
+                //     .style("fill", "magenta")
+                //     .style("font-family", "Verdana")
+                //     .style("font-size", "12pt")
+                //     .style("visibility", "hidden")
+                //     .text(function(d) {return d.name;});
+                
+                // Create scale for X axis
+                xscale = d3.scaleLinear()
+                    .domain([0, xmax])
+                    .range([padding, w - padding - widest_taxon_name]);
+
+                // Create scale for Y axis
+                yscale = d3.scaleLinear()
+                    .domain([0, 2*(nlvs-1)])
+                    .range([padding, h - padding]);
+
+                epoch_choices = Array.from(Array(coal_like_result.epochs.length).keys());
+                epoch_starting_index = 0; // index of value selected at start
+                epochs = [];
+                for (const epoch_index in coal_like_result.epochs) {
+                    const epoch = coal_like_result.epochs[epoch_index];
+                    const start_at = xmax - epoch.height;
+                    const finish_at = xmax - epoch.prevheight;
+                    const delta_increment = finish_at - start_at;
+                    epochs.push({which:epoch_index, node:epoch.node, start:start_at, finish:finish_at, delta:delta_increment, logpr:epoch.coallike});
+                }
+
+                svg.selectAll("rect.epoch")
+                    .data(epochs)
+                    .enter()
+                    .append("rect")
+                    .attr("class", function(d) {return "epoch e" + d.which;})
+                    .attr("x", function(d) {return xscale(d.start);})
+                    .attr("y", padding)
+                    .attr("width", function(d) {return xscale(d.finish) - xscale(d.start);})
+                    .attr("height", h - 2*padding)
+                    .style("fill", function(d) {return d.which == epoch_starting_index ? "pink" : "white";})
+                    .style("stroke", "none")
+                    //.on("mouseover", function(d) {
+                    //    d3.select("text.epoch")
+                    //        .text("begins " + d.start.toFixed(9) + ", ends " + d.finish.toFixed(9) + ", width " + d.delta.toFixed(9) + ", log coal. like. = " + d.logpr.toFixed(9))
+                    //        .style("visibility", "visible");
+                    //    d3.select("rect.e" + d.which)
+                    //        .style("fill", "pink");
+                    //    })
+                    //.on("mouseout", function(d) {
+                    //    d3.select("text.epoch")
+                    //        .text("")
+                    //        .style("visibility", "hidden");
+                    //    d3.select("rect.e" + d.which)
+                    //        .style("fill", "white");
+                    //    })
+                    .style("visibility", "visible");
+                                    
+                // Labels showing details of selected epoch 
+                svg.selectAll("text.epoch")
+                    .data(epochs)
+                    .enter()
+                    .append("text")
+                    .attr("class", "epoch")
+                    .attr("x", padding)
+                    .attr("y", h - 1)
+                    .style("fill", "black")
+                    .style("font-family", "Verdana")
+                    .style("font-size", "12pt")
+                    .text(function(d) {return (d.which == epoch_starting_index ? describeEpoch(epoch_starting_index) : "");})
+                    .style("visibility", "visible");
+                
+                // This rect is just for debugging
+                //svg.append("rect")
+                //    .attr("id", "debug")
+                //    .attr("x", xscale(0.0))
+                //    .attr("y", padding)
+                //    .attr("width", xscale(0.00207))
+                //    .attr("height", h - 2*padding)
+                //    .style("fill", "pink")
+                //    .attr("visibility", "hidden");
+
+                // Reposition taxon labels so that the longest will just fit
+                svg.selectAll("text.taxonlabel")
+                    .attr("x", w - widest_taxon_name + spacer)
+                    .attr("y", function(d) {return yscale(2*d.key) + tallest_taxon_name/4;});
+                   // not sure why tallest_taxon_name shouldn't be divided by 2, but 4 looks better
+                                
+                // Adds lines composing all gene trees to the plot
+                addLinesToSVG(svg, linedata, xscale, yscale, gene_index, jigger);
+                        
+                // For debugging: this section creates small rectangles defining maximum bounding box of taxon labels
+                // Set visibility to visible to reveal
+                svg.selectAll("rect.leaf")
+                    .data(d3.entries(leaf_names))
+                    .enter()
+                    .append("rect")
+                    .attr("class", "leaf")
+                    .attr("x", w - widest_taxon_name + spacer)
+                    .attr("y", function(d) {return yscale(2*d.key) - tallest_taxon_name;})
+                    .attr("width", widest_taxon_name)
+                    .attr("height", tallest_taxon_name)
+                    .style("fill", "none")
+                    .style("stroke", "red")
+                    .style("visibility", "hidden");
+
+                // For debugging: this section creates small circles at points where taxon labels start
+                // Set visibility to visible to reveal
+                svg.selectAll("circle.leaf")
+                    .data(d3.entries(leaf_names))
+                    .enter()
+                    .append("circle")
+                    .attr("class", "leaf")
+                    .attr("cx", w - widest_taxon_name + spacer)
+                    .attr("cy", function(d) {return yscale(2*d.key);})
+                    .attr("r", 2)
+                    .style("fill", "red")
+                    .style("visibility", "hidden");
+
+                // For debugging: this section adds node numbers to nodes
+                svg.selectAll("text.nodenum")
+                    .data(linedata)
+                    .enter()
+                    .append("text")
+                    .attr("class", "nodenum")
+                    .attr("x", function(d) {return xscale(d.nodex);})
+                    .attr("y", function(d) {return yscale(d.nodey);})
+                    .style("fill", "red")
+                    .style("font-family", "Verdana")
+                    .style("font-size", "8pt")
+                    .text(function(d) {
+                        return d.nodenumber;
+                    })
+                    .style("visibility", "hidden");
+
+                // For debugging: these show the species sets at each node (anc nodes have sets containing all descendant species)
+                //svg.selectAll("text.species")
+                //    .data(species_sets[0])
+                //    .enter()
+                //    .append("text")
+                //    .attr("class", "species")
+                //    .attr("x", function(d) {return xscale(d.x);})
+                //    .attr("y", function(d) {return yscale(d.y);})
+                //    .style("fill", "red")
+                //    .style("font-family", "Verdana")
+                //    .style("font-size", "8pt")
+                //    .style("visibility", "hidden")
+                //    .text(function(d) {
+                //        return d.info;
+                //    });
+                                    
+                // Labels showing details of each gene tree segment
+                svg.selectAll("text.segment")
+                    .data(linedata)
+                    .enter()
+                    .append("text")
+                    .attr("class", function(d) {return "segment gene" + d.genename + "-edge" + d.edgename;})
+                    .attr("x", w/4)
+                    .attr("y", h - 1)
+                    .style("fill", "black")
+                    .style("font-family", "Verdana")
+                    .style("font-size", "12pt")
+                    .text(function(d) {return d.genename + ", " + d.edgename + ": depth = " + d.depth.toFixed(6) + ", edgelen = " + d.edgelen.toFixed(6) + ", x = " + d.nodex.toFixed(6);})
+                    .style("visibility", "hidden");
+                    
+                svg.selectAll("line.barrier")
+                    .data(barriers)
+                    .enter()
+                    .append("line")
+                    .attr("id", function(d) {return d.name;})
+                    .attr("class", "barrier")
+                    .attr("x1", function(d) {return xscale(xmax - d.x1);})
+                    .attr("y1", function(d) {return yscale(d.y1);})
+                    .attr("x2", function(d) {return xscale(xmax - d.x2);})
+                    .attr("y2", function(d) {return yscale(d.y2);})
+                    .style("stroke", "red")
+                    .style("stroke-width", species_barrier_line_width)
+                    .style("visibility", "visible")
+                    .on("mouseover", function(d) {
+                        d3.selectAll("line.barrier#" + d.name)
+                            .style("stroke", "blue")
+                            .style("stroke-width", 5);
+                        d3.selectAll("text.epoch")
+                            .style("visibility", "hidden")
+                        d3.select("text.barrier#" + d.name)
+                            .style("visibility", "visible");
+                        })
+                    .on("mouseout", function(d) {
+                        d3.selectAll("line.barrier#" + d.name)
+                            .style("stroke", "red")
+                            .style("stroke-width", 3);
+                        d3.select("text.barrier#" + d.name)
+                            .style("visibility", "hidden");
+                        });
+            }
+            chooseGeneTree();
+
+            let chooseEpoch = function() {
+                // Unhighlight all epochs
+                d3.selectAll("rect.epoch")
+                   .style("fill", "white");
+
+                // Erase information about all epochs
+                d3.selectAll("text.epoch")
+                   .text("");
+            
+                // Select current epoch
+                d3.select("rect.e" + which_epoch)
+                   .style("fill", "pink");
+               
+                // Update information about this epoch
+                d3.selectAll("text.epoch").style("visibility", "hidden");
+                d3.select("text.epoch")
+                   .text(describeEpoch(which_epoch))
+                   .style("visibility", "visible");
+            }
+            chooseEpoch();
+            
+            let controls_div = container_div.append("div").attr("id", "controls");
+            
+            addDropdown(controls_div, "epochdropdown", "Epoch", epoch_choices, epoch_starting_index, function() {
+                let selected_index = d3.select(this).property('selectedIndex');
+                which_epoch = epoch_choices[selected_index];
+                chooseEpoch();
+            });
+        
+            addDropdown(controls_div, "genetreedropdown", "Gene tree", gene_tree_choices, gene_tree_starting_index, function() {
+                let selected_index = d3.select(this).property('selectedIndex');
+                which_gene_tree = gene_tree_choices[selected_index];
+                chooseGeneTree();
+                
+                // Reset epoch displayed to the starting epoch
+                which_epoch = epoch_starting_index;
+                chooseEpoch();
+                
+                // Reset epoch dropdown control to starting epoch
+                let epoch_dropdown = document.getElementById("epochdropdown");
+                epoch_dropdown.value = epoch_starting_index;
+                
+                console.log("changed gene tree to " + which_gene_tree);
+            });
+            
+            // Listen and react to keystrokes
+            // key      code  key code  key code  key code  key code
+            // -------------  --------  --------  --------  --------
+            // tab         9    0   48    ~  192    a   65    n   78
+            // return     13    1   49    ;  186    b   66    o   79
+            // shift      16    2   50    =  187    c   67    p   80
+            // control    17    3   51    ,  188    d   68    q   81
+            // option     18    4   52    -  189    e   69    r   82
+            // command    91    5   53    .  190    f   70    s   83
+            // space      32    6   54    /  191    g   71    t   84
+            // leftarrow  37    7   55    \  220    h   72    u   85
+            // uparrow    38    8   56    [  219    i   73    v   86
+            // rightarrow 39    9   57    ]  221    j   74    w   87
+            // downarrow  40              '  222    k   75    x   88
+            //                                      l   76    y   89
+            //                                      m   77    z   90
+            function keyDown() {
+                console.log("key was pressed: " + d3.event.keyCode);
+                if (d3.event.keyCode == 40) {
+                    // 40 is the downarrow key
+                    which_gene_tree += 1; 
+                    if (which_gene_tree == gene_tree_choices.length)
+                        which_gene_tree = 0;
+                    chooseGeneTree();
+                    
+                    // Reset epoch displayed to the starting epoch
+                    which_epoch = epoch_starting_index;
+                    chooseEpoch();
+                    
+                    // Reset genetree dropdown dropdown control to starting epoch
+                    let genetree_dropdown = document.getElementById("genetreedropdown");
+                    genetree_dropdown.value = which_gene_tree;
+                    
+                    // Reset epoch dropdown control to starting epoch
+                    let epoch_dropdown = document.getElementById("epochdropdown");
+                    epoch_dropdown.value = epoch_starting_index;
+                    
+                    console.log("changed gene tree to " + which_gene_tree);
+                }
+                else if (d3.event.keyCode == 38) {
+                    // 38 is the uparrow key
+                    which_gene_tree -= 1; 
+                    if (which_gene_tree < 0)
+                        which_gene_tree = gene_tree_choices.length - 1;
+                    chooseGeneTree();
+                    
+                    // Reset epoch displayed to the starting epoch
+                    which_epoch = epoch_starting_index;
+                    chooseEpoch();
+                    
+                    // Reset genetree dropdown dropdown control to starting epoch
+                    let genetree_dropdown = document.getElementById("genetreedropdown");
+                    genetree_dropdown.value = which_gene_tree;
+                    
+                    // Reset epoch dropdown control to starting epoch
+                    let epoch_dropdown = document.getElementById("epochdropdown");
+                    epoch_dropdown.value = epoch_starting_index;
+                    
+                    console.log("changed gene tree to " + which_gene_tree);
+                }
+                else if (d3.event.keyCode == 37) {
+                    // 37 is the leftarrow key
+                    if (which_epoch < epoch_choices.length - 1) {
+                        which_epoch++;
+                        chooseEpoch();
+                        
+                        // Reset epoch dropdown control to starting epoch
+                        let epoch_dropdown = document.getElementById("epochdropdown");
+                        epoch_dropdown.value = which_epoch;
+                    }
+                }
+                else if (d3.event.keyCode == 39) {
+                    // 39 is the rightarrow key
+                    if (which_epoch > 0) {
+                        which_epoch--;
+                        chooseEpoch();
+
+                        // Reset epoch dropdown control to starting epoch
+                        let epoch_dropdown = document.getElementById("epochdropdown");
+                        epoch_dropdown.value = which_epoch;
+                    }
+                }
+            }
+            d3.select("body")
+                .on("keydown", keyDown);
+            
+		</script>
+	</body>
+</html>
+
+

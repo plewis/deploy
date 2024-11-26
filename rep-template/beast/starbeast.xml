@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beast beautitemplate='StarBeast3' beautistatus='noAutoSetClockRate|noAutoUpdateFixMeanSubstRate' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST.base v2.7.6:starbeast3 v1.1.8:BEASTLabs v2.0.2:ORC v1.1.2" version="2.7">
+
+__SEQUENCES__
+
+    <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+
+    <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+
+    <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+
+    <map name="Normal" >beast.base.inference.distribution.Normal</map>
+
+    <map name="Beta" >beast.base.inference.distribution.Beta</map>
+
+    <map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+
+    <map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+
+    <map name="prior" >beast.base.inference.distribution.Prior</map>
+
+    <map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+
+    <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="__CHAINLENGTH__" preBurnin="__PREBURNIN__" storeEvery="__STOREEVERY1__">
+        <state id="state" spec="State" storeEvery="__STOREEVERY2__">
+            <stateNode id="Tree.t:Species" spec="starbeast3.tree.SpeciesTree">
+                <taxonset id="taxonsuperset" spec="starbeast3.tree.StarBeast3TaxonSet">
+__TAXONSET__
+                </taxonset>
+            </stateNode>
+            <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+__LOCI__
+        </state>
+        <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
+__SBI__
+                        <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" estimate="false" lower="__LAMBDA1__" name="birthRate" upper="__LAMBDA2__">__LAMBDA3__</parameter>
+            <speciesTreePrior id="SpeciesTreePopSize.Species" spec="starbeast3.evolution.speciation.SpeciesTreePrior" bottomPopSize="@popSize" gammaParameter="@popMean" taxonset="@taxonsuperset" tree="@Tree.t:Species">
+                <populationModel id="speciesTreePopulationModel" spec="starbeast3.evolution.speciation.ConstantPopulations" populationSizes="@popSize" speciesTree="@Tree.t:Species"/>
+                <treePrior id="YuleModel.t:Species" spec="beast.base.evolution.speciation.YuleModel" birthDiffRate="@speciationRate.t:Species" tree="@Tree.t:Species"/>
+            </speciesTreePrior>
+            <sharedRateModel id="branchRatesModel.Species" spec="starbeast3.evolution.branchratemodel.SharedSpeciesClockModel">
+                <branchRateModel id="strictClockModel.Species" spec="starbeast3.evolution.branchratemodel.StrictClockModelSB3" tree="@Tree.t:Species">
+                    <parameter id="SpeciesTreeStrictClockRate" spec="parameter.RealParameter" estimate="false" lower="0.0" name="clock.rate">1.0</parameter>
+                </branchRateModel>
+            </sharedRateModel>
+        </init>
+        <distribution id="posterior" spec="CompoundDistribution">
+            <distribution id="speciescoalescent" spec="CompoundDistribution">
+__SPECIESCOALESCENT__            
+            </distribution>
+            <distribution idref="SpeciesTreePopSize.Species"/>
+            <distribution id="prior" spec="CompoundDistribution">
+                <distribution idref="YuleModel.t:Species"/>
+                <prior id="popMean.prior" name="distribution" x="@popMean">
+                    <Exponential id="Exponential.11" name="distr">
+                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">__THETAMEAN__</parameter>
+                    </Exponential>
+                </prior>
+            </distribution>
+            <distribution id="vectorPrior" spec="CompoundDistribution">
+                <prior id="constPopSizesPrior.Species" name="distribution" x="@popSize">
+                    <InverseGamma id="popPriorDistr.InverseGamma" beta="@popMean" name="distr">
+                        <alpha id="Function$Constant.0" spec="Function$Constant" value="2.0"/>
+                    </InverseGamma>
+                </prior>
+            </distribution>
+            <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
+__LIKELIHOOD__            
+            </distribution>
+        </distribution>
+        <operator id="Reheight.t:Species" spec="starbeast3.operators.NodeReheight2" taxonset="@taxonsuperset" tree="@Tree.t:Species" weight="30.0">
+__TREEPRIOR1__
+        </operator>
+        <operator id="CoordinatedExponential.t:Species" spec="starbeast3.operators.CoordinatedExponential" speciesTree="@Tree.t:Species" weight="15.0">
+__TREEPRIOR2__
+        </operator>
+        <operator id="CoordinatedUniform.t:Species" spec="starbeast3.operators.CoordinatedUniform" speciesTree="@Tree.t:Species" weight="30.0">
+__TREEPRIOR3__
+        </operator>
+        <operator id="TreeRootScaler.t:Species" spec="kernel.BactrianScaleOperator" rootOnly="true" scaleFactor="0.7" tree="@Tree.t:Species" upper="10.0" weight="3.0"/>
+        <operator id="BactrianNodeOperator.t:Species" spec="kernel.BactrianNodeOperator" tree="@Tree.t:Species" weight="3.0"/>
+        <operator id="AdaptableTopologyOperator.lengths.Species" spec="AdaptableOperatorSampler" weight="100.0">
+            <tree idref="Tree.t:Species"/>
+            <operator idref="BactrianNodeOperator.t:Species"/>
+            <operator id="TreeScaler.t:Species" spec="kernel.BactrianScaleOperator" scaleFactor="0.01" tree="@Tree.t:Species" upper="10.0" weight="1.0"/>
+            <operator idref="CoordinatedUniform.t:Species"/>
+            <operator idref="CoordinatedExponential.t:Species"/>
+            <operator id="updown.all" spec="operator.kernel.BactrianUpDownOperator" scaleFactor="0.75" weight="1.0">
+                <down idref="Tree.t:Species"/>
+                <down idref="popSize"/>
+                <down idref="popMean"/>
+__TREE__                
+            </operator>
+        </operator>
+        <operator id="PopSizeGibbsSampler.Species" spec="starbeast3.operators.PopSizeGibbsSampler" gammaprior="@popPriorDistr.InverseGamma" popSizes="@popSize" weight="50.0">
+__TREEPRIOR4__
+        </operator>
+        <operator id="AdaptableOperatorSampler.popmean:Species" spec="AdaptableOperatorSampler" weight="5.0">
+            <parameter idref="popMean"/>
+            <operator id="Scale.popmean" spec="kernel.BactrianScaleOperator" parameter="@popMean" upper="10.0" weight="1.0"/>
+            <operator idref="updown.all"/>
+            <operator id="SampleFromPriorOperator.popmean" spec="orc.operators.SampleFromPriorOperator" parameter="@popMean" prior2="@popMean.prior" weight="1.0"/>
+        </operator>
+        <operator id="ParallelMCMCTreeOperator" spec="starbeast3.operators.ParallelMCMCTreeOperator" chainCoverage="1.0" learning="false" nregression="50" otherState="@state" runtime="1000.0" speciesTree="@Tree.t:Species" targetCPU="0.0" weight="1.0">
+__PARALLEL__        
+            <schedule id="operatorSchedule" spec="starbeast3.core.OperatorScheduleRecalculator">
+                <subschedule id="operatorSubschedule" spec="OperatorSchedule" operatorPattern="^ParallelMCMCTreeOperator$" weight="1.0" weightIsPercentage="true"/>
+            </schedule>
+        </operator>
+        <logger id="tracelog" spec="Logger" fileName="starbeast3.log" logEvery="10000" model="@posterior" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="vectorPrior"/>
+            <log idref="speciescoalescent"/>
+            <log idref="speciationRate.t:Species"/>
+            <log id="TreeStat.Species" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:Species"/>
+            <log idref="YuleModel.t:Species"/>
+            <log idref="popMean"/>
+            <log idref="popSize"/>
+__LOGLOCUS__
+        </logger>
+        <logger id="speciesTreeLogger" spec="Logger" fileName="species.trees" logEvery="10000" mode="tree">
+            <log id="SpeciesTreeLoggerX" spec="starbeast3.core.SpeciesTreeLogger" popSize="@popSize" speciesTreePrior="@SpeciesTreePopSize.Species" tree="@Tree.t:Species">
+                <treetop id="treeTopFinder" spec="beast.base.evolution.speciation.TreeTopFinder">
+__TREETOP__
+                </treetop>
+            </log>
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="10000">
+            <log idref="posterior"/>
+            <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+__LOGGERLOCUS__        
+        <operatorschedule idref="operatorSchedule"/>
+    </run>
+
+</beast>

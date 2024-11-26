@@ -1,0 +1,11 @@
+#nexus
+
+begin paup;
+
+    set maxtrees=__MAXTREES__;
+
+    [__RFSMC__]
+    
+    quit;
+
+end;
