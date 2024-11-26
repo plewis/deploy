@@ -105,22 +105,25 @@ else:
             fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
             maxdeep = 0
             stuff = open(fn, 'r').read()
-        m = re.search(r'num deep coalescences = (?P<numdeep>\d+)\s+Maximum number of deep coalescences = (?P<maxdeep>\d+)', stuff, re.M | re.S)
+            # Extract numdeep, maxdeep, and stoheight
+            m = re.search(r'num deep coalescences = (?P<numdeep>\d+)\s+Maximum number of deep coalescences = (?P<maxdeep>\d+)\s+True species tree height = (?P<stoheight>[.0-9]+)', stuff, re.M | re.S)
             assert m is not None, 'could not extract deep coalescences from file "%s"' % fn
             numdeep = int(m.group('numdeep'))
-        maxdeep = int(m.group('maxdeep'))
+            maxdeep = int(m.group('maxdeep'))
+            stoheight = float(m.group('stoheight'))
+            
+             # Extract stxheight (species tree expected height)
+            m = re.search(r'Expected species tree height = (?P<stxheight>[.0-9]+)', stuff, re.M | re.S)
+            assert m is not None, 'could not extract expected species tree height from file "%s"' % fn
+            stxheight = float(m.group('stxheight'))
             
             # extract lambda and theta mean
             fn = 'rep%d/sim/proj.conf' % rep_plus_one
             stuff = open(fn, 'r').read()
-        m = re.search('theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
+            m = re.search('theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
             assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
-            
-            # Is species tree expected height (stxheight) and observed height (stoheight) saved?
-            stxheight = -1.0
-            stoheight = -1.0
         elif __POL02003__:
             fn = 'rep%d/sim/output%d.txt' % (rep_plus_one,rep_plus_one)
             stuff = open(fn, 'r').read()
@@ -146,7 +149,7 @@ else:
         # Save true species tree
         fn = 'rep%d/sim/true-species-tree.tre' % rep_plus_one
         stuff = open(fn, 'r').read()
-    m = re.search('tree \S+ = \[&R\] (.+?);', stuff, re.M | re.S)
+        m = re.search('tree \S+ = \[&R\] (.+?);', stuff, re.M | re.S)
         assert m is not None, 'could not locate newick in file "%s"' % fn
         true_tree = m.group(1)
         true_tree = re.sub(':[.0-9]+', '', true_tree)
