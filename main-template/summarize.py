@@ -10,8 +10,8 @@ def calcContourBreaksStr(cbmin, cbmax):
     diff = cbmax - cbmin
     incr = diff/9.0
     breaks = []
-    curr = lower
-    while curr < upper:
+    curr = cbmin
+    while curr < cbmax:
         breaks.append('%.3f' % curr)
         curr += incr
     return breaks
