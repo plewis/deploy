@@ -1,5 +1,6 @@
 import sys, re, os, subprocess as sub
 
+plot_theta_vs_lambda = __PLOT_THETA_VS_LAMBDA__
 nspecies = __NUM_SPECIES__
 
 data_from_file = False
@@ -59,16 +60,18 @@ if data_from_file:
     # Read headers and ensure that format is what was expected
     headers = lines[0].strip().split('\t')
     nheaders = len(headers)
-    assert nheaders == 9, 'Expecting 9 columns but instead found %d in headers\nheaders: %s\n' % (nheaders,headers)
+    assert nheaders == 11, 'Expecting 11 columns but instead found %d in headers\nheaders: %s\n' % (nheaders,headers)
     assert headers[0] == 'rep' 
     assert headers[1] == 'theta' 
     assert headers[2] == 'lambda' 
     assert headers[3] == 'numdeep' 
     assert headers[4] == 'maxdeep' 
-    assert headers[5] == 'svdq-rf' 
-    assert headers[6] == 'astral-rf' 
-    assert headers[7] == 'smc-rf' 
-    assert headers[8] == 'beast-rf' 
+    assert headers[5] == 'sppTreeObsHt' 
+    assert headers[6] == 'sppTreeExpHt' 
+    assert headers[7] == 'svdq-rf' 
+    assert headers[8] == 'astral-rf' 
+    assert headers[9] == 'smc-rf' 
+    assert headers[10] == 'beast-rf' 
     
     nlines = len(lines)
     print('nlines = %d' % nlines)
@@ -76,17 +79,19 @@ if data_from_file:
     for i,line in enumerate(lines[1:]):
         parts = line.strip().split('\t')
         nparts = len(parts)
-        assert nparts == 9, 'Expecting 9 columns but instead found %d in line %d\nline: %s\n' % (nparts, i, line.strip())
+        assert nparts == 11, 'Expecting 11 columns but instead found %d in line %d\nline: %s\n' % (nparts, i, line.strip())
         rep       =   int(parts[0])
         theta     = float(parts[1])
         lamBda    = float(parts[2])
         numdeep   =   int(parts[3])
         maxdeep   =   int(parts[4])
-        svdq_rf   = float(parts[5])
-        astral_rf = float(parts[6])
-        smc_rf    = float(parts[7])
-        beast_rf  = float(parts[8])
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'svdq_rf':svdq_rf,'astral_rf':astral_rf,'smc_rf':smc_rf,'beast_rf':beast_rf})
+        sppTreeObsHt = float(parts[5])
+        sppTreeExpHt = float(parts[6])
+        svdq_rf      = float(parts[7])
+        astral_rf    = float(parts[8])
+        smc_rf       = float(parts[9])
+        beast_rf     = float(parts[10])
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':sppTreeObsHt,'sppTreeExpHt':sppTreeExpHt,'svdq_rf':svdq_rf,'astral_rf':astral_rf,'smc_rf':smc_rf,'beast_rf':beast_rf})
 else:
     print('Summarizing output...')
 
@@ -228,19 +233,37 @@ else:
         output_string += '%.5f\n' % beast_rf
         outf.write(output_string)
 
-# Create lambdavector, thetavector, smcmeans, and beastmeans
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
-lambdavector = []
-thetavector = []
+
+if plot_theta_vs_lambda:
+    # Create thetavector and lambdavector
+    lambdavector = []
+    thetavector = []
+    for s in summary:
+        lambdavector.append('%g' % s['lambda'])
+        thetavector.append('%g' % s['theta'])
+    lambdastr = ','.join(lambdavector)
+    thetastr = ','.join(thetavector)
+else:
+    # Create halfthetavector and Tvector
+    Tvector = []
+    halfthetavector = []
+    for s in summary:
+        halftheta = s['theta']/2.0
+        T = s['sppTreeExpHt']
+        Tvector.append('%g' % T)
+        halfthetavector.append('%g' % halftheta)
+    Tstr = ','.join(Tvector)
+    halfthetastr = ','.join(halfthetavector)
+
+# Create smcmeans and beastmeans
 smcRFmeans = []
 beastRFmeans = []
 smcMinusBeastRF = []
 contour_breaks_max = None
 contour_breaks_min = None
 for s in summary:
-    lambdavector.append('%g' % s['lambda'])
-    thetavector.append('%g' % s['theta'])
     smcRFmeans.append('%g' % s['smc_rf'])
     beastRFmeans.append('%g' % s['beast_rf'])
     diff = s['smc_rf'] - s['beast_rf']
@@ -250,24 +273,33 @@ for s in summary:
         contour_breaks_min = diff
     smcMinusBeastRF.append('%g' % diff)
 
-lambdastr = ','.join(lambdavector)
-thetastr = ','.join(thetavector)
 smcrfstr = ','.join(smcRFmeans)
 beastrfstr = ','.join(beastRFmeans)
 smcminusbeaststr = ','.join(smcMinusBeastRF)
 
 contour_breaks_str = calcContourBreaksStr(contour_breaks_min, contour_breaks_max)
 
-# Open plot-template.Rmd
-stuff = open('plot-template.Rmd', 'r').read()
-stuff = re.sub('__NSPECIES__', '%d' % nspecies, stuff, re.M | re.S)
-stuff = re.sub('__LAMBDAVECTOR__', lambdastr, stuff, re.M | re.S)
-stuff = re.sub('__THETAVECTOR__', thetastr, stuff, re.M | re.S)
-stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
-stuff = re.sub('__BEASTRFMEANS__', beastrfstr, stuff, re.M | re.S)
-stuff = re.sub('__SMC_MINUS_BEAST_RF__', smcminusbeaststr, stuff, re.M | re.S)
-stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
-        
+if plot_theta_vs_lambda:
+    # Open plot-theta-lambda-template.Rmd
+    stuff = open('plot-theta-lambda-template.Rmd', 'r').read()
+    stuff = re.sub('__NSPECIES__', '%d' % nspecies, stuff, re.M | re.S)
+    stuff = re.sub('__LAMBDAVECTOR__', lambdastr, stuff, re.M | re.S)
+    stuff = re.sub('__THETAVECTOR__', thetastr, stuff, re.M | re.S)
+    stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__BEASTRFMEANS__', beastrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__SMC_MINUS_BEAST_RF__', smcminusbeaststr, stuff, re.M | re.S)
+    stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
+else:
+    # Open plot-halftheta-T-template.Rmd
+    stuff = open('plot-halftheta-T-template.Rmd', 'r').read()
+    stuff = re.sub('__NSPECIES__', '%d' % nspecies, stuff, re.M | re.S)
+    stuff = re.sub('__TVECTOR__', Tstr, stuff, re.M | re.S)
+    stuff = re.sub('__HALFTHETAVECTOR__', halfthetastr, stuff, re.M | re.S)
+    stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__BEASTRFMEANS__', beastrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__SMC_MINUS_BEAST_RF__', smcminusbeaststr, stuff, re.M | re.S)
+    stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
+
 outf = open('plot.Rmd', 'w')
 outf.write(stuff)
 outf.close()

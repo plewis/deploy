@@ -251,6 +251,7 @@ def run(maindir, nreps):
     nspp_str = '%d' % (len(species),)
     summarize_path = os.path.join(maindir, 'summarize.py')
     setupsubst.substitutions({
+        '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
         '__NUM_SPECIES__': nspp_str,
         '__PAUPPATH__': paup_path,
         '__NREPS__': nreps,
