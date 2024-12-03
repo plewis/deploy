@@ -1,0 +1,67 @@
+---
+title: "RGL Perspective Plots"
+author: "Paul Lewis"
+date: "2024-07-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+Plot of simulated combinations of theta and lambda
+
+```{r}
+halftheta = c(__HALFTHETAVECTOR__)
+T = c(__TVECTOR__)
+numdeep = c(__NUMDEEP__)
+maxdeep = c(__MAXDEEP__)
+nspecies = __NSPECIES__
+plot(theta, lambda, type="p", pch=19, main="Simulation conditions", xlab="theta", ylab="lambda")
+```
+Set colors for plots
+
+```{r}
+bgcolor <- "cornsilk"
+planecolor <- "ghostwhite"
+surfcolor <- "red"
+```
+
+Set up values used for the x-axis and y-axis of the grid
+
+```{r}
+theta_vals <- unique(theta)
+cat("theta_vals:\n")
+theta_vals
+ncols <- length(theta_vals)
+
+lambda_vals <- unique(lambda)
+cat("lambda_vals:\n")
+lambda_vals
+nrows <- length(lambda_vals)
+```
+
+The rf-summary.txt and kf-summary.txt files are created by crunch.py
+
+```{r}
+smcmean   <- c(__SMCRFMEANS__)
+beastmean <- c(__BEASTRFMEANS__)
+smcminusbeast <- c(__SMC_MINUS_BEAST_RF__)
+proportiondeep <- numdeep/maxdeep
+rf <- data.frame(theta, lambda, smcmean, beastmean)
+```
+
+Contour plot SMC on top, BEAST on bottom. of zero delta RF plane
+
+```{r}
+v <- ggplot(rf, aes(theta, lambda, z = smcminusbeast))
+v + geom_contour_filled(breaks=c(__CONTOUR_BREAKS__))
+```
+Contour plot showing number of deep coalescences
+
+```{r}
+v <- ggplot(rf, aes(halftheta, T, z = proportiondeep))
+v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(theta/2))
+```
+

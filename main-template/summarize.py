@@ -261,6 +261,8 @@ else:
 smcRFmeans = []
 beastRFmeans = []
 smcMinusBeastRF = []
+numdeep = []
+maxdeep = []
 contour_breaks_max = None
 contour_breaks_min = None
 for s in summary:
@@ -272,10 +274,14 @@ for s in summary:
     if contour_breaks_min is None or diff < contour_breaks_min:
         contour_breaks_min = diff
     smcMinusBeastRF.append('%g' % diff)
+    numdeep.append('%d' % s['numdeep'])
+    maxdeep.append('%d' % s['maxdeep'])
 
 smcrfstr = ','.join(smcRFmeans)
 beastrfstr = ','.join(beastRFmeans)
 smcminusbeaststr = ','.join(smcMinusBeastRF)
+numdeepstr = ','.join(numdeep)
+maxdeepstr = ','.join(maxdeep)
 
 contour_breaks_str = calcContourBreaksStr(contour_breaks_min, contour_breaks_max)
 
@@ -289,6 +295,8 @@ if plot_theta_vs_lambda:
     stuff = re.sub('__BEASTRFMEANS__', beastrfstr, stuff, re.M | re.S)
     stuff = re.sub('__SMC_MINUS_BEAST_RF__', smcminusbeaststr, stuff, re.M | re.S)
     stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
+    stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
+    stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
 else:
     # Open plot-halftheta-T-template.Rmd
     stuff = open('plot-halftheta-T-template.Rmd', 'r').read()
@@ -299,6 +307,8 @@ else:
     stuff = re.sub('__BEASTRFMEANS__', beastrfstr, stuff, re.M | re.S)
     stuff = re.sub('__SMC_MINUS_BEAST_RF__', smcminusbeaststr, stuff, re.M | re.S)
     stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
+    stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
+    stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
 
 outf = open('plot.Rmd', 'w')
 outf.write(stuff)
