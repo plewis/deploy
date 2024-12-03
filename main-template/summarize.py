@@ -219,7 +219,7 @@ else:
             beast_rf = -1
             print('  BEAST trees not found')
         
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'stoheight':stoheight, 'stxheight':stxheight, 'svdq_rf':svdq_rf,'astral_rf':astral_rf,'smc_rf':smc_rf,'beast_rf':beast_rf})
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'svdq_rf':svdq_rf,'astral_rf':astral_rf,'smc_rf':smc_rf,'beast_rf':beast_rf})
         output_string  = '%d\t' % rep_plus_one
         output_string += '%.5f\t' % theta
         output_string += '%.5f\t' % lamBda
