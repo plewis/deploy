@@ -123,7 +123,7 @@ __PARALLEL__
             <log idref="popSize"/>
 __LOGLOCUS__
         </logger>
-        <logger id="speciesTreeLogger" spec="Logger" fileName="species.trees" logEvery="10000" mode="tree">
+        <logger id="speciesTreeLogger" spec="Logger" fileName="species.trees" logEvery="__STOREEVERY3__" mode="tree">
             <log id="SpeciesTreeLoggerX" spec="starbeast3.core.SpeciesTreeLogger" popSize="@popSize" speciesTreePrior="@SpeciesTreePopSize.Species" tree="@Tree.t:Species">
                 <treetop id="treeTopFinder" spec="beast.base.evolution.speciation.TreeTopFinder">
 __TREETOP__

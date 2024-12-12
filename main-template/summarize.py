@@ -180,7 +180,7 @@ else:
             m = re.search(r'tree qAge = \[&R\] (\S+);', stuff, re.M | re.S)    
             assert m is not None
             svdq_tree = m.group(1)
-            svdq_tree = re.sub(':[.0-9]+', '', svdq_tree)
+            svdq_tree = re.sub(':[-e.0-9]+', '', svdq_tree)
             svdq_rf = calcRF(rep_plus_one, 'SVDQ', svdq_tree)
             print('  SVDQ tree: %s (RF = %d)' % (svdq_tree,svdq_rf))
         else:

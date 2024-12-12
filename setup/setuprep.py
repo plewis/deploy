@@ -548,6 +548,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         '__PREBURNIN__': setupmain.beast_preburnin,
         '__STOREEVERY1__': setupmain.beast_storeevery,
         '__STOREEVERY2__': setupmain.beast_storeevery,
+        '__STOREEVERY3__': setupmain.beast_storeevery,
         '__TAXONSET__': taxonset,
         '__LOCI__': loci,
         '__SBI__': sbi,

@@ -3,8 +3,8 @@ import sys,os,re,math,shutil
 import setupsubst
 
 # Specify NetID of user (this is for specifying home directories and choosing among template files)
-user = 'pol02003'
-#user = 'aam21005'
+#user = 'pol02003'
+user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
 local = True
@@ -58,7 +58,7 @@ elif user == 'aam21005':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 9
+ngridpoints = 2
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2
@@ -164,7 +164,7 @@ else:
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 1000
+smc_nparticles        = 100
 smc_nspeciesparticles = 200
 if user == 'aam21005':
     smc_thin			  = 0.1
