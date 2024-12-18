@@ -355,19 +355,36 @@ def run(rep, nreps, maindir, repdir, rnseed):
     u = random.random()
     comphet = setupmain.min_comphet + u*(setupmain.max_comphet - setupmain.min_comphet)
     
-    setupsubst.substitutions({
-        '__RNSEED__':        rnseed, 
-        '__THETAMEAN__':     theta_mean, 
-        '__LAMBDA__':        speciation_rate,
-        '__SUBSETS__':       subsets,
-        '__RELRATES__':      relrates,
-        '__SPECIES__':       species,
-        '__OCCUPANCY__':     occupancy,
-        '__ASRV_SHAPE__':    asrv_shape,
-        '__EDGE_RATE_VAR__': edge_rate_variance,
-        '__COMP_HET__':      comphet
-        }, infile, outfile)
-    os.rename(outfile, os.path.join(outer_simdir, 'proj.conf'))
+    
+    if setupmain.user == "aam21005":
+         setupsubst.substitutions({
+             '__RNSEED__':        rnseed, 
+             '__THETAMEAN__':     theta_mean, 
+             '__LAMBDA__':        speciation_rate,
+             '__SUBSETS__':       subsets,
+             '__RELRATES__':      relrates,
+             '__SPECIES__':       species,
+             '__OCCUPANCY__':     occupancy,
+             '__ASRV_SHAPE__':    asrv_shape,
+             '__EDGE_RATE_VAR__': edge_rate_variance,
+             '__COMP_HET__':      comphet,
+             '__SAVEGENETREESSEPARATELY__': setupmain.sim_save_gene_trees_separately    
+             }, infile, outfile)
+         os.rename(outfile, os.path.join(outer_simdir, 'proj.conf'))
+    else:
+         setupsubst.substitutions({
+             '__RNSEED__':        rnseed, 
+             '__THETAMEAN__':     theta_mean, 
+             '__LAMBDA__':        speciation_rate,
+             '__SUBSETS__':       subsets,
+             '__RELRATES__':      relrates,
+             '__SPECIES__':       species,
+             '__OCCUPANCY__':     occupancy,
+             '__ASRV_SHAPE__':    asrv_shape,
+             '__EDGE_RATE_VAR__': edge_rate_variance,
+             '__COMP_HET__':      comphet
+             }, infile, outfile)
+         os.rename(outfile, os.path.join(outer_simdir, 'proj.conf'))
 
     ##############################################################
     # Run simulation program to simulate data for this replicate #
@@ -439,7 +456,10 @@ def run(rep, nreps, maindir, repdir, rnseed):
             '__SMCSAVEEVERY__': setupmain.smc_saveevery,
             '__SMCNTHREADS__': setupmain.smc_nthreads,
             '__SMCSAVEGENETREES__': setupmain.smc_savegenetrees,
-            '__SMCSAVEMEMORY__': setupmain.smc_savememory
+            '__SMCGENENEWICKS__': setupmain.smc_genenewicks,
+            '__SMCNLOCI__': setupmain.nloci,
+            '__SMCSAVEMEMORY__': setupmain.smc_savememory,
+            '__SMCNEWICKPATH__': setupmain.smc_newickpath
             }, infile, outfile)
     else:
     	setupsubst.substitutions({

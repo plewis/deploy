@@ -65,8 +65,8 @@ ngridpoints = 2
 nreps = 1
 
 nloci           = 10
-min_sites_per_locus = 200
-max_sites_per_locus = 1000
+min_sites_per_locus = 500
+max_sites_per_locus = 500
 
 # Variance of lognormal distribution governing variation
 # among rates on each edge of a gene tree. The mean rate
@@ -154,6 +154,9 @@ else:
     
     T_min = 0.1
     T_max = 1.0
+    
+if user == 'aam21005':
+    sim_save_gene_trees_separately = True
 
 ################
 # SMC settings #
@@ -164,15 +167,17 @@ else:
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 100
-smc_nspeciesparticles = 200
+smc_nparticles        = 1
+smc_nspeciesparticles = 1000
 if user == 'aam21005':
-    smc_thin			  = 0.1
+    smc_thin			  = 1.0
     smc_saveevery		  = 100
     smc_nthreads		  = 7
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
+    smc_genenewicks		  = True
+    smc_newickpath		  = "../sim"
 elif user == 'pol02003':
     smc_nkept             = 50
     smc_nspeciesparticles = 200
