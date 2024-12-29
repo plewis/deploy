@@ -264,6 +264,19 @@ def run(maindir, nreps):
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
         
+    ##############################
+    # Set up summarize-galax.py script #
+    ##############################
+    nspp_str = '%d' % (len(species),)
+    summarize_path = os.path.join(maindir, 'summarize-galax.py')
+    setupsubst.substitutions({
+        '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
+        '__NUM_SPECIES__': nspp_str,
+        '__NREPS__': nreps,
+        '__AAM21005__': user == 'aam21005',
+        '__POL02003__': user == 'pol02003'
+        }, summarize_path, summarize_path)
+        
     #########################################
     # Set up theta-lambda-svdqage.py script #
     #########################################
@@ -295,3 +308,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__MAXTREES__': beast_samplesize + 1
         }, rfbeast_path, rfbeast_path)
+        
+    #########################################
+    # Set up writegalax.py script #
+    #########################################
+    write_galax_path = os.path.join(maindir, 'writegalax.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, write_galax_path, write_galax_path)
