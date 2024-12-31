@@ -42,7 +42,7 @@ T_vals
 nrows <- length(T_vals)
 ```
 
-The rf-summary.txt and kf-summary.txt files are created by crunch.py
+Plot new info content.
 
 ```{r}
 info <- c(__SMC_INFO__)
@@ -50,10 +50,24 @@ infodf <- data.frame(halftheta, T, info)
 proportiondeep <- numdeep/maxdeep
 ```
 
-Contour plot SMC on top, BEAST on bottom. of zero delta RF plane
+Plot old info content.
+
+```{r}
+old_info <- c(__SMC_OLD_INFO__)
+old_infodf <- data.frame(halftheta, T, old_info)
+```
+
+Contour plot new info
 
 ```{r}
 v <- ggplot(infodf, aes(halftheta, T, z = info))
+v + geom_contour_filled(breaks=c(__CONTOUR_BREAKS__)) + labs(x=expression(theta/2))
+```
+
+Contour plot old info
+
+```{r}
+v <- ggplot(old_infodf, aes(halftheta, T, z = old_info))
 v + geom_contour_filled(breaks=c(__CONTOUR_BREAKS__)) + labs(x=expression(theta/2))
 ```
 

@@ -94,13 +94,21 @@ else:
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
             
-           # Extract information from galax output
+           # Extract information from new galax output
             fn = 'smcout%d.txt' % rep_plus_one
             stuff_two = open(fn, 'r').read()
             
             m = re.search(r'([0-9]*\.[0-9]*) percent information given sample size', stuff_two, re.M | re.S)
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_info = float(m.group(1))
+            
+           # Extract information from old galax output
+            fn = 'smcout%d.txt' % rep_plus_one
+            stuff_three = open(fn, 'r').read()
+            
+            m = re.search(r'average *[0-9]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+([0-9.]*)', stuff_three, re.M | re.S)
+            assert m is not None, 'could not extract information content from file "%s"' % fn
+            smc_old_info = float(m.group(1))
             
         elif __POL02003__:
             fn = 'rep%d/sim/output%d.txt' % (rep_plus_one,rep_plus_one)
@@ -124,7 +132,7 @@ else:
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
             
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info})
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info})
         output_string  = '%d\t' % rep_plus_one
         output_string += '%.5f\t' % theta
         output_string += '%.5f\t' % lamBda
@@ -132,7 +140,8 @@ else:
         output_string += '%d\t' % maxdeep
         output_string += '%.5f\t' % stoheight
         output_string += '%.5f\t' % stxheight
-        output_string += '%.5f\t' % smc_info        
+        output_string += '%.5f\t' % smc_info  
+        output_string += '%.5f\t' % smc_old_info      
 
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
@@ -167,15 +176,21 @@ contour_breaks_min = None
 for s in summary:
     smcInfomeans.append('%g' % s['smc_info'])
     diff = s['smc_info']
-    print(diff)
     if contour_breaks_max is None or diff > contour_breaks_max:
         contour_breaks_max = diff
     if contour_breaks_min is None or diff < contour_breaks_min:
         contour_breaks_min = diff
     numdeep.append('%d' % s['numdeep'])
     maxdeep.append('%d' % s['maxdeep'])
+    
+# Create smcOldInfomeans
+smcOldInfomeans = []
+for s in summary:
+    smcOldInfomeans.append('%g' % s['smc_old_info'])
+    diff = s['smc_old_info']
 
 smcinfostr = ','.join(smcInfomeans)
+smcoldinfostr = ','.join(smcOldInfomeans)
 numdeepstr = ','.join(numdeep)
 maxdeepstr = ','.join(maxdeep)
 
@@ -199,6 +214,7 @@ else:
     stuff = re.sub('__TVECTOR__', Tstr, stuff, re.M | re.S)
     stuff = re.sub('__HALFTHETAVECTOR__', halfthetastr, stuff, re.M | re.S)
     stuff = re.sub('__SMC_INFO__', smcinfostr, stuff, re.M | re.S)
+    stuff = re.sub('__SMC_OLD_INFO__', smcoldinfostr, stuff, re.M | re.S)
     stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
     stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
