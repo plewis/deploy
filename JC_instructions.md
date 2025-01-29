@@ -57,11 +57,25 @@ It is up to you to use the arguments provided to set up one replicate in this fu
 
 Open the script 'setupmain.py' under the 'setup' folder. Change 'user = ' to your username under the section starting with 'Specify NetID of user.' You can comment out the user names you are not using with a #.
 
-Specify local = False on line 11 (section starting with 'Specify local = True if....'). This tells the program you are going to run the simulations on the remote cluster.
+Specify
+* `local = False` 
+on line 11 (section starting with 'Specify local = True if....'). This tells the program you are going to run the simulations on the remote cluster.
 
-On line 21, specify theta_vs_lambda = False (section starting with 'Specify whether grid should be...'). This tells the program we will choose parameters based on theta / 2 and species tree height.
+On line 21, specify 
+* `theta_vs_lambda = False`
+(section starting with 'Specify whether grid should be...'). This tells the program we will choose parameters based on theta / 2 and species tree height.
 
-Under the Paths section (line 24), find the section corresponding to your user name. We are not using your local computer to do anything right now, so you can skip to the section that says "else:" (this corresponds to paths on the remote cluster). 'simulator_path' and 'smc_path' should both correspond to the path of the SMC program on the cluster. Don't worry about 'beast_path' and 'astral_path' for now. 'paup_path' should correspond to the path of the PAUP* program on the cluster.
+Under the Paths section (line 24), find the section corresponding to your user name. We are not using your local computer to do anything right now, so you can skip to the section that says "else:" (this corresponds to paths on the remote cluster).\
+* `simulator_path`
+* `smc_path`
+should both correspond to the path of the SMC program on the cluster.
+
+* `paup_path`
+should correspond to the path of the PAUP* program on the  cluster,
+
+Don't worry about these settings for now:
+* `beast_path`
+* `astral_path`
 
 Under the Simulation settings section (line 69), you can specify the parameters for the simulations. 
 The important parameters to set right now are:
@@ -83,7 +97,8 @@ Decreasing half_theta_max and T_max will make the problems harder. For now, you 
 There are 2 kinds of experiments we can specify under the section 'SMC settings'. You can modify the parameters under the section that includes your username (starting on line 187):
 
 For both experiments, you can set
-* `smc_nthreads = 0.1`
+* `smc_nthreads = 36`
+
 This will allow the cluster to use all processors that are available to you.
 
 1. Give the SMC program the true gene trees and have it estimate the species tree. To do this, set
