@@ -65,18 +65,19 @@ Under the Paths section (line 24), find the section corresponding to your user n
 
 Under the Simulation settings section (line 69), you can specify the parameters for the simulations. 
 The important parameters to set right now are:
-	ngridpoints =
-	nloci =
-	species =
-	indivs_for_species = 
+* `ngridpoints`
+* `nloci`
+* `species`
+* `indivs_for_species`
 
 For now, you can set 'ngridpoints = 10' and 'nloci = 10'. ngridpoints sets the square of the number of simulations to conduct (i.e. 'ngridpoints = 10' will result in 100 simulations). 'nloci' sets the number of loci to use in each simulation. You can keep 'species' and 'indivs_for_species' as they are right now ('species            = ['A', 'B', 'C', 'D', 'E']' and 'indivs_for_species = [ 2,   2,   2,   2,   2]'). 'species' sets the number of species in the species trees, and 'indivs_for_species' sets the number of taxa in the gene trees per species.
 
 Because you should have already specified theta_vs_lambda = False, any changes you make between lines 120 and 142 (starting with 'if theta_vs_lambda') will be ignored. You can change the parameter values starting after the 'else:' on line 143:
-	half_theta_min =
-	half_theta_max =
-	T_min =
-	T_max =
+* `half_theta_min`
+* `half_theta_max`
+* `T_min`
+* `T_max`
+
 Decreasing half_theta_max and T_max will make the problems harder. For now, you can keep the values as they are or change them.
 
 There are 2 kinds of experiments we can specify under the section 'SMC settings'. You can modify the parameters under the section that includes your username (starting on line 187):
@@ -95,31 +96,40 @@ You can also ignore the section 'Calculated from settings provided above.' This 
 ## Here are the instructions for running the simulations. These instructions assume setupmain.py is set up.
 
 Run the deploy script using the command
+
 	python3 deploy.py
 
 Note you must be in the same directory as deploy.py. If you are in the 'setup' directory, you may have to use
+	
 	cd ..
+	
 to return to the deploy directory.
 
 You should now have a directory named 'g'. If you have an existing 'g' directory, you will have to remove it (rm -rf g) or rename it (mv g new-name). Be sure you don't actually want the directory before removing it, since this action is permanent.
 
 Move the 'g' directory to your home using the command:
+	
 	mv g ~
 
 Now cd into the 'g' directory:
+	
 	cd ~/g
 
 Now run some scripts to replace place-holder values in the template files:
+	
 	. svdq.sh
 	python3 theta-lambda-svdqage.py
 	
 Now run the SMC program:
+	
 	sbatch smc.slurm
 
 You can check the status of your jobs using:
+	
 	sacct -A pol02003
 
 When the jobs have finished, summarize the results by running the scripts
+	
 	paup rfsmc.nex
 	python3 summarize.py
 
@@ -127,6 +137,7 @@ This will calculate Robinson-Foulds (RF) distances between the trees the SMC pro
 
 
 Now you can run galax on the results:
+	
 	python3 writegalax.py
 	. rungalax.sh
 	python3 summarize-galax.py
