@@ -53,19 +53,19 @@ This python module must have a `run` function that takes the following 5 argumen
 It is up to you to use the arguments provided to set up one replicate in this function.
 
 
-## Here are the instructions for setting up a run. These instructions assume you have compiled the SMC program, PAUP*, and galax on the cluster.
+## Here are the instructions for setting up a run. These instructions assume you have compiled the `SMC` program, `PAUP*`, and `galax` on the cluster.
 
-Open the script 'setupmain.py' under the 'setup' folder. Change 'user = ' to your username under the section starting with 'Specify NetID of user.' You can comment out the user names you are not using with a #.
+Open the script `setupmain.py` under the `setup` folder. Change `user =`  to your username under the section starting with `Specify NetID of user`. You can comment out the user names you are not using with a #.
 
 Specify
 * `local = False` 
-on line 11 (section starting with 'Specify local = True if....'). This tells the program you are going to run the simulations on the remote cluster.
+on line 11 (section starting with `Specify local = True if....`. This tells the program you are going to run the simulations on the remote cluster.
 
 On line 21, specify 
 * `theta_vs_lambda = False`
 (section starting with 'Specify whether grid should be...'). This tells the program we will choose parameters based on theta / 2 and species tree height.
 
-Under the Paths section (line 24), find the section corresponding to your user name. We are not using your local computer to do anything right now, so you can skip to the section that says "else:" (this corresponds to paths on the remote cluster).\
+Under the Paths section (line 24), find the section corresponding to your user name. We are not using your local computer to do anything right now, so you can skip to the section that says "else:" (this corresponds to paths on the remote cluster).
 * `simulator_path`
 * `smc_path`
 should both correspond to the path of the SMC program on the cluster.
@@ -84,7 +84,16 @@ The important parameters to set right now are:
 * `species`
 * `indivs_for_species`
 
-For now, you can set 'ngridpoints = 10' and 'nloci = 10'. ngridpoints sets the square of the number of simulations to conduct (i.e. 'ngridpoints = 10' will result in 100 simulations). 'nloci' sets the number of loci to use in each simulation. You can keep 'species' and 'indivs_for_species' as they are right now ('species            = ['A', 'B', 'C', 'D', 'E']' and 'indivs_for_species = [ 2,   2,   2,   2,   2]'). 'species' sets the number of species in the species trees, and 'indivs_for_species' sets the number of taxa in the gene trees per species.
+For now, you can set
+* `ngridpoints = 10`
+* `nloci = 10`
+ngridpoints sets the square of the number of simulations to conduct (i.e. `ngridpoints = 10` will result in 100 simulations). `nloci` sets the number of loci to use in each simulation.\
+
+You can keep the following settings as they are right now:
+* `species`
+* `indivs_for_species`
+
+`species            = ['A', 'B', 'C', 'D', 'E']` and `indivs_for_species = [ 2,   2,   2,   2,   2]`). `species` sets the number of species in the species trees, and `indivs_for_species` sets the number of taxa in the gene trees per species.
 
 Because you should have already specified theta_vs_lambda = False, any changes you make between lines 120 and 142 (starting with 'if theta_vs_lambda') will be ignored. You can change the parameter values starting after the 'else:' on line 143:
 * `half_theta_min`
@@ -94,7 +103,7 @@ Because you should have already specified theta_vs_lambda = False, any changes y
 
 Decreasing half_theta_max and T_max will make the problems harder. For now, you can keep the values as they are or change them.
 
-There are 2 kinds of experiments we can specify under the section 'SMC settings'. You can modify the parameters under the section that includes your username (starting on line 187):
+There are 2 kinds of experiments we can specify under the section `SMC settings`. You can modify the parameters under the section that includes your username (starting on line 187):
 
 For both experiments, you can set
 * `smc_nthreads = 36`
@@ -123,23 +132,23 @@ This will allow the cluster to use all processors that are available to you.
 (For now, use 'smc_saveevery = 100'? Decreasing this number will give you more samples.)\n
 
 
-You can ignore the section 'BEAST settings'.
+You can ignore the section `BEAST settings`.
 
-You can also ignore the section 'Calculated from settings provided above.' This will set up the directories to run your experiments.
+You can also ignore the section `Calculated from settings provided above`. This will set up the directories to run your experiments.
 
-## Here are the instructions for running the simulations. These instructions assume setupmain.py is set up.
+## Here are the instructions for running the simulations. These instructions assume `setupmain.py` is set up.
 
 Run the deploy script using the command
 
 	python3 deploy.py
 
-Note you must be in the same directory as deploy.py. If you are in the 'setup' directory, you may have to use
+Note you must be in the same directory as `deploy.py`. If you are in the 'setup' directory, you may have to use
 	
 	cd ..
 	
 to return to the deploy directory.
 
-You should now have a directory named 'g'. If you have an existing 'g' directory, you will have to remove it (rm -rf g) or rename it (mv g new-name). Be sure you don't actually want the directory before removing it, since this action is permanent.
+You should now have a directory named `g`. If you have an existing `g` directory, you will have to remove it (`rm -rf g`) or rename it (`mv g new-name`). Be sure you don't actually want the directory before removing it, since this action is permanent.
 
 Move the 'g' directory to your home using the command:
 	
