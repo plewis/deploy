@@ -63,7 +63,7 @@ on line 11 (section starting with `Specify local = True if....`. This tells the 
 
 On line 21, specify 
 * `theta_vs_lambda = False`
-(section starting with 'Specify whether grid should be...'). This tells the program we will choose parameters based on theta / 2 and species tree height.
+(section starting with `Specify whether grid should be...`). This tells the program we will choose parameters based on theta / 2 and species tree height.
 
 Under the Paths section (line 24), find the section corresponding to your user name. We are not using your local computer to do anything right now, so you can skip to the section that says "else:" (this corresponds to paths on the remote cluster).
 * `simulator_path`
