@@ -82,16 +82,35 @@ Decreasing half_theta_max and T_max will make the problems harder. For now, you 
 
 There are 2 kinds of experiments we can specify under the section 'SMC settings'. You can modify the parameters under the section that includes your username (starting on line 187):
 
-1) Give the SMC program the true gene trees and have it estimate the species tree. To do this, set 'smc_genenewicks = True'. Set 'smc_nparticles = 1' and 'smc_thin = 1.0' and 'smc_saveevery = 1'. You can set 'smc_nspeciesparticles'. (For now, use 'smc_nspeciesparticles = 1000'? Increasing this number will take longer but may be more accurate.)
+For both experiments, you can set
+* `smc_nthreads = 0.1`
+This will allow the cluster to use all processors that are available to you.
 
-2) Give the SMC program the raw data and have it estimate the gene trees and the species tree. To do this, set 'smc_genenewicks = False'. You can set 'smc_nparticles'. (For now, use 'smc_nparticles = 10000'? Increasing this number will take longer but may be more accurate.) You can set 'smc_nspeciesparticles'. (For now, use 'smc_nspeciesparticles = 1000'? Increasing this number will take longer but may be more accurate.) You can also set 'smc_thin'. (For now, use 'smc_thin = 0.1'? Increasing this number will take longer but will give you more samples.) You can also set 'smc_saveevery'. (For now, use 'smc_saveevery = 100'? Decreasing this number will give you more samples.)
+1. Give the SMC program the true gene trees and have it estimate the species tree. To do this, set
+* `smc_genenewicks = True`
+* `smc_nparticles = 1`
+* `smc_thin = 1.0`
+* `smc_nspeciesparticles = 1000`
+* `smc_saveevery = 1.0`
 
-For both experiments, you can also set 'smc_nthreads = 36;. This will allow the cluster to use all processors that are available to you.
+(For now, use 'smc_nspeciesparticles = 1000'? Increasing this number will take longer but may be more accurate.)
+
+2. Give the SMC program the raw data and have it estimate the gene trees and the species tree. To do this, set
+* `smc_genenewicks = False`
+* `smc_nparticles = 10000`
+* `smc_nspeciesparticles = 1000`
+* `smc_thin = 0.1`
+* `smc_saveevery = 100`
+
+(For now, use 'smc_nparticles = 10000'? Increasing this number will take longer but may be more accurate.)\
+(For now, use 'smc_nspeciesparticles = 1000'? Increasing this number will take longer but may be more accurate.)\
+(For now, use 'smc_thin = 0.1'? Increasing this number will take longer but will give you more samples.)\
+(For now, use 'smc_saveevery = 100'? Decreasing this number will give you more samples.)\n
+
 
 You can ignore the section 'BEAST settings'.
 
 You can also ignore the section 'Calculated from settings provided above.' This will set up the directories to run your experiments.
-
 
 ## Here are the instructions for running the simulations. These instructions assume setupmain.py is set up.
 
