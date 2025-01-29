@@ -4,6 +4,7 @@ import setupsubst
 
 # Specify NetID of user (this is for specifying home directories and choosing among template files)
 #user = 'pol02003'
+#user = 'jc_net_id'
 user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
@@ -49,6 +50,20 @@ elif user == 'aam21005':
         beast_path     = '/home/aam21005/beast/bin/beast'
         astral_path    = '/home/aam21005/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
+elif user == 'jc_net_id':
+# do not use local
+    if local: 
+        simulator_path = 'smc'
+        smc_path       = 'smc'
+        beast_path     = 'path_to_beast'
+        astral_path    = 'path_to_astral'
+        paup_path      = 'path_to_paup'
+    else:
+        simulator_path = '/home/jc_net_id/bin/smc'
+        smc_path       = '/home/jc_net_id/bin/smc'
+        beast_path     = '/home/jc_net_id/beast/bin/beast'
+        astral_path    = '/home/jc_net_id/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
+        paup_path      = '/home/jc_net_id/bin/paup'
 
 #######################
 # Simulation settings #
@@ -155,7 +170,7 @@ else:
     T_min = 0.1
     T_max = 1.0
     
-if user == 'aam21005':
+if user == 'aam21005' || user == 'jc_net_id':
     sim_save_gene_trees_separately = True
 
 ################
@@ -169,7 +184,7 @@ smc_use_svdq_estimates = True
 
 smc_nparticles        = 1
 smc_nspeciesparticles = 1000
-if user == 'aam21005':
+if user == 'aam21005' or user == 'jc_net_id':
     smc_thin			  = 1.0
     smc_saveevery		  = 100
     smc_nthreads		  = 7
@@ -184,7 +199,7 @@ elif user == 'pol02003':
     smc_nspecieskept      = 50
     smc_speciestreefile   = '2nd-final-species-trees.tre'
 else:
-    assert False, 'user must be either pol02003 or aam21005'
+    assert False, 'user must be either pol02003 or aam21005 or jc_net_id'
 
 ##################
 # BEAST settings #
@@ -261,6 +276,7 @@ def run(maindir, nreps):
         '__PAUPPATH__': paup_path,
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
+        '__JC_NET_ID__': user == 'jc_net_id',
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
         
@@ -274,6 +290,7 @@ def run(maindir, nreps):
         '__NUM_SPECIES__': nspp_str,
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
+        '__JC_NET_ID__': user == 'jc_net_id',
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
         
@@ -284,6 +301,7 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
+        '__JC_NET_ID__': user == 'jc_net_id',
         '__POL02003__': user == 'pol02003'
         }, theta_lambda_svdqage_path, theta_lambda_svdqage_path)
         
@@ -294,7 +312,7 @@ def run(maindir, nreps):
     smc_samplesize = 0
     if user == "pol02003":
         smc_samplesize = smc_nkept * smc_nspecieskept
-    elif user == "aam21005":
+    elif user == "aam21005" || user == "jc_net_id":
         smc_samplessize = smc_nparticles * smc_thin * smc_nspeciesparticles / smc_saveevery
     setupsubst.substitutions({
         '__MAXTREES__': smc_samplesize + 1

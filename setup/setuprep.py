@@ -289,7 +289,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     site_cursor = 1
     subsets = ''
     relrates = ''
-    if setupmain.user == 'aam21005':
+    if setupmain.user == 'aam21005' or setupmain.user == 'jc_net_id':
          relrates += 'relative_rates = '
     for g in range(setupmain.nloci):
         locus = g + 1
@@ -304,7 +304,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         relrate_this_locus = random.gammavariate(setupmain.subset_relrate_shape, setupmain.subset_relrate_scale)
         if setupmain.user == 'pol02003':
             relrates += 'relrate = locus%d:%.5f\n' % (locus, relrate_this_locus)
-        elif setupmain.user == 'aam21005':
+        elif setupmain.user == 'aam21005' or setupmain.user == 'jc_net_id':
             if g == 0:
                 relrates += str(relrate_this_locus)
             else:
@@ -323,7 +323,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         
         site_cursor += nsites_this_locus
         
-    if setupmain.user == 'aam21005':
+    if setupmain.user == 'aam21005' or setupmain.user == 'jc_net_id':
          relrates += '\n'
         
     # Define number of species and number of individuals for each species
@@ -333,7 +333,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         for s in range(nspecies):
             nindivs = setupmain.indivs_for_species[s]
             species += 'simntaxaperspecies = %d\n' % nindivs
-    elif setupmain.user == 'aam21005':
+    elif setupmain.user == 'aam21005' or setupmain.user == 'jc_net_id':
         species = 'nspecies = %d\n' % nspecies
         species += 'ntaxaperspecies = '
         species += ','.join(['%d' % x for x in setupmain.indivs_for_species])
@@ -356,7 +356,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     comphet = setupmain.min_comphet + u*(setupmain.max_comphet - setupmain.min_comphet)
     
     
-    if setupmain.user == "aam21005":
+    if setupmain.user == "aam21005" or setupmain.user == "jc_net_id":
          setupsubst.substitutions({
              '__RNSEED__':        rnseed, 
              '__THETAMEAN__':     theta_mean, 
@@ -443,7 +443,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         smc_theta_mean = theta_mean
         smc_lambda = speciation_rate
         
-    if setupmain.user == "aam21005":
+    if setupmain.user == "aam21005" or setupmain.user == "jc_net_id":
         setupsubst.substitutions({
             '__RNSEED__':    rnseed, 
             '__SUBSETS__':   subsets,

@@ -25,7 +25,7 @@ for rep in range(nreps):
     # Extract true theta and lambda from sim/proj.conf
     fn = 'rep%d/sim/proj.conf' % rep_plus_one
     stuff = open(fn, 'r').read()
-    if __AAM21005__:
+    if __AAM21005__ or if JC_NET_ID:
         m = re.search(r'.+?theta\s+=\s+(?P<truetheta>[.0-9]+).+?lambda\s+=\s+(?P<truelambda>[.0-9]+)', stuff, re.M | re.S)
     elif __POL02003__:
         m = re.search(r'.+?fixedthetamean\s+=\s+(?P<truetheta>[.0-9]+).+?lambda\s+=\s+(?P<truelambda>[.0-9]+)', stuff, re.M | re.S)

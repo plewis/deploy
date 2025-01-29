@@ -105,7 +105,7 @@ else:
         
         print('Replicate %d of %d...' % (rep_plus_one,nreps))
         
-        if __AAM21005__:
+        if __AAM21005__ or if JC_NET_ID:
             # extract deep coalescences
             fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
             maxdeep = 0
