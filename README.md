@@ -152,4 +152,3 @@ To summarize the output, login to node using `srun` and run these commands:
     cat summary.txt
 
 
-

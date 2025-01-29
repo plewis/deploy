@@ -170,7 +170,7 @@ else:
     T_min = 0.1
     T_max = 1.0
     
-if user == 'aam21005' || user == 'jc_net_id':
+if user == 'aam21005' or user == 'jc_net_id':
     sim_save_gene_trees_separately = True
 
 ################
@@ -186,7 +186,7 @@ smc_nparticles        = 1
 smc_nspeciesparticles = 1000
 if user == 'aam21005' or user == 'jc_net_id':
     smc_thin			  = 1.0
-    smc_saveevery		  = 100
+    smc_saveevery		  = 1
     smc_nthreads		  = 7
     smc_savegenetrees	  = False
     smc_savememory		  = False
@@ -312,7 +312,7 @@ def run(maindir, nreps):
     smc_samplesize = 0
     if user == "pol02003":
         smc_samplesize = smc_nkept * smc_nspecieskept
-    elif user == "aam21005" || user == "jc_net_id":
+    elif user == "aam21005" or user == "jc_net_id":
         smc_samplessize = smc_nparticles * smc_thin * smc_nspeciesparticles / smc_saveevery
     setupsubst.substitutions({
         '__MAXTREES__': smc_samplesize + 1
