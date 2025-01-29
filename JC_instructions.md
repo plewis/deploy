@@ -87,7 +87,7 @@ The important parameters to set right now are:
 For now, you can set
 * `ngridpoints = 10`
 * `nloci = 10`
-ngridpoints sets the square of the number of simulations to conduct (i.e. `ngridpoints = 10` will result in 100 simulations). `nloci` sets the number of loci to use in each simulation.\
+`ngridpoints` sets the square of the number of simulations to conduct (i.e. `ngridpoints = 10` will result in 100 simulations). `nloci` sets the number of loci to use in each simulation.\
 
 You can keep the following settings as they are right now:
 * `species`
@@ -95,13 +95,13 @@ You can keep the following settings as they are right now:
 
 `species            = ['A', 'B', 'C', 'D', 'E']` and `indivs_for_species = [ 2,   2,   2,   2,   2]`). `species` sets the number of species in the species trees, and `indivs_for_species` sets the number of taxa in the gene trees per species.
 
-Because you should have already specified theta_vs_lambda = False, any changes you make between lines 120 and 142 (starting with 'if theta_vs_lambda') will be ignored. You can change the parameter values starting after the 'else:' on line 143:
+Because you should have already specified `theta_vs_lambda = False`, any changes you make between lines 120 and 142 (starting with `if theta_vs_lambda`) will be ignored. You can change the parameter values starting after the 'else:' on line 143:
 * `half_theta_min`
 * `half_theta_max`
 * `T_min`
 * `T_max`
 
-Decreasing half_theta_max and T_max will make the problems harder. For now, you can keep the values as they are or change them.
+Decreasing `half_theta_max` and `T_max` will make the problems harder. For now, you can keep the values as they are or change them.
 
 There are 2 kinds of experiments we can specify under the section `SMC settings`. You can modify the parameters under the section that includes your username (starting on line 187):
 
@@ -186,6 +186,6 @@ Now you can run galax on the results:
 	python3 summarize-galax.py
 
 
-You can now transfer the file 'plot-galax.Rmd' to your local laptop and run it in RStudio to  visualize the results.
+You can now transfer the file `plot-galax.Rmd` to your local laptop using the instructions at [this link](https://kb.uconn.edu/space/SH/26033783688/File+Transfer) You can then run the file in RStudio to  visualize the results.
 
 
