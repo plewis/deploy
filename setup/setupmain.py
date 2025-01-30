@@ -4,8 +4,8 @@ import setupsubst
 
 # Specify NetID of user (this is for specifying home directories and choosing among template files)
 #user = 'pol02003'
-user = 'jjc23002'
-#user = 'aam21005'
+#user = 'jjc23002'
+user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
 local = True
@@ -79,7 +79,11 @@ ngridpoints = 2
 # instead set to ngridpoints^2
 nreps = 1
 
-nloci           = 10
+# number of loci varies among simulations
+#nloci           = 10
+min_n_loci = 10
+max_n_loci = 100
+
 min_sites_per_locus = 500
 max_sites_per_locus = 500
 

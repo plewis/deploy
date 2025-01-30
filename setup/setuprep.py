@@ -151,7 +151,7 @@ def writeNexusFile(fn, ntax, nchar, mask, taxa, sequences):
     f.write('end;\n')
     f.close()
     
-def paupForAstral(astraldir, subset_info):
+def paupForAstral(astraldir, subset_info, nloci):
     # Build string s containing PAUP* commands to estimate gene trees
     # for each locus
     s = ''
@@ -168,7 +168,7 @@ def paupForAstral(astraldir, subset_info):
         s += '  contree all / treefile=genetrees.txt format=newick %s;\n' % (locus == 1 and 'replace' or 'append',)
         s += '  cleardata;\n'
         s += '  cleartrees;\n'
-        if locus < setupmain.nloci:
+        if locus < nloci:
             s += '\n'
     
     # Create mlgenetrees.nex file that will later be executed by PAUP*
@@ -289,9 +289,12 @@ def run(rep, nreps, maindir, repdir, rnseed):
     site_cursor = 1
     subsets = ''
     relrates = ''
+    
+    # Choose the number of loci for this simulation
+    nloci = random.randint(setupmain.min_n_loci, setupmain.max_n_loci)
     if setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
          relrates += 'relative_rates = '
-    for g in range(setupmain.nloci):
+    for g in range(nloci):
         locus = g + 1
 
         # Choose the number of sites for this locus 
@@ -457,7 +460,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
             '__SMCNTHREADS__': setupmain.smc_nthreads,
             '__SMCSAVEGENETREES__': setupmain.smc_savegenetrees,
             '__SMCGENENEWICKS__': setupmain.smc_genenewicks,
-            '__SMCNLOCI__': setupmain.nloci,
+            '__SMCNLOCI__': nloci,
             '__SMCSAVEMEMORY__': setupmain.smc_savememory,
             '__SMCNEWICKPATH__': setupmain.smc_newickpath
             }, infile, outfile)
@@ -479,7 +482,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     # Set up the "beast" directory #
     ################################
     #taxa,seqs = copydata.beast(os.path.join(outer_simdir, 'sim.nex'), setupmain.nloci, setupmain.sites_per_locus)
-    taxa,seqs = copydata.beast(os.path.join(outer_simdir, 'sim.nex'), setupmain.nloci, subset_info)
+    taxa,seqs = copydata.beast(os.path.join(outer_simdir, 'sim.nex'), nloci, subset_info)
 
     taxonset = ''
     nspecies = len(setupmain.species)
@@ -509,7 +512,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     treetop = ''
     loggerlocus = ''
     clustertree = 2
-    for g in range(setupmain.nloci):
+    for g in range(nloci):
         locus = g + 1
         loci += '            <tree id="Tree.t:gene%d" spec="beast.base.evolution.tree.Tree" name="stateNode">\n' % locus
         loci += '                <taxonset id="TaxonSet.gene%d" spec="TaxonSet">\n' % locus
@@ -592,7 +595,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     #################################
     # Set up the "astral" directory #
     #################################
-    paupForAstral(outer_astraldir, subset_info)
+    paupForAstral(outer_astraldir, subset_info, nloci)
 
     ####################################
     # Set up the "genetrees" directory #
