@@ -27,7 +27,7 @@ for rep in range(nreps):
     stuff = open(fn, 'r').read()
     if __AAM21005__:
         m = re.search(r'.+?theta\s+=\s+(?P<truetheta>[.0-9]+).+?lambda\s+=\s+(?P<truelambda>[.0-9]+)', stuff, re.M | re.S)
-    elif __JC_NET_ID__:
+    elif __JJC23002__:
         m = re.search(r'.+?theta\s+=\s+(?P<truetheta>[.0-9]+).+?lambda\s+=\s+(?P<truelambda>[.0-9]+)', stuff, re.M | re.S)
     elif __POL02003__:
         m = re.search(r'.+?fixedthetamean\s+=\s+(?P<truetheta>[.0-9]+).+?lambda\s+=\s+(?P<truelambda>[.0-9]+)', stuff, re.M | re.S)

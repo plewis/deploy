@@ -110,7 +110,7 @@ else:
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_old_info = float(m.group(1))
             
-        elif __JC_NET_ID__:
+        elif __JJC23002__:
             # extract deep coalescences
             fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
             maxdeep = 0

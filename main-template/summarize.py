@@ -129,7 +129,7 @@ else:
             assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
-        elif __JC_NET_ID__:
+        elif __JJC23002__:
             # extract deep coalescences
             fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
             maxdeep = 0
