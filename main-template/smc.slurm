@@ -10,7 +10,7 @@
 #SBATCH --job-name=smc
 #SBATCH -o smc-%a.out
 #SBATCH -e smc-%a.err
-#SBATCH --mem=50G
+#SBATCH --mem=150G
 
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
 export TIMEFORMAT="user-seconds %3U"
