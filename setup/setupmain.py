@@ -317,7 +317,7 @@ def run(maindir, nreps):
     if user == "pol02003":
         smc_samplesize = smc_nkept * smc_nspecieskept
     elif user == "aam21005" or user == "jjc23002":
-        smc_samplessize = smc_nparticles * smc_thin * smc_nspeciesparticles / smc_saveevery
+        smc_samplesize = smc_nparticles * smc_thin * smc_nspeciesparticles / smc_saveevery
     setupsubst.substitutions({
         '__MAXTREES__': smc_samplesize + 1
         }, rfsmc_path, rfsmc_path)
