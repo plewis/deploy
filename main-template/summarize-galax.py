@@ -98,7 +98,7 @@ else:
             fn = 'smcout%d.txt' % rep_plus_one
             stuff_two = open(fn, 'r').read()
             
-            m = re.search(r'([0-9]*\.[0-9]*) percent information given sample size', stuff_two, re.M | re.S)
+            m = re.search(r'([0-9]*\.[0-9]*) percent raw information given sample size', stuff_two, re.M | re.S)
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_info = float(m.group(1))
             
@@ -106,9 +106,16 @@ else:
             fn = 'smcout%d.txt' % rep_plus_one
             stuff_three = open(fn, 'r').read()
             
-            m = re.search(r'average *[0-9]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+([0-9.]*)', stuff_three, re.M | re.S)
+            m = re.search(r'([0-9]*\.[0-9]*) percent raw information given total num. topologies', stuff_two, re.M | re.S)
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_old_info = float(m.group(1))
+            
+            # Extract ngenes from conf files
+            fn = 'rep%d/smc/proj.conf' % rep_plus_one
+            stuff_four = open(fn, 'r').read()
+            m = re.search(r'ngenes = ([0-9]*)', stuff_four, re.M | re.S)
+            ngenes = float(m.group(1))
+            
             
         elif __JJC23002__:
             # extract deep coalescences
@@ -139,7 +146,7 @@ else:
             fn = 'smcout%d.txt' % rep_plus_one
             stuff_two = open(fn, 'r').read()
             
-            m = re.search(r'([0-9]*\.[0-9]*) percent information given sample size', stuff_two, re.M | re.S)
+            m = re.search(r'([0-9]*\.[0-9]*) percent raw information given sample size', stuff_two, re.M | re.S)
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_info = float(m.group(1))
             
@@ -147,10 +154,16 @@ else:
             fn = 'smcout%d.txt' % rep_plus_one
             stuff_three = open(fn, 'r').read()
             
-            m = re.search(r'average *[0-9]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+[0-9.]*[ \t]+([0-9.]*)', stuff_three, re.M | re.S)
+            m = re.search(r'([0-9]*\.[0-9]*) percent raw information given total num. topologies', stuff_two, re.M | re.S)
             assert m is not None, 'could not extract information content from file "%s"' % fn
             smc_old_info = float(m.group(1))
             
+            # Extract ngenes from conf files
+            fn = 'rep%d/smc/proj.conf' % rep_plus_one
+            stuff_four = open(fn, 'r').read()
+            m = re.search(r'ngenes = ([0-9]*)', stuff_four, re.M | re.S)
+            ngenes = float(m.group(1))
+                        
         elif __POL02003__:
             fn = 'rep%d/sim/output%d.txt' % (rep_plus_one,rep_plus_one)
             stuff = open(fn, 'r').read()
@@ -172,8 +185,21 @@ else:
             assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
+        
+       # Extract SMC RF menas
+        fn = 'smcrf%d.txt' % rep_plus_one
+        assert (os.path.exists(fn))
+        lines = open(fn, 'r').readlines()
+        smcrfsum = 0.0
+        smcrfnum = 0
+        for line in lines[1:]:
+            parts = line.strip().split()
+            assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
+            smcrfnum += 1
+            smcrfsum += float(parts[1])
+        smc_rf = smcrfsum/smcrfnum
             
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info})
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info, 'ngenes':ngenes, 'smc_rf':smc_rf})
         output_string  = '%d\t' % rep_plus_one
         output_string += '%.5f\t' % theta
         output_string += '%.5f\t' % lamBda
@@ -182,7 +208,9 @@ else:
         output_string += '%.5f\t' % stoheight
         output_string += '%.5f\t' % stxheight
         output_string += '%.5f\t' % smc_info  
-        output_string += '%.5f\t' % smc_old_info      
+        output_string += '%.5f\t' % smc_old_info     
+        output_string += '%.5f\t' % ngenes
+        output_string += '%.5f\t' % smc_rf
 
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
@@ -206,7 +234,7 @@ else:
         Tvector.append('%g' % T)
         halfthetavector.append('%g' % halftheta)
     Tstr = ','.join(Tvector)
-    halfthetastr = ','.join(halfthetavector)
+
 
 # Create smcInfomeans
 smcInfomeans = []
@@ -216,24 +244,39 @@ contour_breaks_max = None
 contour_breaks_min = None
 for s in summary:
     smcInfomeans.append('%g' % s['smc_info'])
-    diff = s['smc_info']
-    if contour_breaks_max is None or diff > contour_breaks_max:
-        contour_breaks_max = diff
-    if contour_breaks_min is None or diff < contour_breaks_min:
-        contour_breaks_min = diff
+    breakpt = s['smc_info']
+    if contour_breaks_max is None or breakpt > contour_breaks_max:
+        contour_breaks_max = breakpt
+    if contour_breaks_min is None or breakpt < contour_breaks_min:
+        contour_breaks_min = breakpt
     numdeep.append('%d' % s['numdeep'])
     maxdeep.append('%d' % s['maxdeep'])
+    halfthetastr = ','.join(halfthetavector)
+
     
 # Create smcOldInfomeans
 smcOldInfomeans = []
 for s in summary:
     smcOldInfomeans.append('%g' % s['smc_old_info'])
-    diff = s['smc_old_info']
+    
+# Create ngenes vector
+ngeneVector = []
+for s in summary:
+     ngeneVector.append('%g' % s['ngenes'])
+     
+# Create smcmeans
+smcRFmeans = []
+for s in summary:
+    smcRFmeans.append('%g' % s['smc_rf'])
+    
+    
 
 smcinfostr = ','.join(smcInfomeans)
 smcoldinfostr = ','.join(smcOldInfomeans)
 numdeepstr = ','.join(numdeep)
 maxdeepstr = ','.join(maxdeep)
+ngenestr = ','.join(ngeneVector)
+smcrfstr = ','.join(smcRFmeans)
 
 contour_breaks_str = calcContourBreaksStr(contour_breaks_min, contour_breaks_max)
 
@@ -259,6 +302,8 @@ else:
     stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
     stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
+    stuff = re.sub('__NGENES__', ngenestr, stuff, re.M | re.S)
+    stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
 
 outf = open('plot-galax.Rmd', 'w')
 outf.write(stuff)

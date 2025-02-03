@@ -187,7 +187,7 @@ if user == 'aam21005' or user == 'jjc23002':
 smc_use_svdq_estimates = True 
 
 smc_nparticles        = 1
-smc_nspeciesparticles = 1000
+smc_nspeciesparticles = 500
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 1.0
     smc_saveevery		  = 1

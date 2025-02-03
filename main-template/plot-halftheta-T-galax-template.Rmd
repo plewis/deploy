@@ -18,6 +18,8 @@ T = c(__TVECTOR__)
 numdeep = c(__NUMDEEP__)
 maxdeep = c(__MAXDEEP__)
 nspecies = __NSPECIES__
+smcmean   <- c(__SMCRFMEANS__)
+
 plot(halftheta, T, type="p", pch=19, main="Simulation conditions", xlab="theta/2", ylab="T")
 ```
 Set colors for plots
@@ -46,7 +48,7 @@ Plot new info content.
 
 ```{r}
 info <- c(__SMC_INFO__)
-infodf <- data.frame(halftheta, T, info)
+infodf <- data.frame(halftheta, T, info, smcmean)
 proportiondeep <- numdeep/maxdeep
 ```
 
@@ -54,7 +56,7 @@ Plot old info content.
 
 ```{r}
 old_info <- c(__SMC_OLD_INFO__)
-old_infodf <- data.frame(halftheta, T, old_info)
+old_infodf <- data.frame(halftheta, T, old_info, smcmean)
 ```
 
 Contour plot new info
@@ -78,3 +80,11 @@ v <- ggplot(infodf, aes(halftheta, T, z = proportiondeep))
 v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(theta/2))
 ```
 
+RF distance and info
+```{r}
+ngenes   <- c(__NGENES__)
+
+v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) + geom_jitter() +
+  scale_color_gradient(low="blue", high="green")
+v
+```
