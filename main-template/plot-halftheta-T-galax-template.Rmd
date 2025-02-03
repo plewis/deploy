@@ -80,11 +80,25 @@ v <- ggplot(infodf, aes(halftheta, T, z = proportiondeep))
 v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(theta/2))
 ```
 
-RF distance and info
+# PLot RF distance vs info with points colored by ngenes
 ```{r}
 ngenes   <- c(__NGENES__)
 
 v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) + geom_jitter() +
+  scale_color_gradient(low="blue", high="green")
+v
+```
+
+# PLot RF distance vs info with points colored by theta/2
+```{r}
+v <- ggplot(infodf, aes(info, smcmean, z = halftheta, color = halftheta)) + geom_jitter() +
+  scale_color_gradient(low="blue", high="green")
+v
+```
+
+# PLot RF distance vs info with points colored by T
+```{r}
+v <- ggplot(infodf, aes(info, smcmean, z = T, color = T)) + geom_jitter() +
   scale_color_gradient(low="blue", high="green")
 v
 ```

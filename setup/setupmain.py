@@ -171,8 +171,8 @@ else:
     #  0.4    0.06234 = 0.4/(5*1.28333333)   0.02074 = 0.4/(10*1.92896825)   0.01150 = 0.4/(15*2.31822899)
     #  0.2    0.03117 = 0.2/(5*1.28333333)   0.01037 = 0.2/(10*1.92896825)   0.00575 = 0.2/(15*2.31822899)
     
-    T_min = 0.1
-    T_max = 1.0
+    T_min = 0.01
+    T_max = 0.3
     
 if user == 'aam21005' or user == 'jjc23002':
     sim_save_gene_trees_separately = True
@@ -195,7 +195,7 @@ if user == 'aam21005' or user == 'jjc23002':
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
-    smc_genenewicks		  = True
+    smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
 elif user == 'pol02003':
     smc_nkept             = 50
@@ -318,6 +318,7 @@ def run(maindir, nreps):
         smc_samplesize = smc_nkept * smc_nspecieskept
     elif user == "aam21005" or user == "jjc23002":
         smc_samplesize = smc_nparticles * smc_thin * smc_nspeciesparticles / smc_saveevery
+    smc_samplesize = int(smc_samplesize)
     setupsubst.substitutions({
         '__MAXTREES__': smc_samplesize + 1
         }, rfsmc_path, rfsmc_path)
