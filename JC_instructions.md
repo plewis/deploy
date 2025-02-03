@@ -150,6 +150,10 @@ to return to the deploy directory.
 
 You should now have a directory named `g`. If you have an existing `g` directory, you will have to remove it (`rm -rf g`) or rename it (`mv g new-name`). Be sure you don't actually want the directory before removing it, since this action is permanent.
 
+It may be a good idea to save the `setupmain.py` file so we can recreate the analyses if we need to:
+
+	cp setup/setupmain.py g/.
+
 Move the 'g' directory to your home using the command:
 	
 	mv g ~
