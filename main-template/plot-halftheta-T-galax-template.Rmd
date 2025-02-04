@@ -102,3 +102,12 @@ v <- ggplot(infodf, aes(info, smcmean, z = T, color = T)) + geom_jitter() +
   scale_color_gradient(low="blue", high="green")
 v
 ```
+
+# PLot RF distance vs info with points colored by average sequence length
+```{r}
+avgseqlen   <- c(__AVGSEQLENGTH__)
+
+v <- ggplot(infodf, aes(info, smcmean, z = T, color = avgseqlen)) + geom_jitter() +
+  scale_color_gradient(low="blue", high="green")
+v
+```

@@ -116,6 +116,13 @@ else:
             m = re.search(r'ngenes = ([0-9]*)', stuff_four, re.M | re.S)
             ngenes = float(m.group(1))
             
+            # Extract avgseqlen from conf files
+            fn = 'rep%d/sim/sim.nex' % rep_plus_one
+            stuff_five = open(fn, 'r').read()
+            m = re.search(r'(nchar=)([0-9]*)', stuff_five, re.M | re.S)
+            total_seq_len = float(m.group(2))
+            avg_seq_len = total_seq_len / ngenes
+            
             
         elif __JJC23002__:
             # extract deep coalescences
@@ -163,6 +170,13 @@ else:
             stuff_four = open(fn, 'r').read()
             m = re.search(r'ngenes = ([0-9]*)', stuff_four, re.M | re.S)
             ngenes = float(m.group(1))
+            
+            # Extract avgseqlen from conf files
+            fn = 'rep%d/sim/sim.nex' % rep_plus_one
+            stuff_five = open(fn, 'r').read()
+            m = re.search(r'(nchar=)([0-9]*)', stuff_five, re.M | re.S)
+            total_seq_len = float(m.group(2))
+            avg_seq_len = total_seq_len / ngenes
                         
         elif __POL02003__:
             fn = 'rep%d/sim/output%d.txt' % (rep_plus_one,rep_plus_one)
@@ -186,7 +200,7 @@ else:
             theta = float(m.group('theta'))
             lamBda = float(m.group('lambda'))
         
-       # Extract SMC RF menas
+       # Extract SMC RF means
         fn = 'smcrf%d.txt' % rep_plus_one
         assert (os.path.exists(fn))
         lines = open(fn, 'r').readlines()
@@ -199,7 +213,7 @@ else:
             smcrfsum += float(parts[1])
         smc_rf = smcrfsum/smcrfnum
             
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info, 'ngenes':ngenes, 'smc_rf':smc_rf})
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info, 'ngenes':ngenes, 'smc_rf':smc_rf, 'avg_seq_len':avg_seq_len})
         output_string  = '%d\t' % rep_plus_one
         output_string += '%.5f\t' % theta
         output_string += '%.5f\t' % lamBda
@@ -211,6 +225,7 @@ else:
         output_string += '%.5f\t' % smc_old_info     
         output_string += '%.5f\t' % ngenes
         output_string += '%.5f\t' % smc_rf
+        output_string += '%.5f\t' % avg_seq_len
 
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
@@ -269,6 +284,11 @@ smcRFmeans = []
 for s in summary:
     smcRFmeans.append('%g' % s['smc_rf'])
     
+# Create average seq length vector
+avgSeqLenVector = []
+for s in summary:
+     avgSeqLenVector.append('%g' % s['avg_seq_len'])
+    
     
 
 smcinfostr = ','.join(smcInfomeans)
@@ -277,6 +297,7 @@ numdeepstr = ','.join(numdeep)
 maxdeepstr = ','.join(maxdeep)
 ngenestr = ','.join(ngeneVector)
 smcrfstr = ','.join(smcRFmeans)
+seqlenstr = ','.join(avgSeqLenVector)
 
 contour_breaks_str = calcContourBreaksStr(contour_breaks_min, contour_breaks_max)
 
@@ -304,6 +325,7 @@ else:
     stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__NGENES__', ngenestr, stuff, re.M | re.S)
     stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__AVGSEQLENGTH__', seqlenstr, stuff, re.M | re.S)
 
 outf = open('plot-galax.Rmd', 'w')
 outf.write(stuff)

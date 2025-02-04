@@ -84,8 +84,8 @@ nreps = 1
 min_n_loci = 10
 max_n_loci = 100
 
-min_sites_per_locus = 500
-max_sites_per_locus = 500
+min_sites_per_locus = 100
+max_sites_per_locus = 1000
 
 # Variance of lognormal distribution governing variation
 # among rates on each edge of a gene tree. The mean rate
@@ -187,7 +187,7 @@ if user == 'aam21005' or user == 'jjc23002':
 smc_use_svdq_estimates = True 
 
 smc_nparticles        = 1
-smc_nspeciesparticles = 500
+smc_nspeciesparticles = 200
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 1.0
     smc_saveevery		  = 1
