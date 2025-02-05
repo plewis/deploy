@@ -4,11 +4,11 @@ import setupsubst
 
 # Specify NetID of user (this is for specifying home directories and choosing among template files)
 #user = 'pol02003'
-#user = 'jjc23002'
-user = 'aam21005'
+user = 'jjc23002'
+#user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = True
+local = False
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate
@@ -63,7 +63,7 @@ elif user == 'jjc23002':
         smc_path       = '/home/jjc23002/bin/smc'
         beast_path     = '/home/jjc23002/beast/bin/beast'
         astral_path    = '/home/jjc23002/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
-        paup_path      = '/home/jjc23002/bin/paup'
+        paup_path      = 'paup4a168_centos64'
 
 #######################
 # Simulation settings #
@@ -280,7 +280,7 @@ def run(maindir, nreps):
         '__PAUPPATH__': paup_path,
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
-        '__JJC23002__': user == 'jjc3002',
+        '__JJC23002__': user == 'jjc23002',
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
         
@@ -294,7 +294,7 @@ def run(maindir, nreps):
         '__NUM_SPECIES__': nspp_str,
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
-        '__JJC23002__': user == 'jjc3002',
+        '__JJC23002__': user == 'jjc23002',
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
         
@@ -305,7 +305,7 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         '__AAM21005__': user == 'aam21005',
-        '__JJC23002__': user == 'jjc3002',
+        '__JJC23002__': user == 'jjc23002',
         '__POL02003__': user == 'pol02003'
         }, theta_lambda_svdqage_path, theta_lambda_svdqage_path)
         
