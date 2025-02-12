@@ -5,8 +5,8 @@
 #SBATCH -A pol02003
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --array=1-__NJOBS__%36
+#SBATCH --cpus-per-task=36
+#SBATCH --array=1-__NJOBS__%1
 #SBATCH --job-name=smc
 #SBATCH -o smc-%a.out
 #SBATCH -e smc-%a.err
