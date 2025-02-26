@@ -56,7 +56,7 @@ It is up to you to use the arguments provided to set up one replicate in this fu
 ## Here are the instructions for setting up a run. These instructions assume you have compiled the `SMC` program, `PAUP*`, and `galax` on the cluster.
 
 Request an interactive node with:
-`srun --ntasks=12 --nodes=1 --partition=general --pty bash`
+`srun --ntasks=1 --nodes=1 --partition=general --pty bash`
 
 Open the script `setupmain.py` under the `setup` folder. Change `user =`  to your username under the section starting with `Specify NetID of user`. You can comment out the user names you are not using with a #.
 
