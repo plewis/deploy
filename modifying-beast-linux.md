@@ -204,6 +204,55 @@ Still inside the `calculateLogP` function, but after the line `traverse(root, nu
 
     POLGlobals.partialsRecalculated += operationCount[0]; //POL
 
+#### Modify _Logger.java_:
+
+    bbedit ./beast/base/inference/Logger.java
+
+After all the other imports at the top of the file, add
+
+    import beast.base.pol.POLGlobals; //POL
+
+In `public void init()` function, change
+
+    for (final Loggable m_logger : loggerList) {
+        m_logger.init(out);
+    }
+
+    // Remove trailing tab from header
+    String header = rawbaos.toString().trim();
+
+to
+
+    for (final Loggable m_logger : loggerList) {
+        m_logger.init(out);
+    }
+
+    if (mode == LOGMODE.compound && tmp != System.out) {    //POL
+        out.print("MPartials\t");                           //POL
+    }                                                       //POL
+
+    // Remove trailing tab from header
+    String header = rawbaos.toString().trim();
+
+Finally, at the end of the function `public void log(long sampleNr)`, change
+
+        } else {
+            m_out.println(logContent);
+        }
+    } // log
+
+to be 
+
+        } else {
+            m_out.print(logContent);                                                //POL
+            double num_partial_recalculations = POLGlobals.partialsRecalculated;    //POL
+            m_out.print("\t" + (num_partial_recalculations/1000000.0));             //POL
+            m_out.println();                                                        //POL
+            
+            //POL m_out.println(logContent);
+        }
+    } // log
+
 #### Modify _MCMC.java_:
 
     cd ~/beast2/src/beast/base/evolution/inference
@@ -231,8 +280,11 @@ Following the directions at the bottom of the readme page at https://github.com/
     nano build.xml
  
     <!-- POL commented out --><!--<property name="openjreLnx" value="../../Downloads/zulu17.34.19-ca-fx-jre17.0.3-linux_x64/"/> -->
-    <!-- POL added -->            <property name="openjreLnx" value="..//zulu23.32.11-ca-fx-jdk23.0.2-linux_x64"/>
+    <!-- POL added -->
+    <property name="openjreLnx" value="..//zulu23.32.11-ca-fx-jdk23.0.2-linux_x64"/>
     
+#### Build beast2 and BeastFX
+
 Comment out this section of the _BeastFX/build.xml_ file to skip the notarization step. That is, change this
 
     <antcall target="notarization">
@@ -249,8 +301,6 @@ to this
 
 If you do not comment out this section, you will eventually be asked to supply your username and password for notarization. I have supplied my apple ID and password for this, which works, but notarization does not seem to be necessary so it saves time to skip it. 
  
-During the build, you will see a dialog box pop up that seems to encourage you to drag BEAST to your Applications folder, but just ignore it and it will go away.
-
 #### Create a _buildbeast.sh_ script
 
 I realized that one of the reasons beast was not building was because we changed some of the code, which, understandably, causes some of the unit tests to fail. Hence, I'm using the NoJUnitTest versions of the targets.
@@ -315,7 +365,8 @@ In fact, now that you've commented out the `export JAVA_HOME...` line in _packag
     ant dist_all_BeastFX
     ant package
     ant linux
-    cd ../beast2/release/Linux/beast/bin/packagemanager -add starbeast3
+    cd ..
+    ./beast2/release/Linux/beast/bin/packagemanager -add starbeast3
 
 #### Running beast
 
