@@ -73,7 +73,7 @@ elif user == 'jjc23002':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 2
+ngridpoints = 10
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2

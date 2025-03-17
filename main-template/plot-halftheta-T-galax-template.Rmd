@@ -104,22 +104,22 @@ v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(t
 ```{r}
 ngenes   <- c(__NGENES__)
 
-v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) + geom_jitter() +
-  scale_color_gradient(low="blue", high="green")
+v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) +
+  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
 v
 ```
 
 # PLot RF distance vs info with points colored by theta/2
 ```{r}
-v <- ggplot(infodf, aes(info, smcmean, z = halftheta, color = halftheta)) + geom_jitter() +
-  scale_color_gradient(low="blue", high="green")
+v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = halftheta)) +
+  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
 v
 ```
 
 # PLot RF distance vs info with points colored by T
 ```{r}
-v <- ggplot(infodf, aes(info, smcmean, z = T, color = T)) + geom_jitter() +
-  scale_color_gradient(low="blue", high="green")
+v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = T)) +
+  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
 v
 ```
 
@@ -127,7 +127,7 @@ v
 ```{r}
 avgseqlen   <- c(__AVGSEQLENGTH__)
 
-v <- ggplot(infodf, aes(info, smcmean, z = T, color = avgseqlen)) + geom_jitter() +
-  scale_color_gradient(low="blue", high="green")
+v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = avgseqlen)) +
+  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
 v
 ```
