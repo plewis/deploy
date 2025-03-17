@@ -62,15 +62,35 @@ old_infodf <- data.frame(halftheta, T, old_info, smcmean)
 Contour plot new info
 
 ```{r}
+min = round((min(info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
+max = round((max(info) / 5.0)) * 5.0 + 5.0 # round to nearest 5, then round up
+break_vec = c()
+
+for (i in min:max) {
+  if ((i %% 5.0) == 0) {
+    break_vec <- append(break_vec, i)
+  }
+}
+
 v <- ggplot(infodf, aes(halftheta, T, z = info))
-v + geom_contour_filled(breaks=c(__CONTOUR_BREAKS__)) + labs(x=expression(theta/2))
+v + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2))
 ```
 
 Contour plot old info
 
 ```{r}
+min = round((min(old_info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
+max = round((max(old_info) / 5.0)) * 5.0 + 5.0 # round to nearest 5, then round up
+break_vec = c()
+
+for (i in min:max) {
+  if ((i %% 5.0) == 0) {
+    break_vec <- append(break_vec, i)
+  }
+}
+
 v <- ggplot(old_infodf, aes(halftheta, T, z = old_info))
-v + geom_contour_filled(breaks=c(__CONTOUR_BREAKS__)) + labs(x=expression(theta/2))
+v + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2))
 ```
 
 Contour plot showing number of deep coalescences

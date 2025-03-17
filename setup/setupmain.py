@@ -4,11 +4,11 @@ import setupsubst
 
 # Specify NetID of user (this is for specifying home directories and choosing among template files)
 #user = 'pol02003'
-user = 'jjc23002'
-#user = 'aam21005'
+#user = 'jjc23002'
+user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = False
+local = True
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate
@@ -191,12 +191,13 @@ smc_nspeciesparticles = 200
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 1.0
     smc_saveevery		  = 1
-    smc_nthreads		  = 7
+    smc_nthreads		  = 1
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
+    smc_ngroups			  = 3
 elif user == 'pol02003':
     smc_nkept             = 50
     smc_nspeciesparticles = 200

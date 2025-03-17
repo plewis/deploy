@@ -456,6 +456,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
             '__SMCNPARTICLES__': setupmain.smc_nparticles,
             '__SMCTHIN__': setupmain.smc_thin,
             '__SMCNSPECIESPARTICLES__': setupmain.smc_nspeciesparticles,
+            '__SMCNGROUPS__': setupmain.smc_ngroups,
             '__SMCSAVEEVERY__': setupmain.smc_saveevery,
             '__SMCNTHREADS__': setupmain.smc_nthreads,
             '__SMCSAVEGENETREES__': setupmain.smc_savegenetrees,
