@@ -173,12 +173,15 @@ Finally, at the end of the function `public void log(long sampleNr)`, change
 to be 
 
         } else {
-            m_out.print(logContent);                                                //POL
-            double num_partial_recalculations = POLGlobals.partialsRecalculated;    //POL
-            m_out.print("\t" + (num_partial_recalculations/1000000.0));             //POL
-            m_out.println();                                                        //POL
-            
-            //POL m_out.println(logContent);
+            if (mode == LOGMODE.compound) {                                          //POL
+                m_out.print(logContent);                                             //POL
+                double num_partial_recalculations = POLGlobals.partialsRecalculated; //POL
+                m_out.print("\t" + (num_partial_recalculations/1000000.0));          //POL
+                m_out.println();                                                     //POL
+            }                                                                        //POL
+            else {                                                                   //POL      
+                m_out.println(logContent);
+            }                                                                        //POL
         }
     } // log
 
