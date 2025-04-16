@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+require(gridExtra)
 ```
 
 Plot of simulated combinations of theta and lambda
@@ -19,6 +20,9 @@ numdeep = c(__NUMDEEP__)
 maxdeep = c(__MAXDEEP__)
 nspecies = __NSPECIES__
 smcmean   <- c(__SMCRFMEANS__)
+
+rf_max = (nspecies - 3) *2
+smcmean <- smcmean/rf_max # scale rf to maximum
 
 plot(halftheta, T, type="p", pch=19, main="Simulation conditions", xlab="theta/2", ylab="T")
 ```
@@ -44,7 +48,7 @@ T_vals
 nrows <- length(T_vals)
 ```
 
-Plot new info content.
+Get new info content.
 
 ```{r}
 info <- c(__SMC_INFO__)
@@ -52,19 +56,27 @@ infodf <- data.frame(halftheta, T, info, smcmean)
 proportiondeep <- numdeep/maxdeep
 ```
 
-Plot old info content.
+Get uncorrected info content.
 
 ```{r}
 old_info <- c(__SMC_OLD_INFO__)
 old_infodf <- data.frame(halftheta, T, old_info, smcmean)
 ```
 
-Contour plot new info
+Contour plot new info and uncorrected info
 
 ```{r}
-min = round((min(info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
-max = round((max(info) / 5.0)) * 5.0 # round to nearest 5, then round up
+min1 = round((min(info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
+max1 = round((max(info) / 5.0)) * 5.0 # round to nearest 5, then round up
 break_vec = c()
+
+min2 = round((min(old_info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
+max2 = round((max(old_info) / 5.0)) * 5.0 # round to nearest 5, then round up
+
+min <- min(min1, min2)
+max <- max(max1, max2)
+
+# ensure break vec is the same for both plots
 
 for (i in min:max) {
   if ((i %% 5.0) == 0) {
@@ -77,30 +89,15 @@ for (i in min:max) {
   }
 }
 
-v <- ggplot(infodf, aes(halftheta, T, z = info))
-v + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2))
-```
+plot1 <- ggplot(infodf, aes(halftheta, T, z = info)) + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2))+
+  scale_fill_viridis_d(drop = FALSE) + labs(title="new info")
 
-Contour plot old info
+plot2 <- ggplot(old_infodf, aes(halftheta, T, z = old_info)) + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2)) +
+  scale_fill_viridis_d(drop = FALSE) + labs(title="uncorrected info")
 
-```{r}
-min = round((min(old_info) / 5.0)) * 5.0 - 5.0 # round to nearest 5, then round down
-max = round((max(old_info) / 5.0)) * 5.0 # round to nearest 5, then round up
-break_vec = c()
+# side by side plots
+grid.arrange(plot1, plot2, ncol=2)
 
-for (i in min:max) {
-  if ((i %% 5.0) == 0) {
-    if (i == max) {
-      break_vec <- append(break_vec, i+0.1)
-    }
-    else {
-      break_vec <- append(break_vec, i)
-    }
-  }
-}
-
-v <- ggplot(old_infodf, aes(halftheta, T, z = old_info))
-v + geom_contour_filled(breaks=c(break_vec)) + labs(x=expression(theta/2))
 ```
 
 Contour plot showing number of deep coalescences
@@ -110,30 +107,42 @@ v <- ggplot(infodf, aes(halftheta, T, z = proportiondeep))
 v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(theta/2))
 ```
 
-# PLot RF distance vs info with points colored by ngenes
+Plot RF distance vs info with points colored by ngenes
 ```{r}
 ngenes   <- c(__NGENES__)
 
-v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) +
-  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
-v
+plot1 <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = ngenes)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("corrected info") + xlim(min-5, max)
+
+plot2 <- ggplot(old_infodf, aes(old_info, smcmean, z = ngenes, color = ngenes)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("uncorrected info") + xlim(min-5, max)
+
+grid.arrange(plot1, plot2, ncol=2)
 ```
 
-# PLot RF distance vs info with points colored by theta/2
+Plot RF distance vs info with points colored by theta/2
 ```{r}
-v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = halftheta)) +
-  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
-v
+plot1 <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = halftheta)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("corrected info") + xlim(min-5, max)
+
+plot2 <- ggplot(old_infodf, aes(old_info, smcmean, z = ngenes, color = halftheta)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("uncorrected info") + xlim(min-5, max)
+
+grid.arrange(plot1, plot2, ncol=2)
 ```
 
-# PLot RF distance vs info with points colored by T
+Plot RF distance vs info with points colored by T
 ```{r}
-v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = T)) +
-  scale_color_gradient(low="black", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3)
-v
+plot1 <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = T)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("corrected info") + xlim(min-5, max)
+
+plot2 <- ggplot(old_infodf, aes(old_info, smcmean, z = ngenes, color = T)) +
+  scale_color_gradient(low="purple", high="green")+  theme_bw() + theme_classic() + ylab("inaccuracy") + geom_point(size=5, alpha=0.3) + xlab("uncorrected info") + xlim(min-5, max)
+
+grid.arrange(plot1, plot2, ncol=2)
 ```
 
-# PLot RF distance vs info with points colored by average sequence length
+Plot RF distance vs info with points colored by average sequence length
 ```{r}
 avgseqlen   <- c(__AVGSEQLENGTH__)
 

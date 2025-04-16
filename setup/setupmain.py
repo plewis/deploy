@@ -73,7 +73,7 @@ elif user == 'jjc23002':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 3
+ngridpoints = 2
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2
@@ -187,9 +187,9 @@ if user == 'aam21005' or user == 'jjc23002':
 smc_use_svdq_estimates = True 
 
 smc_nparticles        = 10
-smc_nspeciesparticles = 100
+smc_nspeciesparticles = 10
 if user == 'aam21005' or user == 'jjc23002':
-    smc_thin			  = 0.1
+    smc_thin			  = 1.0
     smc_saveevery		  = 1
     smc_nthreads		  = 1
     smc_savegenetrees	  = False
