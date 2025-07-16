@@ -15,7 +15,7 @@ local = True
 maindir = 'g'
 
 # Specify the master pseudorandom number seed
-master_seed = 97531
+master_seed = 9753
 
 # Specify whether grid should be theta vs lambda or theta/2 vs T (=species tree height)
 theta_vs_lambda = False
@@ -81,10 +81,10 @@ nreps = 1
 
 # number of loci varies among simulations
 #nloci           = 10
-min_n_loci = 10
-max_n_loci = 100
+min_n_loci = 3
+max_n_loci = 3
 
-min_sites_per_locus = 100
+min_sites_per_locus = 1000
 max_sites_per_locus = 1000
 
 # Variance of lognormal distribution governing variation
@@ -118,8 +118,8 @@ max_occupancy = 1.0
 min_comphet = 10000
 max_comphet = 10000
 
-species            = ['A', 'B', 'C', 'D', 'E']
-indivs_for_species = [ 2,   2,   2,   2,   2]
+species            = ['A', 'B', 'C', 'D']
+indivs_for_species = [ 2,   2,   2,   2]
 
 if theta_vs_lambda:
     # Average distance between two leaves in a gene tree
@@ -155,8 +155,8 @@ else:
     #        0.10   0.10   0.03333   0.01667
     #        0.15   0.15   0.05000   0.02500
     
-    half_theta_min = 0.01
-    half_theta_max = 0.15
+    half_theta_min = 0.05
+    half_theta_max = 0.05
     
     # Average height to first speciation event:
     # n =  5: suminv = 1.28333333 = 1/2 + 1/3 + 1/4 + 1/5
@@ -171,8 +171,8 @@ else:
     #  0.4    0.06234 = 0.4/(5*1.28333333)   0.02074 = 0.4/(10*1.92896825)   0.01150 = 0.4/(15*2.31822899)
     #  0.2    0.03117 = 0.2/(5*1.28333333)   0.01037 = 0.2/(10*1.92896825)   0.00575 = 0.2/(15*2.31822899)
     
-    T_min = 0.01
-    T_max = 0.3
+    T_min = 0.05
+    T_max = 0.05
     
 if user == 'aam21005' or user == 'jjc23002':
     sim_save_gene_trees_separately = True
@@ -186,18 +186,18 @@ if user == 'aam21005' or user == 'jjc23002':
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 10
-smc_nspeciesparticles = 10
+smc_nparticles        = 5
+smc_nspeciesparticles = 200
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 1.0
-    smc_saveevery		  = 1
-    smc_nthreads		  = 1
+    smc_saveevery		  = 200
+    smc_nthreads		  = 3
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
-    smc_ngroups			  = 3
+    smc_ngroups			  = 1
 elif user == 'pol02003':
     smc_nkept             = 50
     smc_nspeciesparticles = 200
@@ -340,3 +340,19 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, write_galax_path, write_galax_path)
+        
+	#########################################
+    # Set up ruv.py script #
+    #########################################
+    ruv_path = os.path.join(maindir, 'ruv.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, ruv_path, ruv_path)
+        
+	#########################################
+    # Set up main.py script #
+    #########################################
+    hpd_path = os.path.join(maindir, 'hpd.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, hpd_path, hpd_path)
