@@ -1,0 +1,94 @@
+---
+title: "validation plots"
+author: "Analisa Milkey"
+date: "2025-07-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+setwd("")
+```
+
+Read in average species tree height files and true heights.
+
+```{r}
+nreps = __NREPS__
+
+# make vector of observed means
+observed_means <- c()
+for (i in 1:nreps) {
+  i_str = as.character(i)
+  filename = paste("observed_mean", i_str, sep="")
+  file_location = paste("rep", i_str, "/smc/average_species_tree_height.txt", sep="")
+  filename = unlist(read.table(file_location, header=FALSE))
+  observed_means[i] = filename
+}
+
+# get true heights
+summary <- read.table("summary.txt", header=TRUE)
+```
+
+Copy HPD intervals from program output (run python3 hpd.py).
+
+```{r}
+hpd_mins <- c()
+hpd_maxes <- c()
+```
+
+
+Plot coverage.
+
+```{r}
+true_heights <- c(summary$sppTreeObsHt)
+
+df <- data.frame(observed_means, true_heights, hpd_mins, hpd_maxes)
+
+#plot(df$observed_means, df$true_heights)
+
+p <- ggplot() +
+  geom_point(data = df, aes(true_heights, observed_means), color="blue", alpha = 0.5, cex=0.2) +
+  geom_point(data = df, aes(true_heights, observed_means + hpd_maxes - observed_means), color="orange", alpha=0.5) +
+  geom_point(data = df, aes(true_heights, observed_means - observed_means + hpd_mins), color="orange", alpha=0.5) +
+  geom_linerange(aes(x=true_heights, y=observed_means, ymin=hpd_mins, ymax = hpd_maxes),colour="orange", alpha=0.5, size=1.1) +
+  geom_abline(slope = 1, intercept = 0, color="yellow")
+
+p
+
+# count true values falling within hpd bounds
+counts_within_hpd <- sum(true_heights >= hpd_mins & true_heights <= hpd_maxes)
+counts_within_hpd
+
+proportion_in_range <- counts_within_hpd / length(true_heights)
+proportion_in_range
+
+# test to ensure all values have been counted
+# test should equal nreps
+test <- sum(observed_means >= hpd_mins & observed_means <= hpd_maxes)
+test
+```
+
+
+Plot RUV analysis.
+
+Copy ranks from program output (run python3 ruv.py). Modify breaks and qbinom probabilities based on nparticles.
+
+```{r}
+ranks <- c()
+
+hist(ranks, breaks=c(0,2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000, 22000, 24000, 26000, 28000, 30000, 32000, 34000, 36000, 38000,40000), ylim=c(0, 30))
+
+ci_low  <- qbinom(0.025,90,.05)
+
+ci_mean <- qbinom(0.5,90,.05)
+
+ci_high <- qbinom(0.975,90,.05)
+
+abline(h=ci_high, lwd=2, lty="dotted", col="navy")
+
+abline(h=ci_mean, lwd=2, lty="solid",  col="navy")
+
+abline(h=ci_low, lwd=2, lty="dotted", col="navy")
+```
+
