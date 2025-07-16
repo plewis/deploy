@@ -356,3 +356,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, hpd_path, hpd_path)
+        
+	#########################################
+    # Set up plot-validation-template.Rmd script #
+    #########################################
+    validation_path = os.path.join(maindir, 'plot-validation-template.Rmd')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, validation_path, validation_path)
