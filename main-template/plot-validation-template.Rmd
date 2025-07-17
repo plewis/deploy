@@ -45,14 +45,22 @@ true_heights <- c(summary$sppTreeObsHt)
 
 df <- data.frame(observed_means, true_heights, hpd_mins, hpd_maxes)
 
-#plot(df$observed_means, df$true_heights)
+colors <- c()
+for (i in 1:nreps) {
+  if (true_heights[i] >= hpd_mins[i] && true_heights[i] <= hpd_maxes[i]) {
+    colors[i] = "green"
+  }
+  else {
+    colors[i] = "red"
+  }
+}
 
 p <- ggplot() +
-  geom_point(data = df, aes(true_heights, observed_means), color="blue", alpha = 0.5, cex=0.2) +
-  geom_point(data = df, aes(true_heights, observed_means + hpd_maxes - observed_means), color="orange", alpha=0.5) +
-  geom_point(data = df, aes(true_heights, observed_means - observed_means + hpd_mins), color="orange", alpha=0.5) +
-  geom_linerange(aes(x=true_heights, y=observed_means, ymin=hpd_mins, ymax = hpd_maxes),colour="orange", alpha=0.5, size=1.1) +
-  geom_abline(slope = 1, intercept = 0, color="yellow")
+  geom_point(data = df, aes(true_heights, observed_means), color="blue", alpha = 0.5, cex=0.5) +
+  geom_point(data = df, aes(true_heights, hpd_maxes), color=colors, alpha=0.5) +
+  geom_point(data = df, aes(true_heights, hpd_mins), color=colors, alpha=0.5) +
+  geom_linerange(aes(x=true_heights, y=observed_means, ymin=hpd_mins, ymax = hpd_maxes),colour=colors, alpha=0.5, size=1.1) +
+  geom_abline(slope = 1, intercept = 0, color="black")
 
 p
 

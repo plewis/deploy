@@ -8,14 +8,15 @@ import setupsubst
 user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = True
+local = False
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate
 maindir = 'g'
 
 # Specify the master pseudorandom number seed
-master_seed = 9753
+#master_seed = 1235
+master_seed = 1
 
 # Specify whether grid should be theta vs lambda or theta/2 vs T (=species tree height)
 theta_vs_lambda = False
@@ -45,8 +46,8 @@ elif user == 'aam21005':
         astral_path    = '/Users/analisamilkey/Documents/software/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_osx'
     else:
-        simulator_path = 'single-smc'
-        smc_path       = 'single-smc'
+        simulator_path = 'mixing-smc'
+        smc_path       = 'mixing-smc'
         beast_path     = '/home/aam21005/beast/bin/beast'
         astral_path    = '/home/aam21005/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
@@ -73,7 +74,7 @@ elif user == 'jjc23002':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 2
+ngridpoints = 7
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2
@@ -81,8 +82,8 @@ nreps = 1
 
 # number of loci varies among simulations
 #nloci           = 10
-min_n_loci = 3
-max_n_loci = 3
+min_n_loci = 100
+max_n_loci = 100
 
 min_sites_per_locus = 1000
 max_sites_per_locus = 1000
@@ -118,8 +119,8 @@ max_occupancy = 1.0
 min_comphet = 10000
 max_comphet = 10000
 
-species            = ['A', 'B', 'C', 'D']
-indivs_for_species = [ 2,   2,   2,   2]
+species            = ['A', 'B', 'C', 'D', 'E']
+indivs_for_species = [ 2,   2,   2,   2,   2]
 
 if theta_vs_lambda:
     # Average distance between two leaves in a gene tree
@@ -171,8 +172,8 @@ else:
     #  0.4    0.06234 = 0.4/(5*1.28333333)   0.02074 = 0.4/(10*1.92896825)   0.01150 = 0.4/(15*2.31822899)
     #  0.2    0.03117 = 0.2/(5*1.28333333)   0.01037 = 0.2/(10*1.92896825)   0.00575 = 0.2/(15*2.31822899)
     
-    T_min = 0.05
-    T_max = 0.05
+    T_min = 0.1
+    T_max = 0.1
     
 if user == 'aam21005' or user == 'jjc23002':
     sim_save_gene_trees_separately = True
@@ -186,20 +187,20 @@ if user == 'aam21005' or user == 'jjc23002':
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 5
-smc_nspeciesparticles = 200
+smc_nparticles        = 1000
+smc_nspeciesparticles = 1000
 if user == 'aam21005' or user == 'jjc23002':
-    smc_thin			  = 1.0
-    smc_saveevery		  = 200
-    smc_nthreads		  = 3
+    smc_thin			  = 0.1
+    smc_saveevery		  = 500
+    smc_nthreads		  = 10
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
-    smc_ngroups			  = 1
+    smc_ngroups			  = 10
 elif user == 'pol02003':
-    smc_nkept             = 50
+    smc_nkept             = 1000
     smc_nspeciesparticles = 200
     smc_nspecieskept      = 50
     smc_speciestreefile   = '2nd-final-species-trees.tre'
@@ -210,10 +211,10 @@ else:
 # BEAST settings #
 ##################
 
-beast_chainlength     =  10000 # 10000000
-beast_preburnin       =  1000  # 1000000
-beast_storeevery      =  10    # 10000
-beast_logevery        =  10    # 10000
+beast_chainlength     =  1000000 # 10000000
+beast_preburnin       =  0  # 1000000
+beast_storeevery      =  1000    # 10000
+beast_logevery        =  1000    # 10000
 beast_lambda		  =  10
 beast_thetamean		  =  4.0
 
