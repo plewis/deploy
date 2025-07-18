@@ -1,0 +1,50 @@
+---
+title: "validation plots"
+author: "Analisa Milkey"
+date: "2025-07-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+setwd("")
+```
+
+Read in average species tree height files and true heights.
+
+```{r}
+nreps = __NREPS__
+
+ranks <- c()
+
+for (i in 1:nreps) {
+  i_str = as.character(i)
+  file_location = paste("rep", i_str, "/smc/", "bhvdists.txt", sep="")
+  
+  dist <- read.table(file_location, header = TRUE, sep = '\t')
+
+  reference_value <- dist[1,]$distance.to.tree.1
+
+  dist_ordered <- dist[order(dist$distance.to.tree.1, decreasing = FALSE), ]
+  
+  test = which(dist_ordered$distance.to.tree.1 == reference_value)[1] # issue if multiple trees with same distance?
+  
+  ranks <- c(ranks, test-1)
+}
+
+hist(ranks, breaks=c(0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000), ylim=c(0, 20))
+
+ci_low  <- qbinom(0.025,100,.05)
+
+ci_mean <- qbinom(0.5,100,.05)
+
+ci_high <- qbinom(0.975,100,.05)
+
+abline(h=ci_high, lwd=2, lty="dotted", col="navy")
+
+abline(h=ci_mean, lwd=2, lty="solid",  col="navy")
+
+abline(h=ci_low, lwd=2, lty="dotted", col="navy")
+```
+
