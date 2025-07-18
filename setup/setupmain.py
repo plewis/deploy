@@ -74,7 +74,7 @@ elif user == 'jjc23002':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 7
+ngridpoints = 10
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2
@@ -82,8 +82,8 @@ nreps = 1
 
 # number of loci varies among simulations
 #nloci           = 10
-min_n_loci = 100
-max_n_loci = 100
+min_n_loci = 10
+max_n_loci = 10
 
 min_sites_per_locus = 1000
 max_sites_per_locus = 1000
@@ -187,7 +187,7 @@ if user == 'aam21005' or user == 'jjc23002':
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 1000
+smc_nparticles        = 5000
 smc_nspeciesparticles = 1000
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 0.1
@@ -365,3 +365,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, validation_path, validation_path)
+        
+	#########################################
+    # Set up create-bhv-files.py script #
+    #########################################
+    create_bhv_path = os.path.join(maindir, 'create-bhv-files.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, create_bhv_path, create_bhv_path)
