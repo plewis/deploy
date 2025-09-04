@@ -7,9 +7,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
 #SBATCH --array=1-__NJOBS__%10
-#SBATCH --job-name=smc
-#SBATCH -o smc-%a.out
-#SBATCH -e smc-%a.err
+#SBATCH --job-name=td
+#SBATCH -o td-%a.out
+#SBATCH -e td-%a.err
 #SBATCH --mem=150G
 
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
