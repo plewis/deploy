@@ -53,7 +53,8 @@ Get new info content.
 
 ```{r}
 info <- c(__SMC_INFO__)
-infodf <- data.frame(halftheta, T, info, smcmean)
+t_ratio <- T / halftheta
+infodf <- data.frame(halftheta, T, info, smcmean, t_ratio)
 proportiondeep <- numdeep/maxdeep
 ```
 
@@ -61,7 +62,8 @@ Get uncorrected info content.
 
 ```{r}
 old_info <- c(__SMC_OLD_INFO__)
-old_infodf <- data.frame(halftheta, T, old_info, smcmean)
+t_ratio <- T / halftheta
+old_infodf <- data.frame(halftheta, T, old_info, smcmean, t_ratio)
 ```
 
 Contour plot new info and uncorrected info
@@ -152,14 +154,10 @@ v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = avgseqlen)) +
 v
 ```
 
-3D plot
+3D plot labeled by T / halftheta
 
 ```{r}
 library(plotly)
-
-3D plot labeled by T / halftheta
-```{r}
-t_ratio = T / halftheta
 fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=T)
 fig 
 
