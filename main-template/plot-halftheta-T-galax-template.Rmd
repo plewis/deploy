@@ -165,15 +165,10 @@ fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~ngenes, size=1, mode = "mar
 fig
 ```
 
-3D plot labeled by T
+3D plot labeled by T / halftheta
 ```{r}
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~T, size=1, mode = "markers", color=T)
+t_ratio = T / halftheta
+fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=T)
 fig 
 
-```
-
-3D plot labeled by theta
-```{r}
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~halftheta, size=1, mode = "markers", color=halftheta)
-fig
 ```
