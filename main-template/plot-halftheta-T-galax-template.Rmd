@@ -152,18 +152,10 @@ v <- ggplot(infodf, aes(info, smcmean, z = ngenes, color = avgseqlen)) +
 v
 ```
 
-3D plot labeled by ngenes
+3D plot
 
 ```{r}
 library(plotly)
-
-ngenes   <- c(__NGENES__)
-
-# scatterplot3d(x=infodf$info, z=infodf$smcmean, y=ngenes, color = ngenes)
-
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~ngenes, size=1, mode = "markers", color=ngenes)
-fig
-```
 
 3D plot labeled by T / halftheta
 ```{r}
