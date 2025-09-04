@@ -18,20 +18,20 @@ for i in range(1, nreps+1):
 		file.write("#nexus\n")
 		file.write("begin trees;\n")
 
-		new_sim_file_path = ""
-		if i + 1 > nreps:
-			new_sim_file_path = "rep1/sim/true-species-tree.tre"
+		# new_sim_file_path = ""
+		# if i + 1 > nreps:
+		#	new_sim_file_path = "rep1/sim/true-species-tree.tre"
 
-		else:
-			new_sim_file_path = "rep" + str(i+1) + "/sim/true-species-tree.tre" # this only works if all sims use same params
+		# else:
+		#	new_sim_file_path = "rep" + str(i+1) + "/sim/true-species-tree.tre" # this only works if all sims use same params
 
-		new_sim_file = open(new_sim_file_path)
-		new_sim_file_lines = new_sim_file.readlines()
+		# new_sim_file = open(new_sim_file_path)
+		# new_sim_file_lines = new_sim_file.readlines()
 
-		for line in new_sim_file_lines:
-			flag = re.search('^  tree', line)
-			if flag:
-				file.write(line)
+		# for line in new_sim_file_lines:
+		#	flag = re.search('^  tree', line)
+		#	if flag:
+		#		file.write(line)
 
 
 		true_file_path = "rep" + str(i) + "/sim/true-species-tree.tre"
