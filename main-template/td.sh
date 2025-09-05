@@ -1,6 +1,6 @@
 for i in rep*/smc; do
 	echo "$i"
 	cd "$i"
-	td --treefile bhv_trees.tre
+	td --treefile species_trees.trees --frechet mean
 	cd ../..
 done
