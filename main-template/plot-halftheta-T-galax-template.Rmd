@@ -158,7 +158,7 @@ v
 
 ```{r}
 library(plotly)
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=T)
+fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=proportiondeep)
 fig 
 
 ```
