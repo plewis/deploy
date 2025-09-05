@@ -184,11 +184,6 @@ When the jobs have finished, summarize the results by running the scripts
 	python3 summarize.py
 
 This will calculate Robinson-Foulds (RF) distances between the trees the SMC program sampled and the true tree and summarize the results. If you get a message "The limit of 1 tree (= 'Maxtrees') has been reached.  Do you want to increase Maxtrees?", you can type 'y'. If you then get the message 'Enter new value for 'Maxtrees' (101):'', type any value over 101, then type '2' to automatically increase the number of trees. You can ignore any errors about ASTRAL or BEAST trees not found since you did not run those programs.
-
-# This part does not work yet.
-To use the new BHV geodesic distance metric, run:
-	python3 create-bhv-files.py (This will create tree files that can be read by the treedistance program and will create a file called bhv_trees.tre in each smc replicate directory.)
- 	sbatch td.slurm (This will run the treedistance program and create a file called bhvdists.txt in each smc replicate directory.)
   
 
 Now you can run galax on the results:
@@ -199,5 +194,12 @@ Now you can run galax on the results:
 
 
 You can now transfer the file `plot-galax.Rmd` to your local laptop using the instructions at [this link](https://kb.uconn.edu/space/SH/26033783688/File+Transfer) You can then run the file in RStudio to  visualize the results.
+
+
+
+# This part does not work yet.
+To use the new BHV geodesic distance metric, run:
+	python3 create-bhv-files.py (This will create tree files that can be read by the treedistance program and will create a file called bhv_trees.tre in each smc replicate directory.)
+ 	sbatch td.slurm (This will run the treedistance program and create a file called bhvdists.txt in each smc replicate directory.)
 
 
