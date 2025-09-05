@@ -193,7 +193,7 @@ if user == 'aam21005' or user == 'jjc23002':
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 100
+smc_nparticles        = 1000
 smc_nspeciesparticles = 100
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 0.1
