@@ -29,14 +29,14 @@ if user == 'pol02003':
     if local:
         simulator_path = 'smc6'
         smc_path       = 'smc6'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = '/Applications/BEAST\ 2.7.7/bin/beast'
         astral_path    = '/Users/plewis/Documents/software/astral/astral.5.7.8.jar'
         paup_path      = 'paup'
     else:
         simulator_path = '/home/pol02003/bin/smc6'
         smc_path       = '/home/pol02003/bin/smc6'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = '/home/pol02003/beast/bin/beast'
         astral_path    = '/home/pol02003/Astral/astral.5.7.1.jar'
         paup_path      = '/home/pol02003/bin/paup'
@@ -44,14 +44,14 @@ elif user == 'aam21005':
     if local:
         simulator_path = 'smc'
         smc_path       = 'smc'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = '/Applications/BEAST\ 2.7.6/bin/beast'
         astral_path    = '/Users/analisamilkey/Documents/software/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_osx'
     else:
         simulator_path = 'mixing-smc'
         smc_path       = 'mixing-smc'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = '/home/aam21005/beast/bin/beast'
         astral_path    = '/home/aam21005/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
@@ -60,14 +60,14 @@ elif user == 'jjc23002':
     if local: 
         simulator_path = 'smc'
         smc_path       = 'smc'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = 'path_to_beast'
         astral_path    = 'path_to_astral'
         paup_path      = 'path_to_paup'
     else:
         simulator_path = '/home/jjc23002/bin/smc'
         smc_path       = '/home/jjc23002/bin/smc'
-		td_path		   = 'td'
+        td_path        = 'td'
         beast_path     = '/home/jjc23002/beast/bin/beast'
         astral_path    = '/home/jjc23002/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
@@ -80,7 +80,7 @@ elif user == 'jjc23002':
 useFASTA = True
 
 # No. points along the x and y axes
-ngridpoints = 10
+ngridpoints = 2
 
 # If ngridpoints > 1, this option is ignored and nreps is
 # instead set to ngridpoints^2
@@ -193,18 +193,18 @@ if user == 'aam21005' or user == 'jjc23002':
 # If False, use true theta and lambda
 smc_use_svdq_estimates = True 
 
-smc_nparticles        = 5000
-smc_nspeciesparticles = 1000
+smc_nparticles        = 100
+smc_nspeciesparticles = 100
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 0.1
-    smc_saveevery		  = 500
+    smc_saveevery		  = 10
     smc_nthreads		  = 10
     smc_savegenetrees	  = False
     smc_savememory		  = False
     smc_speciestreefile   = 'species_trees.trees'
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
-    smc_ngroups			  = 10
+    smc_ngroups			  = 3
 elif user == 'pol02003':
     smc_nkept             = 1000
     smc_nspeciesparticles = 200
