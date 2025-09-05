@@ -29,12 +29,14 @@ if user == 'pol02003':
     if local:
         simulator_path = 'smc6'
         smc_path       = 'smc6'
+		td_path		   = 'td'
         beast_path     = '/Applications/BEAST\ 2.7.7/bin/beast'
         astral_path    = '/Users/plewis/Documents/software/astral/astral.5.7.8.jar'
         paup_path      = 'paup'
     else:
         simulator_path = '/home/pol02003/bin/smc6'
         smc_path       = '/home/pol02003/bin/smc6'
+		td_path		   = 'td'
         beast_path     = '/home/pol02003/beast/bin/beast'
         astral_path    = '/home/pol02003/Astral/astral.5.7.1.jar'
         paup_path      = '/home/pol02003/bin/paup'
@@ -42,12 +44,14 @@ elif user == 'aam21005':
     if local:
         simulator_path = 'smc'
         smc_path       = 'smc'
+		td_path		   = 'td'
         beast_path     = '/Applications/BEAST\ 2.7.6/bin/beast'
         astral_path    = '/Users/analisamilkey/Documents/software/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_osx'
     else:
         simulator_path = 'mixing-smc'
         smc_path       = 'mixing-smc'
+		td_path		   = 'td'
         beast_path     = '/home/aam21005/beast/bin/beast'
         astral_path    = '/home/aam21005/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
@@ -56,12 +60,14 @@ elif user == 'jjc23002':
     if local: 
         simulator_path = 'smc'
         smc_path       = 'smc'
+		td_path		   = 'td'
         beast_path     = 'path_to_beast'
         astral_path    = 'path_to_astral'
         paup_path      = 'path_to_paup'
     else:
         simulator_path = '/home/jjc23002/bin/smc'
         smc_path       = '/home/jjc23002/bin/smc'
+		td_path		   = 'td'
         beast_path     = '/home/jjc23002/beast/bin/beast'
         astral_path    = '/home/jjc23002/ASTRAL-5.7.1/Astral/astral.5.7.1.jar'
         paup_path      = 'paup4a168_centos64'
@@ -256,7 +262,7 @@ def run(maindir, nreps):
     ###########################
     td_slurm_path = os.path.join(maindir, 'td.slurm')
     setupsubst.substitutions({
-        '__TD_PATH__': smc_path,
+        '__TD_PATH__': td_path,
         '__NJOBS__': nreps,
         '__MAINDIR__': maindir
         }, td_slurm_path, td_slurm_path)
