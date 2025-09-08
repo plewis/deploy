@@ -41,17 +41,13 @@ for rep in range(nreps):
       assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
       theta = float(m.group('theta'))
       lamBda = float(m.group('lambda'))
-      
-     # Extract information from BHV info output
-      fn = 'info.txt'
-      stuff_two = open(fn, 'r').read()
 
      # Extract means from BHV output
-      fn = 'rep%d/sim/proj.conf' % rep_plus_one
-      stuff = open(fn, 'r').read()
-      m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
-      theta = float(m.group('theta'))
+     # fn = 'rep%d/sim/proj.conf' % rep_plus_one
+    #  stuff = open(fn, 'r').read()
+    #   m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
+    # assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
+    #  theta = float(m.group('theta'))
       
       
   elif __JJC23002__:
@@ -78,11 +74,6 @@ for rep in range(nreps):
       assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
       theta = float(m.group('theta'))
       lamBda = float(m.group('lambda'))
-      
-     # Extract information from BHV info output
-      fn = 'info.txt'
-      stuff_two = open(fn, 'r').read()
-      smc_info = stuff_two
                   
   elif __POL02003__:
             # extract deep coalescences
@@ -109,9 +100,9 @@ for rep in range(nreps):
       theta = float(m.group('theta'))
       lamBda = float(m.group('lambda'))
       
-     # Extract information from BHV info output
-      fn = 'info.txt'
-      stuff_two = open(fn, 'r').read()
+# Extract information from BHV info output
+fn = 'info.txt'
+stuff_two = open(fn, 'r').read()
   
  # Extract SMC RF means
   fn = 'smcrf%d.txt' % rep_plus_one
