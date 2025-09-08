@@ -13,6 +13,9 @@ summary = []
 
 print('Creating BHV info plot...')
 
+with open('info.txt', 'r') as file:
+     info_lines = lines = file.readlines()
+
 nreps = __NREPS__
 for rep in range(nreps):
   rep_plus_one = rep + 1
@@ -43,11 +46,10 @@ for rep in range(nreps):
       lamBda = float(m.group('lambda'))
 
       # extract BHV info
-      fn = 'info.txt'
-      stuff_two = open(fn, 'r').read()
-      m = stuff_two[rep]
-      assert m is not None, 'could not extract bhv info from info.txt file'
-      smc_info = float(m)
+      rep_info = info_lines[rep].rstrip(',\n')
+      assert rep_info is not None, 'could not extract bhv info from info.txt file'
+      print(rep_info)
+      smc_info = float(rep_info)
       
       
   elif __JJC23002__:
@@ -100,28 +102,28 @@ for rep in range(nreps):
       theta = float(m.group('theta'))
       lamBda = float(m.group('lambda'))
   
-     # Extract SMC RF means
-     fn = 'smcrf%d.txt' % rep_plus_one
-     assert (os.path.exists(fn))
-     lines = open(fn, 'r').readlines()
-     smcrfsum = 0.0
-     smcrfnum = 0
-     for line in lines[1:]:
-         parts = line.strip().split()
-         assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-         smcrfnum += 1
-         smcrfsum += float(parts[1])
-         smc_rf = smcrfsum/smcrfnum
+      # Extract SMC RF means
+      fn = 'smcrf%d.txt' % rep_plus_one
+      assert (os.path.exists(fn))
+      lines = open(fn, 'r').readlines()
+      smcrfsum = 0.0
+      smcrfnum = 0
+      for line in lines[1:]:
+          parts = line.strip().split()
+          assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
+          smcrfnum += 1
+          smcrfsum += float(parts[1])
+          smc_rf = smcrfsum/smcrfnum
             
-     summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info})
-     output_string  = '%d\t' % rep_plus_one
-     output_string += '%.5f\t' % theta
-     output_string += '%.5f\t' % lamBda
-     output_string += '%d\t' % numdeep
-     output_string += '%d\t' % maxdeep
-     output_string += '%.5f\t' % stoheight
-     output_string += '%.5f\t' % stxheight
-     output_string += '%.5f\t' % smc_info
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info})
+      output_string  = '%d\t' % rep_plus_one
+      output_string += '%.5f\t' % theta
+      output_string += '%.5f\t' % lamBda
+      output_string += '%d\t' % numdeep
+      output_string += '%d\t' % maxdeep
+      output_string += '%.5f\t' % stoheight
+      output_string += '%.5f\t' % stxheight
+      output_string += '%.5f\t' % smc_info
 
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
