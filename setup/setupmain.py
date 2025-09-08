@@ -411,3 +411,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, info_path, info_path)
+
+	#########################################
+    # Set up calculate-information-hpd.py script #
+    #########################################
+    info_path_hpd = os.path.join(maindir, 'calculate-information-hpd.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, info_path_hpd, info_path_hpd)
