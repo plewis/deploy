@@ -82,6 +82,7 @@ for rep in range(nreps):
      # Extract information from BHV info output
       fn = 'info.txt'
       stuff_two = open(fn, 'r').read()
+      smc_info = stuff_two
                   
   elif __POL02003__:
             # extract deep coalescences
