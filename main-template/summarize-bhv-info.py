@@ -100,20 +100,20 @@ for rep in range(nreps):
       theta = float(m.group('theta'))
       lamBda = float(m.group('lambda'))
   
-     # Extract SMC RF means
-     fn = 'smcrf%d.txt' % rep_plus_one
-     assert (os.path.exists(fn))
-     lines = open(fn, 'r').readlines()
-     smcrfsum = 0.0
-     smcrfnum = 0
-     for line in lines[1:]:
-         parts = line.strip().split()
-         assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-         smcrfnum += 1
-         smcrfsum += float(parts[1])
-         smc_rf = smcrfsum/smcrfnum
+      # Extract SMC RF means
+      fn = 'smcrf%d.txt' % rep_plus_one
+      assert (os.path.exists(fn))
+      lines = open(fn, 'r').readlines()
+      smcrfsum = 0.0
+      smcrfnum = 0
+      for line in lines[1:]:
+          parts = line.strip().split()
+          assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
+          smcrfnum += 1
+          smcrfsum += float(parts[1])
+          smc_rf = smcrfsum/smcrfnum
             
-     summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_rf':smc_rf})
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_rf':smc_rf})
 
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
