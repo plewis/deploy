@@ -389,3 +389,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, create_bhv_path, create_bhv_path)
+
+	#########################################
+    # Set up calculate-information.py script #
+    #########################################
+    info_path = os.path.join(maindir, 'calculate-information.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, info_path, info_path)
