@@ -205,11 +205,11 @@ Run second set of analyses under the posterior and rename the directory g-poster
 
 For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
 
-Create a new directory ('g-info') and move both 'g-prior' and 'g-posterior' into this directory. Move 'calculate-information.py' into this directory from 'g-prior' (mv g-prior/calculate-information.py .)
+Create a new directory (`g-info`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information.py' into this directory from `g-prior` (mv g-prior/calculate-information.py .)
 
 Run information calculation: python3 calculate-information.py
 
-Move info.txt into 'g-posterior'. Run 'paup rfsmc.nex', 'python3 summarize.py'. Run 'python3 summarize-bhv-info.py'. Tranfser the output file 'plot-bhv-info.Rmd' to your local laptop.
+Move info.txt into `g-posterior`. Run `paup rfsmc.nex`, `python3 summarize.py`. Run `python3 summarize-bhv-info.py`. Tranfser the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
 
