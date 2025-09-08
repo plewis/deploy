@@ -163,18 +163,9 @@ smcrfstr = ','.join(smcRFmeans)
 
 if plot_theta_vs_lambda:
     assert False # does not work yet
-    ## Open plot-theta-lambda-template.Rmd
-    #stuff = open('plot-theta-lambda-template.Rmd', 'r').read()
-    #stuff = re.sub('__NSPECIES__', '%d' % nspecies, stuff, re.M | re.S)
-    #stuff = re.sub('__LAMBDAVECTOR__', lambdastr, stuff, re.M | re.S)
-    #stuff = re.sub('__THETAVECTOR__', thetastr, stuff, re.M | re.S)
-    #stuff = re.sub('__CONTOUR_BREAKS__', contour_breaks_str, stuff, re.M | re.S)
-    #stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
-    #stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
-    #stuff = re.sub('__SMC_INFO__', smcinfostr, stuff, re.M | re.S)
 else:
-    # Open plot-halftheta-T-template.Rmd
-    stuff = open('plot-halftheta-T-galax-template.Rmd', 'r').read()
+    # Open plot-halftheta-T-BHV-info-template.Rmd
+    stuff = open('plot-halftheta-T-BHV-info-template.Rmd', 'r').read()
     stuff = re.sub('__NSPECIES__', '%d' % nspecies, stuff, re.M | re.S)
     stuff = re.sub('__TVECTOR__', Tstr, stuff, re.M | re.S)
     stuff = re.sub('__HALFTHETAVECTOR__', halfthetastr, stuff, re.M | re.S)
