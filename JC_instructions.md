@@ -198,8 +198,16 @@ You can now transfer the file `plot-galax.Rmd` to your local laptop using the in
 
 
 # This part does not work yet.
-To use the new BHV geodesic distance metric, run:
-	python3 create-bhv-files.py (This will create tree files that can be read by the treedistance program and will create a file called bhv_trees.tre in each smc replicate directory.)
- 	sbatch td.slurm (This will run the treedistance program and create a file called bhvdists.txt in each smc replicate directory.)
+To use the new BHV geodesic distance metric:
+
+Run one set of analyses under the prior and rename the directory g-prior.
+Run second set of analyses under the posterior and rename the directory g-posterior.
+
+For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
+
+Create a new directory ('g-info') and move both 'g-prior' and 'g-posterior' into this directory. Move 'calculate-information.py' into this directory from 'g-prior' (mv g-prior/calculate-information.py .)
+
+Run information calculation: python3 calculate-information.py
+
 
 
