@@ -173,6 +173,7 @@ else:
     stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__SMC_INFO_BHV__', smcrfstr, stuff, re.M | re.S)
 
 outf = open('plot-bhv-info.Rmd', 'w')
 outf.write(stuff)
