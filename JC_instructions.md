@@ -209,5 +209,7 @@ Create a new directory ('g-info') and move both 'g-prior' and 'g-posterior' into
 
 Run information calculation: python3 calculate-information.py
 
+Move info.txt into 'g-posterior'. Run 'paup rfsmc.nex', 'python3 summarize.py'. Run 'python3 summarize-bhv-info.py'. Tranfser the output file 'plot-bhv-info.Rmd' to your local laptop.
+
 
 
