@@ -102,7 +102,7 @@ for rep in range(nreps):
       
 # Extract information from BHV info output
 fn = 'info.txt'
-stuff_two = open(fn, 'r').read()
+smc_info = open(fn, 'r').read()
   
 # Extract SMC RF means
 fn = 'smcrf%d.txt' % rep_plus_one
