@@ -315,6 +315,20 @@ def run(maindir, nreps):
         '__JJC23002__': user == 'jjc23002',
         '__POL02003__': user == 'pol02003'
         }, summarize_path, summarize_path)
+
+	##############################
+    # Set up summarize-bhv-info.py script #
+    ##############################
+    nspp_str = '%d' % (len(species),)
+    summarize_path = os.path.join(maindir, 'summarize-bhv-info.py')
+    setupsubst.substitutions({
+        '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
+        '__NUM_SPECIES__': nspp_str,
+        '__NREPS__': nreps,
+        '__AAM21005__': user == 'aam21005',
+        '__JJC23002__': user == 'jjc23002',
+        '__POL02003__': user == 'pol02003'
+        }, summarize_path, summarize_path)
         
     #########################################
     # Set up theta-lambda-svdqage.py script #
