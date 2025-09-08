@@ -20,7 +20,6 @@ T = c(__TVECTOR__)
 numdeep = c(__NUMDEEP__)
 maxdeep = c(__MAXDEEP__)
 nspecies = __NSPECIES__
-smcmean   <- c(__SMCRFMEANS__)
 
 rf_max = (nspecies - 3) *2
 smcmean <- smcmean/rf_max # scale rf to maximum
