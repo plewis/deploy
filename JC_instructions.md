@@ -200,16 +200,22 @@ You can now transfer the file `plot-galax.Rmd` to your local laptop using the in
 # This part does not work yet.
 To use the new BHV geodesic distance metric:
 
-Run one set of analyses under the prior and rename the directory g-prior.
+Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in rep-template/smc/*.conf that says run_on_empty = false to run_on_empty = true.
+
 Run second set of analyses under the posterior and rename the directory g-posterior.
 
 For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
 
 Create a new directory (`g-info`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information.py' into this directory from `g-prior` (mv g-prior/calculate-information.py .)
 
+Before running the smc analyses, you will have to modify the directories in `smc.slurm` and `td.slurm` to fit the correct path.
+Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory.
+
+cd ..
 Run information calculation: python3 calculate-information.py
 
-Move info.txt into `g-posterior`. Run `paup rfsmc.nex`, `python3 summarize.py`. Run `python3 summarize-bhv-info.py`. Tranfser the output file `plot-bhv-info.Rmd` to your local laptop.
+
+Move info.txt into `g-posterior`. Run `paup rfsmc.nex`, `python3 summarize.py`. Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
 
