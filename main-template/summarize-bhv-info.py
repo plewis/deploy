@@ -19,7 +19,7 @@ for rep in range(nreps):
           
   if __AAM21005__:
       # extract deep coalescences
-      fn = 'g-prior/rep%d/sim/deep_coalescences.txt' % rep_plus_one
+      fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
       maxdeep = 0
       stuff = open(fn, 'r').read()
       # Extract numdeep, maxdeep, and stoheight
@@ -47,7 +47,7 @@ for rep in range(nreps):
       stuff_two = open(fn, 'r').read()
 
      # Extract means from BHV output
-      fn = 'g-posterior/rep%d/sim/proj.conf' % rep_plus_one
+      fn = 'rep%d/sim/proj.conf' % rep_plus_one
       stuff = open(fn, 'r').read()
       m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
       assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
@@ -55,7 +55,7 @@ for rep in range(nreps):
       
       
   elif __JJC23002__:
-            # extract deep coalescences
+      # extract deep coalescences
       fn = 'g-prior/rep%d/sim/deep_coalescences.txt' % rep_plus_one
       maxdeep = 0
       stuff = open(fn, 'r').read()
