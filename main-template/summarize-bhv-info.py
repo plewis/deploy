@@ -48,9 +48,7 @@ for rep in range(nreps):
       # extract BHV info
       rep_info = info_lines[rep].rstrip(',\n')
       assert rep_info is not None, 'could not extract bhv info from info.txt file'
-      print(rep_info)
       smc_info = float(rep_info)
-      
       
   elif __JJC23002__:
       # extract deep coalescences
@@ -172,8 +170,6 @@ smcinfostr = ','.join(smcInfomeans)
 numdeepstr = ','.join(numdeep)
 maxdeepstr = ','.join(maxdeep)
 smcrfstr = ','.join(smcRFmeans)
-
-contour_breaks_str = calcContourBreaksStr(contour_breaks_min, contour_breaks_max)
 
 if plot_theta_vs_lambda:
     assert False # does not work yet
