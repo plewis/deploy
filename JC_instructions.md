@@ -200,7 +200,7 @@ You can now transfer the file `plot-galax.Rmd` to your local laptop using the in
 # This part does not work yet.
 To use the new BHV geodesic distance metric:
 
-Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in rep-template/smc/*.conf that says run_on_empty = false to run_on_empty = true.
+Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in `setup/setupmain.py` that says sample_from_prior = false to sample_from_prior = true.
 
 Run second set of analyses under the posterior and rename the directory g-posterior.
 
