@@ -50,6 +50,7 @@ Get BHV info content.
 
 ```{r}
 info <- c(__SMC_INFO_BHV__)
+info <- 100 * info
 t_ratio <- T / halftheta
 infodf <- data.frame(halftheta, T, info, smcmean, t_ratio)
 proportiondeep <- numdeep/maxdeep
