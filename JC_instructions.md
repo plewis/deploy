@@ -208,8 +208,13 @@ For each directory, run sbatch td.slurm. This will run the treedistance program 
 
 Create a new directory (`g-info`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information.py' into this directory from `g-prior` (mv g-prior/calculate-information.py .)
 
-Before running the smc analyses, you will have to modify the directories in `smc.slurm` and `td.slurm` to fit the correct path.
+Before running the smc analyses, you will have to modify the files `smc.slurm`, `td.slurm`, and `td-true.slurm`. to fit the correct path.
 Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory.
+
+Calculate BHV distances between true tree and sampled trees. Within `g-posterior` directory, run:
+python3 create-bhv-files.py
+Then run:
+sbatch td-true.slurm
 
 cd ..
 Run information calculation: python3 calculate-information.py
