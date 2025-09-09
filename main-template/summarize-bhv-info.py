@@ -50,87 +50,29 @@ for rep in range(nreps):
       assert rep_info is not None, 'could not extract bhv info from info.txt file'
       smc_info = float(rep_info)
 
-     # Extract SMC RF means
-      fn = 'smcrf%d.txt' % rep_plus_one
+      # extract SMC BHV means
+      fn = 'rep%d/smc/bhvdists.txt'
       assert (os.path.exists(fn))
       lines = open(fn, 'r').readlines()
-      smcrfsum = 0.0
-      smcrfnum = 0
+      smcbhvsum = 0.0
+      smcbhvnum = 0
       for line in lines[1:]:
           parts = line.strip().split()
           assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-          smcrfnum += 1
-          smcrfsum += float(parts[1])
-          smc_rf = smcrfsum/smcrfnum
+          smcbhvnum += 1
+          smcbhvsum += float(parts[1])
+          smc_bhv = smcbhvsum/smcbhvnum
             
-      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_rf':smc_rf})
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':smc_bhv})
 
       
   elif __JJC23002__:
-      # extract deep coalescences
-      fn = 'g-prior/rep%d/sim/deep_coalescences.txt' % rep_plus_one
-      maxdeep = 0
-      stuff = open(fn, 'r').read()
-      # Extract numdeep, maxdeep, and stoheight
-      m = re.search(r'num deep coalescences = (?P<numdeep>\d+)\s+Maximum number of deep coalescences = (?P<maxdeep>\d+)\s+True species tree height = (?P<stoheight>[.0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract deep coalescences from file "%s"' % fn
-      numdeep = int(m.group('numdeep'))
-      maxdeep = int(m.group('maxdeep'))
-      stoheight = float(m.group('stoheight'))
-      
-       # Extract stxheight (species tree expected height)
-      m = re.search(r'Expected species tree height = (?P<stxheight>[.0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract expected species tree height from file "%s"' % fn
-      stxheight = float(m.group('stxheight'))
-      
-      # extract lambda and theta mean
-      fn = 'rep%d/sim/proj.conf' % rep_plus_one
-      stuff = open(fn, 'r').read()
-      m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
-      theta = float(m.group('theta'))
-      lamBda = float(m.group('lambda'))
+      test = 1
                   
   elif __POL02003__:
-            # extract deep coalescences
-      fn = 'g-prior/rep%d/sim/deep_coalescences.txt' % rep_plus_one
-      maxdeep = 0
-      stuff = open(fn, 'r').read()
-      # Extract numdeep, maxdeep, and stoheight
-      m = re.search(r'num deep coalescences = (?P<numdeep>\d+)\s+Maximum number of deep coalescences = (?P<maxdeep>\d+)\s+True species tree height = (?P<stoheight>[.0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract deep coalescences from file "%s"' % fn
-      numdeep = int(m.group('numdeep'))
-      maxdeep = int(m.group('maxdeep'))
-      stoheight = float(m.group('stoheight'))
-      
-       # Extract stxheight (species tree expected height)
-      m = re.search(r'Expected species tree height = (?P<stxheight>[.0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract expected species tree height from file "%s"' % fn
-      stxheight = float(m.group('stxheight'))
-      
-      # extract lambda and theta mean
-      fn = 'rep%d/sim/proj.conf' % rep_plus_one
-      stuff = open(fn, 'r').read()
-      m = re.search(r'theta\s+=\s+(?P<theta>[-.e0-9]+)\s+lambda\s+=\s+(?P<lambda>[.e0-9]+)', stuff, re.M | re.S)
-      assert m is not None, 'could not extract theta and lambda from file "%s"' % fn
-      theta = float(m.group('theta'))
-      lamBda = float(m.group('lambda'))
-  
-      # Extract SMC RF means
-      fn = 'smcrf%d.txt' % rep_plus_one
-      assert (os.path.exists(fn))
-      lines = open(fn, 'r').readlines()
-      smcrfsum = 0.0
-      smcrfnum = 0
-      for line in lines[1:]:
-          parts = line.strip().split()
-          assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-          smcrfnum += 1
-          smcrfsum += float(parts[1])
-          smc_rf = smcrfsum/smcrfnum
-            
-      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_rf':smc_rf})
+      test = 1
 
+      
 nsummary = len(summary)
 print('len(summary) = %d' % nsummary)
 
@@ -167,15 +109,15 @@ for s in summary:
     halfthetastr = ','.join(halfthetavector)
      
 # Create smcmeans
-smcRFmeans = []
+smcBHVmeans = []
 for s in summary:
-    smcRFmeans.append('%g' % s['smc_rf'])
+    smcBHVmeans.append('%g' % s['smc_bhv'])
 
 
 smcinfostr = ','.join(smcInfomeans)
 numdeepstr = ','.join(numdeep)
 maxdeepstr = ','.join(maxdeep)
-smcrfstr = ','.join(smcRFmeans)
+smcbhvstr = ','.join(smcBHVmeans)
 
 if plot_theta_vs_lambda:
     assert False # does not work yet
@@ -188,7 +130,7 @@ else:
     stuff = re.sub('__SMC_INFO__', smcinfostr, stuff, re.M | re.S)
     stuff = re.sub('__NUMDEEP__', numdeepstr, stuff, re.M | re.S)
     stuff = re.sub('__MAXDEEP__', maxdeepstr, stuff, re.M | re.S)
-    stuff = re.sub('__SMCRFMEANS__', smcrfstr, stuff, re.M | re.S)
+    stuff = re.sub('__SMCBHVMEANS__', smcbhvstr, stuff, re.M | re.S)
     stuff = re.sub('__SMC_INFO_BHV__', smcinfostr, stuff, re.M | re.S)
 
 outf = open('plot-bhv-info.Rmd', 'w')
