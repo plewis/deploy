@@ -267,6 +267,16 @@ def run(maindir, nreps):
         '__MAINDIR__': maindir
         }, td_slurm_path, td_slurm_path)
 
+	###########################
+    # Set up td slurm script #
+    ###########################
+    td_slurm_true_path = os.path.join(maindir, 'td-true.slurm')
+    setupsubst.substitutions({
+        '__TD_PATH__': td_path,
+        '__NJOBS__': nreps,
+        '__MAINDIR__': maindir
+        }, td_slurm_true_path, td_slurm_true_path)
+
     #############################
     # Set up BEAST slurm script #
     #############################
