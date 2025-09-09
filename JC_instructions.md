@@ -211,16 +211,17 @@ Create a new directory (`g-info`) and move both `g-prior` and `g-posterior` into
 Before running the smc analyses, you will have to modify the files `smc.slurm`, `td.slurm`, and `td-true.slurm`. to fit the correct path.
 Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory.
 
-Calculate BHV distances between true tree and sampled trees. Within `g-posterior` directory, run:
-python3 create-bhv-files.py
-Then run:
-sbatch td-true.slurm
 
 cd ..
 Run information calculation: python3 calculate-information.py
 
 
-Move info.txt into `g-posterior`. Run `paup rfsmc.nex`, `python3 summarize.py`. Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
+Move info.txt into `g-posterior`. Calculate BHV distances between true tree and sampled trees. Within `g-posterior` directory, run:
+python3 create-bhv-files.py
+Then run:
+sbatch td-true.slurm
+
+Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
 
