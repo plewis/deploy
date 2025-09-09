@@ -51,7 +51,7 @@ for rep in range(nreps):
       smc_info = float(rep_info)
 
       # extract SMC BHV means
-      fn = 'rep%d/smc/bhvdists.txt'
+      fn = 'rep%d/smc/bhvdists.txt' % rep_plus_one
       assert (os.path.exists(fn))
       lines = open(fn, 'r').readlines()
       smcbhvsum = 0.0
