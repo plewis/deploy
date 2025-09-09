@@ -13,9 +13,9 @@ for rep in range(nreps):
 	# Extract rank
 	fn = 'g-prior/rep%d/smc/mean.txt' % rep_plus_one
 	stuff = open(fn, 'r').read()
-	m1 = re.search(r'# HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_lower = float(m1.group(1))
-	m2 = re.search(r'# HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_upper = float(m2.group(1))
 	prior_variance.append(hpd_upper - hpd_lower)
 
@@ -25,9 +25,9 @@ for rep in range(nreps):
 	# Extract rank
 	fn = 'g-posterior/rep%d/smc/mean.txt' % rep_plus_one
 	stuff = open(fn, 'r').read()
-	m1 = re.search(r'# HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_lower = float(m1.group(1))
-	m2 = re.search(r'# HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_upper = float(m2.group(1))
 	posterior_variance.append(hpd_upper - hpd_lower)
 
