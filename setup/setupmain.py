@@ -205,7 +205,7 @@ if user == 'aam21005' or user == 'jjc23002':
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
     smc_ngroups			  = 3
-    sample_from_prior     = False
+    smc_sample_from_prior     = False
 elif user == 'pol02003':
     smc_nkept             = 1000
     smc_nspeciesparticles = 200
