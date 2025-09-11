@@ -6,6 +6,8 @@ nreps = __NREPS__
 
 prior_variance = []
 posterior_variance = []
+prior_lengths = []
+posterior_lengths = []
 
 for rep in range(nreps):
 	rep_plus_one = rep + 1
@@ -18,6 +20,8 @@ for rep in range(nreps):
 	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_upper = float(m2.group(1))
 	prior_variance.append(hpd_upper - hpd_lower)
+	prior_length = float(m1.group(1))
+	prior_lengths.append(prior_length)
 
 for rep in range(nreps):
 	rep_plus_one = rep + 1
@@ -30,14 +34,18 @@ for rep in range(nreps):
 	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_upper = float(m2.group(1))
 	posterior_variance.append(hpd_upper - hpd_lower)
-
+	posterior_length = float(m1.group(1))
+	posterior_lengths.append(posterior_length)
 
 info_list = []
 
 for rep in range(nreps):
 	prior_var = float(prior_variance[rep])
 	post_var = float(posterior_variance[rep])
-	info_list.append((prior_var - post_var) / prior_var)
+	prior_length = float(prior_lengths[rep])
+	posterior_length = float(posterior_lengths[rep])
+	scaling_factor = (prior_length - posterior_length) / (prior_length)
+	info_list.append(((prior_var - post_var) / prior_var) * scaling_factor)
 
 with open('info.txt', 'w') as file:
 	for i in info_list:
