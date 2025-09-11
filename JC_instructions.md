@@ -217,7 +217,7 @@ in `g-posterior`:
 in `g-prior`:
 	`smc.slurm`
  	`td.slurm`
-Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory. In `g-posterior`, also run sbatch td-true.slurm.
+Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory. In `g-posterior`, run `python3 create-bhv-files.py` and then also run sbatch td-true.slurm.
 
 Run information calculation in the `g-info` directory: python3 calculate-information-hpd.py
 
