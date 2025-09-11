@@ -45,7 +45,7 @@ for rep in range(nreps):
 	prior_length = float(prior_lengths[rep])
 	posterior_length = float(posterior_lengths[rep])
 	scaling_factor = posterior_length / prior_length
-	post_var = post_var * scaling_factor
+	prior_var = prior_var * scaling_factor
 	info_list.append(((prior_var - post_var) / prior_var))
 
 with open('info.txt', 'w') as file:
