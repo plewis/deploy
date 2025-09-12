@@ -1,4 +1,5 @@
 import sys, re, os, subprocess as sub
+from math import log
 
 # this file calculates BHV info after td program has been run
 
@@ -54,7 +55,8 @@ for rep in range(nreps):
 	prior_var = prior_var * scaling_factor
 	info_list.append(((prior_var - post_var) / prior_var))
 
-	LCR = log(prior_var) - log(posterior_var)
+	# LCR = log(prior_var) - log(post_var)
+	# info_list.append(LCR)
 
 with open('info.txt', 'w') as file:
 	for i in info_list:
