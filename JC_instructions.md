@@ -206,7 +206,7 @@ Run second set of analyses under the posterior and rename the directory g-poster
 
 For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
 
-Create a new directory (`g-info`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-hpd.py' into this directory from `g-prior` (mv g-prior/calculate-information-hpd.py .)
+Create a new directory (`g-bhv`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-hpd.py' into this directory from `g-prior` (mv g-prior/calculate-information-hpd.py .)
 
 Before running the smc analyses, you will have to modify the following files with their correct path:
 in `g-posterior`:
@@ -219,13 +219,10 @@ in `g-prior`:
  	`td.slurm`
 Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory. In `g-posterior`, run `python3 create-bhv-files.py` and then also run sbatch td-true.slurm.
 
-Run information calculation in the `g-info` directory: python3 calculate-information-hpd.py
 
+Run information calculation in the `g-bhv` directory: python3 calculate-information-hpd.py
 
-Move info.txt into `g-posterior`. Calculate BHV distances between true tree and sampled trees. Within `g-posterior` directory, run:
-python3 create-bhv-files.py
-Then run:
-sbatch td-true.slurm
+Move info.txt into `g-posterior`. Calculate BHV distances between true tree and sampled trees.
 
 Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
