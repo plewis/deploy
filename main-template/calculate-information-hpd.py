@@ -16,11 +16,15 @@ for rep in range(nreps):
 	fn = 'g-prior/rep%d/smc/mean.txt' % rep_plus_one
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	assert m1 is not None
 	hpd_lower = float(m1.group(1))
 	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	assert m2 is not None
+	m3 = re.search(r'# tree length =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	assert m3 is not None
 	hpd_upper = float(m2.group(1))
 	prior_variance.append(hpd_upper - hpd_lower)
-	prior_length = float(m1.group(1))
+	prior_length = float(m3.group(1))
 	prior_lengths.append(prior_length)
 
 for rep in range(nreps):
@@ -32,9 +36,11 @@ for rep in range(nreps):
 	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_lower = float(m1.group(1))
 	m2 = re.search(r'# 95% HPD upper =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	m3 = re.search(r'# tree length =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
+	assert m3 is not None
 	hpd_upper = float(m2.group(1))
 	posterior_variance.append(hpd_upper - hpd_lower)
-	posterior_length = float(m1.group(1))
+	posterior_length = float(m3.group(1))
 	posterior_lengths.append(posterior_length)
 
 info_list = []
