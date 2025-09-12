@@ -54,6 +54,8 @@ for rep in range(nreps):
 	prior_var = prior_var * scaling_factor
 	info_list.append(((prior_var - post_var) / prior_var))
 
+	LCR = log(prior_var) - log(posterior_var)
+
 with open('info.txt', 'w') as file:
 	for i in info_list:
 		file.write(str(i) + ',' + '\n')
