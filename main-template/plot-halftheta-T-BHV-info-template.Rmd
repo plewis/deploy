@@ -92,5 +92,6 @@ scale_bar <- list(
 
 fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=proportiondeep)
 fig <- fig %>% layout(scene = list(xaxis=info_axis,yaxis=accuracy_axis,zaxis=tratio_axis, annotations = scale_bar))
+fig
 
 ```
