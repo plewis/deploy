@@ -8,7 +8,7 @@ import setupsubst
 user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = False
+local = True
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate
@@ -128,6 +128,8 @@ max_comphet = 10000
 species            = ['A', 'B', 'C', 'D', 'E']
 indivs_for_species = [ 2,   2,   2,   2,   2]
 
+slowloci = True
+
 if theta_vs_lambda:
     # Average distance between two leaves in a gene tree
     # Average height to first coalescence
@@ -191,13 +193,13 @@ if user == 'aam21005' or user == 'jjc23002':
 # Determines values of theta and lambda provided to BEAST and SMC
 # If True, use SVD-qage estimates of theta and lambda
 # If False, use true theta and lambda
-smc_use_svdq_estimates = True 
+smc_use_svdq_estimates = False 
 
-smc_nparticles        = 1000
-smc_nspeciesparticles = 100
+smc_nparticles        = 10
+smc_nspeciesparticles = 10
 if user == 'aam21005' or user == 'jjc23002':
     smc_thin			  = 0.1
-    smc_saveevery		  = 10
+    smc_saveevery		  = 1
     smc_nthreads		  = 10
     smc_savegenetrees	  = False
     smc_savememory		  = False

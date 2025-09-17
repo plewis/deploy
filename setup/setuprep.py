@@ -358,6 +358,10 @@ def run(rep, nreps, maindir, repdir, rnseed):
     u = random.random()
     comphet = setupmain.min_comphet + u*(setupmain.max_comphet - setupmain.min_comphet)
     
+    # choose random number for slow loci
+    if setupmain.slowloci == True:
+    	nloci_slow = random.randint(1, setupmain.max_n_loci)
+    
     
     if setupmain.user == "aam21005" or setupmain.user == "jjc23002":
          setupsubst.substitutions({
@@ -371,7 +375,8 @@ def run(rep, nreps, maindir, repdir, rnseed):
              '__ASRV_SHAPE__':    asrv_shape,
              '__EDGE_RATE_VAR__': edge_rate_variance,
              '__COMP_HET__':      comphet,
-             '__SAVEGENETREESSEPARATELY__': setupmain.sim_save_gene_trees_separately    
+             '__SAVEGENETREESSEPARATELY__': setupmain.sim_save_gene_trees_separately,
+             '__NLOCISLOW__': nloci
              }, infile, outfile)
          os.rename(outfile, os.path.join(outer_simdir, 'proj.conf'))
     else:
