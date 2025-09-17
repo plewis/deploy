@@ -197,17 +197,34 @@ You can now transfer the file `plot-galax.Rmd` to your local laptop using the in
 
 
 
-# This part does not work yet.
+# BHV information content
 To use the new BHV geodesic distance metric:
 
-Run one set of analyses under the prior and rename the directory g-prior.
+Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in `setup/setupmain.py` that says sample_from_prior = false to sample_from_prior = true.
+
 Run second set of analyses under the posterior and rename the directory g-posterior.
 
 For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
 
-Create a new directory ('g-info') and move both 'g-prior' and 'g-posterior' into this directory. Move 'calculate-information.py' into this directory from 'g-prior' (mv g-prior/calculate-information.py .)
+Create a new directory (`g-bhv`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-hpd.py' into this directory from `g-prior` (mv g-prior/calculate-information-hpd.py .)
 
-Run information calculation: python3 calculate-information.py
+Before running the smc analyses, you will have to modify the following files with their correct path:
+in `g-posterior`:
+	`smc.slurm`
+ 	`td.slurm`
+  	`td-true.slurm`
+
+in `g-prior`:
+	`smc.slurm`
+ 	`td.slurm`
+Run sbatch smc.slurm for both g-prior and g-posterior directories. Once these analyses have finished, run sbatch td.slurm in each directory. In `g-posterior`, run `python3 create-bhv-files.py` and then also run `sbatch td-true.slurm`.
+
+
+Run information calculation in the `g-bhv` directory: python3 calculate-information-hpd.py
+
+Move info.txt into `g-posterior`. Calculate BHV distances between true tree and sampled trees.
+
+Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
 

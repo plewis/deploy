@@ -207,6 +207,7 @@ if user == 'aam21005' or user == 'jjc23002':
     smc_genenewicks		  = False
     smc_newickpath		  = "../sim"
     smc_ngroups			  = 3
+    smc_sample_from_prior     = False
 elif user == 'pol02003':
     smc_nkept             = 1000
     smc_nspeciesparticles = 200
@@ -269,6 +270,16 @@ def run(maindir, nreps):
         '__MAINDIR__': maindir
         }, td_slurm_path, td_slurm_path)
 
+	###########################
+    # Set up td slurm script #
+    ###########################
+    td_slurm_true_path = os.path.join(maindir, 'td-true.slurm')
+    setupsubst.substitutions({
+        '__TD_PATH__': td_path,
+        '__NJOBS__': nreps,
+        '__MAINDIR__': maindir
+        }, td_slurm_true_path, td_slurm_true_path)
+
     #############################
     # Set up BEAST slurm script #
     #############################
@@ -309,6 +320,20 @@ def run(maindir, nreps):
     ##############################
     nspp_str = '%d' % (len(species),)
     summarize_path = os.path.join(maindir, 'summarize-galax.py')
+    setupsubst.substitutions({
+        '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
+        '__NUM_SPECIES__': nspp_str,
+        '__NREPS__': nreps,
+        '__AAM21005__': user == 'aam21005',
+        '__JJC23002__': user == 'jjc23002',
+        '__POL02003__': user == 'pol02003'
+        }, summarize_path, summarize_path)
+
+	##############################
+    # Set up summarize-bhv-info.py script #
+    ##############################
+    nspp_str = '%d' % (len(species),)
+    summarize_path = os.path.join(maindir, 'summarize-bhv-info.py')
     setupsubst.substitutions({
         '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
         '__NUM_SPECIES__': nspp_str,
@@ -399,3 +424,11 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, info_path, info_path)
+
+	#########################################
+    # Set up calculate-information-hpd.py script #
+    #########################################
+    info_path_hpd = os.path.join(maindir, 'calculate-information-hpd.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, info_path_hpd, info_path_hpd)

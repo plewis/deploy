@@ -465,6 +465,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
             '__SMCSAVEEVERY__': setupmain.smc_saveevery,
             '__SMCNTHREADS__': setupmain.smc_nthreads,
             '__SMCSAVEGENETREES__': setupmain.smc_savegenetrees,
+            '__SMCSAMPLEFROMPRIOR__': setupmain.smc_sample_from_prior,
             '__SMCGENENEWICKS__': setupmain.smc_genenewicks,
             '__SMCNLOCI__': nloci,
             '__SMCSAVEMEMORY__': setupmain.smc_savememory,

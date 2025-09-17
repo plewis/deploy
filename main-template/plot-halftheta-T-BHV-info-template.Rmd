@@ -20,10 +20,7 @@ T = c(__TVECTOR__)
 numdeep = c(__NUMDEEP__)
 maxdeep = c(__MAXDEEP__)
 nspecies = __NSPECIES__
-smcmean   <- c(__SMCRFMEANS__)
-
-rf_max = (nspecies - 3) *2
-smcmean <- smcmean/rf_max # scale rf to maximum
+smcmean   <- c(__SMCBHVMEANS__)
 
 plot(halftheta, T, type="p", pch=19, main="Simulation conditions", xlab="theta/2", ylab="T")
 ```
@@ -53,6 +50,7 @@ Get BHV info content.
 
 ```{r}
 info <- c(__SMC_INFO_BHV__)
+info <- 100 * info
 t_ratio <- T / halftheta
 infodf <- data.frame(halftheta, T, info, smcmean, t_ratio)
 proportiondeep <- numdeep/maxdeep
@@ -69,7 +67,31 @@ v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(t
 
 ```{r}
 library(plotly)
+
+info_axis <- list(
+  nticks = 10,
+  range = c(-10,100),
+  title = "information"
+)
+
+accuracy_axis <- list(
+  nticks = 0.2,
+  range = c(0,0.3),
+  title = "inaccuracy"
+)
+
+tratio_axis <- list(
+  nticks = 4,
+  range = c(0,12),
+  title = "t_ratio"
+)
+
+scale_bar <- list(
+  title = "number of deep coalescences"
+) 
+
 fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=proportiondeep)
-fig 
+fig <- fig %>% layout(scene = list(xaxis=info_axis,yaxis=accuracy_axis,zaxis=tratio_axis, annotations = scale_bar))
+fig
 
 ```
