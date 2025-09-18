@@ -128,7 +128,7 @@ else:
             maxdeep = 0
             stuff_six = open(fn, 'r').read()
             # Extract nloci
-            m = re.search(r'((nloci_slow_rate = )([0-9])*)', stuff_six, re.M | re.S)
+            m = re.search(r'((nloci_slow_rate = )([0-9]+)*)', stuff_six, re.M | re.S)
             assert m is not None, 'could not extract number of slow loci from file "%s"' % fn
             nslowloci = float(m.group(3))
             
@@ -187,21 +187,13 @@ else:
             total_seq_len = float(m.group(2))
             avg_seq_len = total_seq_len / ngenes
             
+
             # extract slow loci
             fn = 'rep%d/sim/proj.conf' % rep_plus_one
             maxdeep = 0
             stuff_six = open(fn, 'r').read()
             # Extract nloci
-            m = re.search(r'((nloci_slow_rate = )([0-9])*)', stuff_six, re.M | re.S)
-            assert m is not None, 'could not extract number of slow loci from file "%s"' % fn
-            nslowloci = float(m.group(3))
-            
-            # extract slow loci
-            fn = 'rep%d/sim/proj.conf' % rep_plus_one
-            maxdeep = 0
-            stuff_six = open(fn, 'r').read()
-            # Extract nloci
-            m = re.search(r'((nloci_slow_rate = )([0-9])*)', stuff_six, re.M | re.S)
+            m = re.search(r'((nloci_slow_rate = )([0-9]+)*)', stuff_six, re.M | re.S)
             assert m is not None, 'could not extract number of slow loci from file "%s"' % fn
             nslowloci = float(m.group(3))
                         
@@ -240,7 +232,7 @@ else:
             smcrfsum += float(parts[1])
         smc_rf = smcrfsum/smcrfnum
             
-        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info, 'ngenes':ngenes, 'smc_rf':smc_rf, 'avg_seq_len':avg_seq_len, 'n_slow_loci':nslowloci})
+        summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_old_info':smc_old_info, 'ngenes':ngenes, 'smc_rf':smc_rf, 'avg_seq_len':avg_seq_len, 'nslowloci':nslowloci})
         output_string  = '%d\t' % rep_plus_one
         output_string += '%.5f\t' % theta
         output_string += '%.5f\t' % lamBda
@@ -361,6 +353,6 @@ else:
     stuff = re.sub('__AVGSEQLENGTH__', seqlenstr, stuff, re.M | re.S)
     stuff = re.sub('__NSLOWLOCI__', slowlocistr, stuff, re.M | re.S) 
 
-outf = open('plot-galax-sow.Rmd', 'w')
+outf = open('plot-galax-slow.Rmd', 'w')
 outf.write(stuff)
 outf.close()

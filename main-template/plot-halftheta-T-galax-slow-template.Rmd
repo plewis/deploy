@@ -55,7 +55,7 @@ Get new info content.
 ```{r}
 info <- c(__SMC_INFO__)
 t_ratio <- T / halftheta
-infodf <- data.frame(halftheta, T, info, smcmean, t_ratio)
+infodf <- data.frame(halftheta, T, info, smcmean, t_ratio, slowloci)
 proportiondeep <- numdeep/maxdeep
 ```
 
@@ -115,7 +115,7 @@ v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(t
 
 ```{r}
 library(plotly)
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=proportiondeep)
+fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=slowloci)
 fig 
 
 ```

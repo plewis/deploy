@@ -376,7 +376,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
              '__EDGE_RATE_VAR__': edge_rate_variance,
              '__COMP_HET__':      comphet,
              '__SAVEGENETREESSEPARATELY__': setupmain.sim_save_gene_trees_separately,
-             '__NLOCISLOW__': nloci
+             '__NLOCISLOW__': nloci_slow
              }, infile, outfile)
          os.rename(outfile, os.path.join(outer_simdir, 'proj.conf'))
     else:
