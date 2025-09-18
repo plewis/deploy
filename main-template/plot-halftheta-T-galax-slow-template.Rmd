@@ -115,7 +115,7 @@ v + geom_contour_filled(breaks=c(0.0,0.2,0.4,0.6,0.8,1.0)) + labs(x=expression(t
 
 ```{r}
 library(plotly)
-fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~t_ratio, size=1, mode = "markers", color=slowloci)
+fig <- plot_ly(infodf, x = ~info, y = ~smcmean, z = ~slowloci, size=1, mode = "markers", color=slowloci)
 fig 
 
 ```
