@@ -196,6 +196,15 @@ Now you can run galax on the results:
 You can now transfer the file `plot-galax.Rmd` to your local laptop using the instructions at [this link](https://kb.uconn.edu/space/SH/26033783688/File+Transfer) You can then run the file in RStudio to  visualize the results.
 
 
+# slow genes
+To use a slower rate for a random proportion of loci:
+
+Follow all the above instructions, except in setupmain.py, set `slowloci = True`.
+
+After running all the above scripts, run:
+	python3 summarize-galax-slowloci.py
+
+ And move the file `plot-galax-slow.Rmd` to your computer.
 
 # BHV information content
 To use the new BHV geodesic distance metric:
