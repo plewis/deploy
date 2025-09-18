@@ -333,7 +333,7 @@ def run(maindir, nreps):
     # Set up summarize-galax-slow.py script #
     ##############################
     nspp_str = '%d' % (len(species),)
-    summarize_path = os.path.join(maindir, 'summarize-galax-slow.py')
+    summarize_path = os.path.join(maindir, 'summarize-galax-slowloci.py')
     setupsubst.substitutions({
         '__PLOT_THETA_VS_LAMBDA__': theta_vs_lambda and 'True' or 'False',
         '__NUM_SPECIES__': nspp_str,
