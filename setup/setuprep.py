@@ -278,59 +278,40 @@ def run(rep, nreps, maindir, repdir, rnseed):
         theta_mean = 2.0*half_theta_mean
         speciation_rate = suminv/T
     
-    ##############################
+   ##############################
     # Set up the "sim" directory #
     ##############################
     infile  = os.path.join(outer_simdir, '%s-proj.conf' % setupmain.user)
     outfile = infile
-    
+
     # Create data partitioning and specify relative rates
     subset_info = []
     site_cursor = 1
     subsets = ''
     relrates = ''
-    
+
     # Choose the number of loci for this simulation
     nloci = random.randint(setupmain.min_n_loci, setupmain.max_n_loci)
     if setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
-        relrates += 'relative_rates = '
-        # choose random number for slow loci
-        if setupmain.slowloci == True:
-            nloci_slow = random.randint(1, setupmain.max_n_loci)
-    
+         relrates += 'relative_rates = '
     for g in range(nloci):
         locus = g + 1
 
-        # Choose the number of sites for this locus 
+        # Choose the number of sites for this locus
         nsites_this_locus = random.randint(setupmain.min_sites_per_locus, setupmain.max_sites_per_locus)
         first = site_cursor
         last  = site_cursor + nsites_this_locus - 1
         subsets += 'subset = locus%d[nucleotide]:%d-%d\n' % (locus,first,last)
 
-    # Choose the relative rate for this locus 
-
-        if nloci_slow == 0:
-            # if not slow loci setting, draw relrates
-            relrate_this_locus = random.gammavariate(setupmain.subset_relrate_shape, setupmain.subset_relrate_scale)
-            if setupmain.user == 'pol02003':
-                relrates += 'relrate = locus%d:%.5f\n' % (locus, relrate_this_locus)
-            elif setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
-                if g == 0:
-                    relrates += str(relrate_this_locus)
-                else:
-                    relrates += ", " + str(relrate_this_locus)
-        else:
-            # if slow loci setting, set relrates to correct rates
-            mean_rate = (nloci_slow * 0.01 + (nloci - nloci_slow)) / nloci
-            scaling_factor = 1 / mean_rate
-            
-            if g < nloci_slow:
-                relrate_this_locus = 0.01 * scaling_factor
+        # Choose the relative rate for this locus
+        relrate_this_locus = random.gammavariate(setupmain.subset_relrate_shape, setupmain.subset_relrate_scale)
+        if setupmain.user == 'pol02003':
+            relrates += 'relrate = locus%d:%.5f\n' % (locus, relrate_this_locus)
+        elif setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
+            if g == 0:
                 relrates += str(relrate_this_locus)
             else:
-                relrate_this_locus = scaling_factor;
-                relrates += str(relrate_this_locus)
-            
+                relrates += ", " + str(relrate_this_locus)
 
         # Save information about this locus in subset_info vector
         subset_info.append({'locus':locus, 'relrate':relrate_this_locus, 'nsites':nsites_this_locus, 'first':first, 'last':last})
@@ -342,14 +323,14 @@ def run(rep, nreps, maindir, repdir, rnseed):
         refinfof.write('  first   = %d\n' % first)
         refinfof.write('  last    = %d\n' % last)
         refinfof.flush()
-        
+
         site_cursor += nsites_this_locus
-        
+
     if setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
          relrates += '\n'
-        
+
     # Define number of species and number of individuals for each species
-    nspecies = len(setupmain.species) 
+    nspecies = len(setupmain.species)
     if setupmain.user == 'pol02003':
         species = 'simnspecies = %d\n' % nspecies
         for s in range(nspecies):
@@ -360,23 +341,28 @@ def run(rep, nreps, maindir, repdir, rnseed):
         species += 'ntaxaperspecies = '
         species += ','.join(['%d' % x for x in setupmain.indivs_for_species])
         species += '\n'
-        
+
     # Choose random edge rate variance
     u = random.random()
     edge_rate_variance = setupmain.min_edge_rate_variance + u*(setupmain.max_edge_rate_variance - setupmain.min_edge_rate_variance)
-    
+
     # Choose random occupancy probability
     u = random.random()
     occupancy = setupmain.min_occupancy + u*(setupmain.max_occupancy - setupmain.min_occupancy)
-    
+
     # Choose random ASRV shape
     u = random.random()
     asrv_shape = setupmain.min_asrv_shape + u*(setupmain.max_asrv_shape - setupmain.min_asrv_shape)
-    
+
     # Choose random compositional heterogeneity Dirichlet parameter
     u = random.random()
     comphet = setupmain.min_comphet + u*(setupmain.max_comphet - setupmain.min_comphet)
-    
+
+    # choose random number for slow loci
+    if setupmain.slowloci == True:
+    	nloci_slow = random.randint(1, setupmain.max_n_loci)
+    else:
+    	nloci_slow = 0    
     
     if setupmain.user == "aam21005" or setupmain.user == "jjc23002":
          setupsubst.substitutions({
@@ -467,6 +453,20 @@ def run(rep, nreps, maindir, repdir, rnseed):
         smc_lambda = speciation_rate
         
     if setupmain.user == "aam21005" or setupmain.user == "jjc23002":
+        if setupmain.slowloci == True:
+            # if slow loci setting, set relrates to correct rates
+            relrates = 'relative_rates = '
+            mean_rate = (nloci_slow * 0.01 + (nloci - nloci_slow)) / nloci
+            scaling_factor = 1 / mean_rate
+            for l in nloci:
+                if l < nloci_slow:
+                    this_rel_rate = 0.01 * l
+                    relrates += str(this_rel_rate)
+                else:
+                    this_rel_rate = scaling_factor
+                    relrates += str(this_rel_rate)     
+            
+            
         setupsubst.substitutions({
             '__RNSEED__':    rnseed, 
             '__SUBSETS__':   subsets,
