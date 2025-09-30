@@ -294,6 +294,10 @@ def run(rep, nreps, maindir, repdir, rnseed):
     nloci = random.randint(setupmain.min_n_loci, setupmain.max_n_loci)
     if setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
          relrates += 'relative_rates = '
+        # choose random number for slow loci
+        if setupmain.slowloci == True:
+        nloci_slow = random.randint(1, setupmain.max_n_loci)
+    
     for g in range(nloci):
         locus = g + 1
 
@@ -303,15 +307,28 @@ def run(rep, nreps, maindir, repdir, rnseed):
         last  = site_cursor + nsites_this_locus - 1
         subsets += 'subset = locus%d[nucleotide]:%d-%d\n' % (locus,first,last)
 
-        # Choose the relative rate for this locus 
-        relrate_this_locus = random.gammavariate(setupmain.subset_relrate_shape, setupmain.subset_relrate_scale)
-        if setupmain.user == 'pol02003':
-            relrates += 'relrate = locus%d:%.5f\n' % (locus, relrate_this_locus)
-        elif setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
-            if g == 0:
-                relrates += str(relrate_this_locus)
+    # Choose the relative rate for this locus 
+
+        if nloci_slow == 0:
+            # if not slow loci setting, draw relrates
+            relrate_this_locus = random.gammavariate(setupmain.subset_relrate_shape, setupmain.subset_relrate_scale)
+            if setupmain.user == 'pol02003':
+                relrates += 'relrate = locus%d:%.5f\n' % (locus, relrate_this_locus)
+            elif setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
+                if g == 0:
+                    relrates += str(relrate_this_locus)
+                else:
+                    relrates += ", " + str(relrate_this_locus)
+        else:
+            # if slow loci setting, set relrates to correct rates
+            mean_rate = (nloci_slow * 0.01 + (nloci - nloci_slow)) / nloci
+            scaling_factor = 1 / mean_rate
+            
+            if g < nloci_slow:
+                relrates += 0.01 * scaling_factor
             else:
-                relrates += ", " + str(relrate_this_locus)
+                relrates += scaling_factor
+            
 
         # Save information about this locus in subset_info vector
         subset_info.append({'locus':locus, 'relrate':relrate_this_locus, 'nsites':nsites_this_locus, 'first':first, 'last':last})
@@ -357,10 +374,6 @@ def run(rep, nreps, maindir, repdir, rnseed):
     # Choose random compositional heterogeneity Dirichlet parameter
     u = random.random()
     comphet = setupmain.min_comphet + u*(setupmain.max_comphet - setupmain.min_comphet)
-    
-    # choose random number for slow loci
-    if setupmain.slowloci == True:
-    	nloci_slow = random.randint(1, setupmain.max_n_loci)
     
     
     if setupmain.user == "aam21005" or setupmain.user == "jjc23002":
