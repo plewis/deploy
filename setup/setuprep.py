@@ -457,12 +457,10 @@ def run(rep, nreps, maindir, repdir, rnseed):
             # if slow loci setting, set relrates to correct rates
             relrates = 'relative_rates = '
             mean_rate = (nloci_slow * 0.01 + (nloci - nloci_slow)) / nloci
-            print(mean_rate)
             scaling_factor = 1 / mean_rate
             for l in range(nloci):
-                print(l)
                 if l < nloci_slow:
-                    this_rel_rate = 0.01 * l
+                    this_rel_rate = 0.01 * scaling_factor
                     if l == 0:
                         relrates += str(this_rel_rate)
                     else:
