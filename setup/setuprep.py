@@ -461,10 +461,13 @@ def run(rep, nreps, maindir, repdir, rnseed):
             for l in range(nloci):
                 if l < nloci_slow:
                     this_rel_rate = 0.01 * l
-                    relrates += str(this_rel_rate)
+                    if l == 0:
+                        relrates += ", " + str(relrate_this_locus)
+                    else:
+                        relrates += str(this_rel_rate)
                 else:
                     this_rel_rate = scaling_factor
-                    relrates += str(this_rel_rate)     
+                    relrates += "," + str(this_rel_rate)     
             
             
         setupsubst.substitutions({
