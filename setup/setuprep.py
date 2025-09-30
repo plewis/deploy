@@ -464,7 +464,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
                     if l == 0:
                         relrates += str(this_rel_rate)
                     else:
-                        relrates += ", " + str(relrate_this_locus)
+                        relrates += ", " + str(this_rel_rate)
                 else:
                     this_rel_rate = scaling_factor
                     relrates += "," + str(this_rel_rate)     
