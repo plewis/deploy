@@ -462,9 +462,9 @@ def run(rep, nreps, maindir, repdir, rnseed):
                 if l < nloci_slow:
                     this_rel_rate = 0.01 * l
                     if l == 0:
-                        relrates += ", " + str(relrate_this_locus)
-                    else:
                         relrates += str(this_rel_rate)
+                    else:
+                        relrates += ", " + str(relrate_this_locus)
                 else:
                     this_rel_rate = scaling_factor
                     relrates += "," + str(this_rel_rate)     
