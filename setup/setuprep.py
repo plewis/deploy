@@ -293,7 +293,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
     # Choose the number of loci for this simulation
     nloci = random.randint(setupmain.min_n_loci, setupmain.max_n_loci)
     if setupmain.user == 'aam21005' or setupmain.user == 'jjc23002':
-         relrates += 'relative_rates = '
+        relrates += 'relative_rates = '
         # choose random number for slow loci
         if setupmain.slowloci == True:
             nloci_slow = random.randint(1, setupmain.max_n_loci)
