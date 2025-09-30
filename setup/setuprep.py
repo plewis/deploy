@@ -325,9 +325,11 @@ def run(rep, nreps, maindir, repdir, rnseed):
             scaling_factor = 1 / mean_rate
             
             if g < nloci_slow:
-                relrates += 0.01 * scaling_factor
+                this_rel_rate = 0.01 * scaling_factor
+                relrates += str(this_rel_rate)
             else:
-                relrates += scaling_factor
+                this_rel_rate = scaling_factor;
+                relrates += str(this_rel_rate)
             
 
         # Save information about this locus in subset_info vector
