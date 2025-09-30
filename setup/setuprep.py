@@ -296,7 +296,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
          relrates += 'relative_rates = '
         # choose random number for slow loci
         if setupmain.slowloci == True:
-        nloci_slow = random.randint(1, setupmain.max_n_loci)
+            nloci_slow = random.randint(1, setupmain.max_n_loci)
     
     for g in range(nloci):
         locus = g + 1
