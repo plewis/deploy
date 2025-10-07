@@ -77,7 +77,7 @@ elif user == 'jjc23002':
 #######################
 
 # Whether to use FASTA or NEXUS format for individual locus-specific data files
-useFASTA = True
+useFASTA = False
 
 # No. points along the x and y axes
 ngridpoints = 2
