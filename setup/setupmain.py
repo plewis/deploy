@@ -265,7 +265,7 @@ def run(maindir, nreps):
     ###########################
     rb_prior_slurm_path = os.path.join(maindir, 'rb-prior.slurm')
     setupsubst.substitutions({
-        '__NJOBS__': min_n_loci,
+        '__NLOCI__': min_n_loci,
         '__MAINDIR__': maindir
         }, rb_prior_slurm_path, rb_prior_slurm_path)
 
@@ -274,7 +274,7 @@ def run(maindir, nreps):
     ###########################
     rb_post_slurm_path = os.path.join(maindir, 'rb-post.slurm')
     setupsubst.substitutions({
-        '__NJOBS__': min_n_loci,
+        '__NLOCI__': min_n_loci,
         '__MAINDIR__': maindir
         }, rb_post_slurm_path, rb_post_slurm_path)
 
