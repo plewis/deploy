@@ -454,5 +454,5 @@ def run(maindir, nreps):
     create_rb_path = os.path.join(maindir, 'create-rb-folders.sh')
     setupsubst.substitutions({
         '__NREPS__': nreps,
-		'__SMCNLOCI__': nloci,
+		'__NLOCI__': min_n_loci,
         }, create_rb_path, create_rb_path)
