@@ -71,7 +71,7 @@ do
 		echo '' >> jc-post.Rev
 		echo '# add monitors' >> jc-post.Rev
 		echo "monitors.append( mnModel(filename=\"output-posterior/gene$l.log\", printgen=100) )" >> jc-prior.Rev
-		echo "monitors.append( mnFile(filename="\output-posterior/gene$l.trees\", printgen=100, psi) )" >> jc-prior.Rev
+		echo "monitors.append( mnFile(filename=\"output-posterior/gene$l.trees\", printgen=100, psi) )" >> jc-prior.Rev
 		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# run the analysis' >> jc-post.Rev
@@ -153,7 +153,7 @@ do
 		echo '' >> jc-prior.Rev
 		echo '# add monitors' >> jc-prior.Rev
 		echo "monitors.append( mnModel(filename=\"output-prior/gene$l.log\", printgen=100) )" >> jc-prior.Rev
-		echo "monitors.append( mnFile(filename="\output-prior/gene$l.trees\", printgen=100, psi) )" >> jc-prior.Rev
+		echo "monitors.append( mnFile(filename=\"output-prior/gene$l.trees\", printgen=100, psi) )" >> jc-prior.Rev
 		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-prior.Rev
 		echo '' >> jc-prior.Rev
 		echo '# run the analysis' >> jc-prior.Rev
