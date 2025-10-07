@@ -289,6 +289,26 @@ def run(maindir, nreps):
         '__MAINDIR__': maindir
         }, td_slurm_true_path, td_slurm_true_path)
 
+	###########################
+    # Set up td rb post slurm script #
+    ###########################
+    td_rb_post_path = os.path.join(maindir, 'td-rb-post.slurm')
+    setupsubst.substitutions({
+        '__TD_PATH__': td_path,
+        '__NJOBS__': min_n_loci,
+        '__MAINDIR__': maindir
+        }, td_rb_post_path, td_rb_post_path)
+
+	###########################
+    # Set up td rb prior slurm script #
+    ###########################
+    td_rb_prior_path = os.path.join(maindir, 'td-rb-prior.slurm')
+    setupsubst.substitutions({
+        '__TD_PATH__': td_path,
+        '__NJOBS__': min_n_loci,
+        '__MAINDIR__': maindir
+        }, td_rb_prior_path, td_rb_prior_path)
+
     #############################
     # Set up BEAST slurm script #
     #############################
@@ -455,7 +475,6 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, info_path_hpd, info_path_hpd)
-
 
     #########################################
     # Set up create-rb-folders.sh script #
