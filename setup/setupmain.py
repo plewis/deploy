@@ -261,13 +261,22 @@ def run(maindir, nreps):
         }, smc_slurm_path, smc_slurm_path)
 
 	###########################
-    # Set up rb slurm script #
+    # Set up rb prior slurm script #
     ###########################
-    rb_slurm_path = os.path.join(maindir, 'smc.slurm')
+    rb_prior_slurm_path = os.path.join(maindir, 'rb-prior.slurm')
     setupsubst.substitutions({
         '__NJOBS__': min_n_loci,
         '__MAINDIR__': maindir
-        }, rb_slurm_path, rb_slurm_path)
+        }, rb_prior_slurm_path, rb_prior_slurm_path)
+
+	###########################
+    # Set up rb post slurm script #
+    ###########################
+    rb_post_slurm_path = os.path.join(maindir, 'rb-post.slurm')
+    setupsubst.substitutions({
+        '__NJOBS__': min_n_loci,
+        '__MAINDIR__': maindir
+        }, rb_post_slurm_path, rb_post_slurm_path)
 
 	###########################
     # Set up td slurm script #
