@@ -236,4 +236,12 @@ Move info.txt into `g-posterior`. Calculate BHV distances between true tree and 
 Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
+# RevBayes information content
+Change 'rep-template/sim/.conf' - add correct number of slow loci and comment out the existing number
+After setting up the g directory, run '. create-rb-folders.sh'
+run 'sbatch rb-prior.slurm'
+run 'sbatch rb-post.slurm'
+
+run 'sbatch td-rb-prior.slurm'
+run 'sbatch td-rb-post.slurm'
 
