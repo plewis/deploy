@@ -6,6 +6,7 @@ do
 		mkdir gene$l
 		mv locus$l.nex gene$l
 		cd gene$l
+		
 		echo '################################################################################' > jc-post.Rev
 		echo '#' >> jc-post.Rev
 		echo '# RevBayes Example: Bayesian inference of phylogeny using a Jukes-Cantor' >> jc-post.Rev
@@ -86,6 +87,90 @@ do
 		echo '' >> jc-post.Rev
 		echo '# you may want to quit RevBayes now' >> jc-post.Rev
 		echo 'q()' >> jc-post.Rev
+
+
+		echo '################################################################################' > jc-prior.Rev
+		echo '#' >> jc-post.Rev
+		echo '# RevBayes Example: Bayesian inference of phylogeny using a Jukes-Cantor' >> jc-prior.Rev
+		echo '#            substitution model on a single gene.' >> jc-prior.Rev
+		echo '#' >> jc-prior.Rev
+		echo '# authors: Sebastian Hoehna, Michael Landis, and Tracy A. Heath' >> jc-prior.Rev
+		echo '#' >> jc-prior.Rev
+		echo '################################################################################' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '### Read in sequence data for both genes' >> jc-prior.Rev
+		echo 'data = readDiscreteCharacterData("locus$l.nex")' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# Get some useful variables from the data. We need these later on.' >> jc-prior.Rev
+		echo 'num_taxa <- data.ntaxa()' >> jc-prior.Rev
+		echo 'num_branches <- 2 * num_taxa - 3' >> jc-prior.Rev
+		echo 'taxa <- data.taxa()' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo 'moves    = VectorMoves()' >> jc-prior.Rev
+		echo 'monitors = VectorMonitors()' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '######################' >> jc-prior.Rev
+		echo '# Substitution Model #' >> jc-prior.Rev
+		echo '######################' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# create a constant variable for the rate matrix' >> jc-prior.Rev
+		echo 'Q <- fnJC(4)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '##############' >> jc-prior.Rev
+		echo '# Tree model #' >> jc-prior.Rev
+		echo '##############' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# Prior distribution on the tree topology' >> jc-prior.Rev
+		echo 'topology ~ dnUniformTopology(taxa)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo 'moves.append( mvNNI(topology, weight=num_taxa) )' >> jc-prior.Rev
+		echo 'moves.append( mvSPR(topology, weight=num_taxa/10) )' >> jc-prior.Rev
+		echo '\n' >> jc-prior.Rev
+		echo '# Branch length prior' >> jc-prior.Rev
+
+		echo 'for (i in 1:num_branches) {' >> jc-prior.Rev
+    	echo '	bl[i] ~ dnExponential(10.0)' >> jc-prior.Rev
+    	echo '	moves.append( mvScale(bl[i]) )' >> jc-prior.Rev
+		echo '}' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo 'TL := sum(bl)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo 'psi := treeAssembly(topology, bl)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '###################' >> jc-prior.Rev
+		echo '# PhyloCTMC Model #' >> jc-prior.Rev
+		echo '###################' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# the sequence evolution model' >> jc-prior.Rev
+		echo 'seq ~ dnPhyloCTMC(tree=psi, Q=Q, type="DNA")' >> jc-prior.Rev
+		echo '# attach the data' >> jc-prior.Rev
+		echo 'seq.clamp(data)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '############' >> jc-prior.Rev
+		echo '# Analysis #' >> jc-prior.Rev
+		echo '############' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo 'mymodel = model(Q)' >> jc-prior.Rev
+		echo 'mymodel.ignoreAllData()' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# add monitors' >> jc-prior.Rev
+		echo 'monitors.append( mnModel(filename="output-burn-in/gene$l.log", printgen=100) )' >> jc-prior.Rev
+		echo 'monitors.append( mnFile(filename="output-burn-in/gene$l.trees", printgen=100, psi) )' >> jc-prior.Rev
+		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# run the analysis' >> jc-prior.Rev
+		echo 'mymcmc = mcmc(mymodel, moves, monitors)' >> jc-prior.Rev
+		echo 'mymcmc.burnin(generations=10000,tuningInterval=100)' >> jc-prior.Rev
+		echo 'mymcmc.run(generations=100000)' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '###################' >> jc-prior.Rev
+		echo '# Post processing #' >> jc-prior.Rev
+		echo '###################' >> jc-prior.Rev
+		echo '' >> jc-prior.Rev
+		echo '# you may want to quit RevBayes now' >> jc-prior.Rev
+		echo 'q()' >> jc-prior.Rev
+
 
 		cd ..
 	done
