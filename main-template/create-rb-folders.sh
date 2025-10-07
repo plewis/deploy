@@ -46,7 +46,6 @@ do
 		echo 'moves.append( mvSPR(topology, weight=num_taxa/10) )' >> jc-post.Rev
 		echo '\n' >> jc-post.Rev
 		echo '# Branch length prior' >> jc-post.Rev
-
 		echo 'for (i in 1:num_branches) {' >> jc-post.Rev
     	echo '	bl[i] ~ dnExponential(10.0)' >> jc-post.Rev
     	echo '	moves.append( mvScale(bl[i]) )' >> jc-post.Rev
@@ -72,8 +71,8 @@ do
 		echo 'mymodel = model(Q)' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# add monitors' >> jc-post.Rev
-		echo 'monitors.append( mnModel(filename="output-burn-in/gene$l.log", printgen=100) )' >> jc-post.Rev
-		echo 'monitors.append( mnFile(filename="output-burn-in/gene$l.trees", printgen=100, psi) )' >> jc-post.Rev
+		echo 'monitors.append( mnModel(filename="output-posterior/gene$l.log", printgen=100) )' >> jc-post.Rev
+		echo 'monitors.append( mnFile(filename="output-posterior/gene$l.trees", printgen=100, psi) )' >> jc-post.Rev
 		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# run the analysis' >> jc-post.Rev
@@ -128,7 +127,6 @@ do
 		echo 'moves.append( mvSPR(topology, weight=num_taxa/10) )' >> jc-prior.Rev
 		echo '\n' >> jc-prior.Rev
 		echo '# Branch length prior' >> jc-prior.Rev
-
 		echo 'for (i in 1:num_branches) {' >> jc-prior.Rev
     	echo '	bl[i] ~ dnExponential(10.0)' >> jc-prior.Rev
     	echo '	moves.append( mvScale(bl[i]) )' >> jc-prior.Rev
@@ -155,8 +153,8 @@ do
 		echo 'mymodel.ignoreAllData()' >> jc-prior.Rev
 		echo '' >> jc-prior.Rev
 		echo '# add monitors' >> jc-prior.Rev
-		echo 'monitors.append( mnModel(filename="output-burn-in/gene$l.log", printgen=100) )' >> jc-prior.Rev
-		echo 'monitors.append( mnFile(filename="output-burn-in/gene$l.trees", printgen=100, psi) )' >> jc-prior.Rev
+		echo 'monitors.append( mnModel(filename="output-prior/gene$l.log", printgen=100) )' >> jc-prior.Rev
+		echo 'monitors.append( mnFile(filename="output-prior/gene$l.trees", printgen=100, psi) )' >> jc-prior.Rev
 		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-prior.Rev
 		echo '' >> jc-prior.Rev
 		echo '# run the analysis' >> jc-prior.Rev
