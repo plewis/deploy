@@ -18,7 +18,7 @@ do
 		echo '' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '### Read in sequence data for both genes' >> jc-post.Rev
-		echo 'data = readDiscreteCharacterData("locus$l.nex")' >> jc-post.Rev
+		echo 'data = readDiscreteCharacterData(\"locus$l.nex\")' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# Get some useful variables from the data. We need these later on.' >> jc-post.Rev
 		echo 'num_taxa <- data.ntaxa()' >> jc-post.Rev
@@ -70,8 +70,8 @@ do
 		echo 'mymodel = model(Q)' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# add monitors' >> jc-post.Rev
-		echo 'monitors.append( mnModel(filename="output-posterior/gene$l.log", printgen=100) )' >> jc-post.Rev
-		echo 'monitors.append( mnFile(filename="output-posterior/gene$l.trees", printgen=100, psi) )' >> jc-post.Rev
+		echo 'monitors.append( mnModel(filename=\"output-posterior/gene$l.log\", printgen=100) )' >> jc-post.Rev
+		echo 'monitors.append( mnFile(filename=\"output-posterior/gene$l.trees\", printgen=100, psi) )' >> jc-post.Rev
 		echo 'monitors.append( mnScreen(printgen=100, TL) )' >> jc-post.Rev
 		echo '' >> jc-post.Rev
 		echo '# run the analysis' >> jc-post.Rev
