@@ -44,7 +44,6 @@ do
 		echo '' >> jc-post.Rev
 		echo 'moves.append( mvNNI(topology, weight=num_taxa) )' >> jc-post.Rev
 		echo 'moves.append( mvSPR(topology, weight=num_taxa/10) )' >> jc-post.Rev
-		echo '\n' >> jc-post.Rev
 		echo '# Branch length prior' >> jc-post.Rev
 		echo 'for (i in 1:num_branches) {' >> jc-post.Rev
     	echo '	bl[i] ~ dnExponential(10.0)' >> jc-post.Rev
