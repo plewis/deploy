@@ -6,7 +6,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
-#SBATCH --array=1-__NLOCI__%10
+#SBATCH --array=1-__SMCNLOCI__%10
 #SBATCH --job-name=td
 #SBATCH -o td-%a.out
 #SBATCH -e td-%a.err
