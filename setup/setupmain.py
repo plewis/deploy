@@ -261,6 +261,15 @@ def run(maindir, nreps):
         }, smc_slurm_path, smc_slurm_path)
 
 	###########################
+    # Set up rb slurm script #
+    ###########################
+    rb_slurm_path = os.path.join(maindir, 'smc.slurm')
+    setupsubst.substitutions({
+        '__NJOBS__': min_n_loci,
+        '__MAINDIR__': maindir
+        }, rb_slurm_path, rb_slurm_path)
+
+	###########################
     # Set up td slurm script #
     ###########################
     td_slurm_path = os.path.join(maindir, 'td.slurm')
