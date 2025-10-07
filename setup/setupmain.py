@@ -446,3 +446,13 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
         }, info_path_hpd, info_path_hpd)
+
+
+    #########################################
+    # Set up create-rb-folders.sh script #
+    #########################################
+    create_rb_path = os.path.join(maindir, 'create-rb-folders.sh')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+		'__NLOCI__': nloci,
+        }, create_rb_path, create_rb_path)
