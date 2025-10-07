@@ -5,6 +5,7 @@ do
 	do
 		mkdir gene$l
 		mv locus$l.nex gene$l
+		cd gene$l
 		echo '################################################################################' > jc-post.Rev
 		echo '#' >> jc-post.Rev
 		echo '# RevBayes Example: Bayesian inference of phylogeny using a Jukes-Cantor' >> jc-post.Rev
