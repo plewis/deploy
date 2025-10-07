@@ -13,5 +13,5 @@
 #SBATCH --mem=150G
 
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
-cd $HOME/__MAINDIR__/rep1/gene${SLURM_ARRAY_TASK_ID}
+cd $HOME/__MAINDIR__/rep1/rb/gene${SLURM_ARRAY_TASK_ID}
 rb jc-post.Rev
