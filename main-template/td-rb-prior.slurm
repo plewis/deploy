@@ -14,5 +14,5 @@
 
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
 export TIMEFORMAT="user-seconds %3U"
-cd $HOME/__MAINDIR__/rep1/gene${SLURM_ARRAY_TASK_ID}/output-prior
+cd $HOME/__MAINDIR__/rep1/rb/gene${SLURM_ARRAY_TASK_ID}/output-prior
 __TD_PATH__ --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001
