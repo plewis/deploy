@@ -304,7 +304,7 @@ def run(maindir, nreps):
     td_rb_post_path = os.path.join(maindir, 'td-rb-post.slurm')
     setupsubst.substitutions({
         '__TD_PATH__': td_path,
-        '__NJOBS__': min_n_loci,
+        '__SMCNLOCI__': min_n_loci,
         '__MAINDIR__': maindir
         }, td_rb_post_path, td_rb_post_path)
 
@@ -314,7 +314,7 @@ def run(maindir, nreps):
     td_rb_prior_path = os.path.join(maindir, 'td-rb-prior.slurm')
     setupsubst.substitutions({
         '__TD_PATH__': td_path,
-        '__NJOBS__': min_n_loci,
+        '__SMCNLOCI__': min_n_loci,
         '__MAINDIR__': maindir
         }, td_rb_prior_path, td_rb_prior_path)
 
