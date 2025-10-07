@@ -7,9 +7,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
 #SBATCH --array=1-__SMCNLOCI__%10
-#SBATCH --job-name=smc
-#SBATCH -o smc-%a.out
-#SBATCH -e smc-%a.err
+#SBATCH --job-name=rbpost
+#SBATCH -o rbpost-%a.out
+#SBATCH -e rbpost-%a.err
 #SBATCH --mem=150G
 
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
