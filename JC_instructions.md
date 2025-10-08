@@ -239,7 +239,7 @@ Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd
 # RevBayes information content (use RevBayes to analyze individual loci, then calculate information content and use it to decide which loci to include in the species tree analysis)
 You can set up the deploy script as normal, but we will only work with directory `rep`<br>
 
-Change 'rep-template/sim/.conf' - add correct number of slow loci and comment out the existing number.<br>
+Open `rep-template/sim/.conf` and modify with the correct number of slow loci and comment out the existing number.<br>
 After setting up the g directory, run '. create-rb-folders.sh'<br>
 run `sbatch rb-prior.slurm`<br>
 run `sbatch rb-post.slurm`<br>
