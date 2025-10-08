@@ -288,24 +288,24 @@ The total number of new loci equals `nslow + nfast`.<br>
 Remove any extra subsets from the `proj.conf` file.<br>
 For example, if the top of the `proj.conf` file looked like this previously:<br>
 
-`subset = locus1[nucleotide]:1-1000<br>
-subset = locus2[nucleotide]:1001-2000<br>
-subset = locus3[nucleotide]:2001-3000<br>
-subset = locus4[nucleotide]:3001-4000<br>
-subset = locus5[nucleotide]:4001-5000<br>
-subset = locus6[nucleotide]:5001-6000<br>
-subset = locus7[nucleotide]:6001-7000<br>
-subset = locus8[nucleotide]:7001-8000<br>
-subset = locus9[nucleotide]:8001-9000<br>
-subset = locus10[nucleotide]:9001-10000`<br>
+`subset = locus1[nucleotide]:1-1000
+subset = locus2[nucleotide]:1001-2000
+subset = locus3[nucleotide]:2001-3000
+subset = locus4[nucleotide]:3001-4000
+subset = locus5[nucleotide]:4001-5000
+subset = locus6[nucleotide]:5001-6000
+subset = locus7[nucleotide]:6001-7000
+subset = locus8[nucleotide]:7001-8000
+subset = locus9[nucleotide]:8001-9000
+subset = locus10[nucleotide]:9001-10000`
 
 You will need to delete loci 7-10 so the correct number of subsets remain:<br>
-`subset = locus1[nucleotide]:1-1000<br>
-subset = locus2[nucleotide]:1001-2000<br>
-subset = locus3[nucleotide]:2001-3000<br>
-subset = locus4[nucleotide]:3001-4000<br>
-subset = locus5[nucleotide]:4001-5000<br>
-subset = locus6[nucleotide]:5001-6000`<br>
+`subset = locus1[nucleotide]:1-1000
+subset = locus2[nucleotide]:1001-2000
+subset = locus3[nucleotide]:2001-3000
+subset = locus4[nucleotide]:3001-4000
+subset = locus5[nucleotide]:4001-5000
+subset = locus6[nucleotide]:5001-6000`
 
 Now make one directory called `posterior` and one called `prior`.<br>
 Copy the `proj.conf` file into both (`cp proj.conf posterior` `cp proj.conf prior`.<br>
