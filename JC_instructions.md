@@ -306,10 +306,62 @@ subset = locus6[nucleotide]:5001-6000`
 
 Now make one directory called `posterior` and one called `prior`. Copy the `proj.conf` file into both (`cp proj.conf posterior` `cp proj.conf prior`.
 
-cd into the `posterior` directory. Copy the `smc.slurm` file from the `g` directory: `cp ../../../smc.slurm .` Edit this file to reflect the current directory by removing the line `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc` since you will run this in the current directory. Also remove the line `#SBATCH --array=1xxx` since there is only one job to run now. Then start the analysis (`sbatch smc.slurm`)
+cd into the `posterior` directory. Copy the `smc.slurm` file from the `g` directory: `cp ../../../smc.slurm .` Edit this file to reflect the current directory by removing the line `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc` since you will run this in the current directory. Also remove the line `#SBATCH --array=1xxx` since there is only one job to run now. Then start the analysis (`sbatch smc.slurm`).
+
+Once this analysis is done, run the treedistance program on the results:
+`cp ../../../td.slurm .`
+`cp ../../../td-true.slurm .`
+
+Make a new tree file that the treedistance program can read:
+`cp species_trees.trees bhv_trees.tre`
+
+Now get the true species tree file:
+`cat ../../sim/true-species-tree.tre`
+Copy the output line `tree test = [&R]..... );`
+Open the `bhv_trees.tre` file and insert it as the first line after the `begin trees;` line.
+
+Now edit the `td.slurm` and `td-true.slurm` files:
+delete the lines `#SBATCH --array=1xxx` and `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc`
+
+Then run these analyses:
+`sbatch td.slurm`
+`sbatch td-true.slurm`
+
+When these analyses are done, get the average distance to the true tree:
+`cp ../../rb/get-bhv-mean.Rmd .`
+`Rscript get-bhv-mean.Rmd`
+
+Record this number. This is the species tree accuracy.
 
 cd into the `prior` directory (`cd ../prior`). Modify the line in the `proj.conf` file that says `sample_from_prior = False` to `sample_from_prior = True`. Copy the `smc.slurm` file from `posterior` into the current `prior` directory (`cp ../posterior/smc.slurm .`) Run the `smc.slurm` file (`sbatch smc.slurm`)
 
+Also copy the `td.slurm` file from the `posterior` directory (`cp ../posterior/td.slurm .`) Then run this analyses:
+`sbatch td.slurm`
 
+Once these analysis are done, `cd ..` (back into the `smc-xx-cutoff` directory)
 
+Now you will run the treedistance program again on these results to get information content and accuracy for the species trees sampled:
 
+`cp ../../td.slurm .`
+cp ../../td-true.slurm .`
+
+Now calculate information content:
+`cp ../../calculate-information-slow.py .`
+Run this file:
+`python3 calculate-information-slow.py`
+
+This will write the information data to a file called `info.txt`. `cat info.txt` to see this number and record it.
+
+Ideally, you will do this for different cutoff values and end up with a table like this:
+
+    | cutoff value     | accuracy   | information    |
+    | 0.1   | xx | xx   |
+    | 0.2  | xx  | xx   |
+	| 0.3  | xx  | xx   |
+	| 0.4  | xx  | xx   |
+	| 0.5  | xx  | xx   |
+	| 0.6  | xx  | xx   |
+	| 0.7  | xx  | xx   |
+	| 0.8  | xx  | xx   |
+	| 0.9  | xx  | xx   |
+	| 1.0  | xx  | xx   |
