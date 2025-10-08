@@ -248,3 +248,17 @@ run `sbatch td-rb-prior.slurm`
 run `sbatch td-rb-post.slurm`
 
 cd into `rep1/rb` directory and run `python3 calc-info-radius-rb.py`
+
+This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.
+
+Open the file `process-info.py` and replace `cutoff_value` with the value you want.
+Then run `python3 process-info.py`. This will create a file that begins with `remove`. This file can be run to delete all loci with information below the cutoff value.
+
+Then do the following by hand:
+cd ..
+Make a new directory and name it appropriately (ex. `mkdir smc-0.8-cutoff`)
+Copy all the loci from the `astral` directory into your new directory (ex. `cp astral/*.nex smc-0.8-cutoff`)
+cd into your new directory
+Copy the `remove` script you created into your new directory (ex. `cp ../rb/remove0.8.sh .`)
+Then run the `remove` script (ex. `. remove0.8.sh`)
+Copy the `crunch.py` file from the `rb` directory into the current directory. (`cp ../rb/crunch.py .`)
