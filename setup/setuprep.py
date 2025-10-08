@@ -624,6 +624,15 @@ def run(rep, nreps, maindir, repdir, rnseed):
         '__LAMBDA3__': beast_lambda3,
         '__THETAMEAN__': beast_theta_mean
         }, infile, outfile)
+
+    ##############################
+    # Set up the "rb" directory #
+    ##############################
+    infile  = os.path.join(outer_rbdir, 'calc-info-radius-rb.py' % setupmain.user)
+    outfile = infile
+    setupsubst.substitutions({
+        '__NREPS__': nloci
+    }, infile, outfile)
     
     #################################
     # Set up the "astral" directory #
