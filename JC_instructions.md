@@ -236,40 +236,45 @@ Move info.txt into `g-posterior`. Calculate BHV distances between true tree and 
 Run `python3 summarize-bhv-info.py`. Transfer the output file `plot-bhv-info.Rmd` to your local laptop.
 
 
-# RevBayes information content
-You can set up the deploy script as normal, but we will only work with directory `rep`
+# RevBayes information content (use RevBayes to analyze individual loci, then calculate information content and use it to decide which loci to include in the species tree analysis)
+You can set up the deploy script as normal, but we will only work with directory `rep`<br>
 
-Change 'rep-template/sim/.conf' - add correct number of slow loci and comment out the existing number
-After setting up the g directory, run '. create-rb-folders.sh'
-run `sbatch rb-prior.slurm`
-run `sbatch rb-post.slurm`
+Change 'rep-template/sim/.conf' - add correct number of slow loci and comment out the existing number.<br>
+After setting up the g directory, run '. create-rb-folders.sh'<br>
+run `sbatch rb-prior.slurm`<br>
+run `sbatch rb-post.slurm`<br>
 
-run `sbatch td-rb-prior.slurm`
-run `sbatch td-rb-post.slurm`
+run `sbatch td-rb-prior.slurm`<br>
+run `sbatch td-rb-post.slurm`<br>
 
-cd into `rep1/rb` directory and run `python3 calc-info-radius-rb.py`
+cd into `rep1/rb` directory and run `python3 calc-info-radius-rb.py`<br>
 
-This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.
+This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.<br>
 
-Open the file `process-info.py` and replace `cutoff_value` with the value you want.
-Then run `python3 process-info.py`. This will create a file that begins with `remove`. This file can be run to delete all loci with information below the cutoff value.
+Open the file `process-info.py` and replace `cutoff_value` with the value you want.<br>
+Then run `python3 process-info.py`.<br>
+This will create a file that begins with `remove`.<br>
+This file will later be run to delete all loci with information below the cutoff value.<br>
 
-Then do the following by hand:
-cd ..
-Make a new directory and name it appropriately (ex. `mkdir smc-0.8-cutoff`)
-Copy all the loci from the `astral` directory into your new directory (ex. `cp astral/*.nex smc-0.8-cutoff`)
-cd into your new directory. Remove the `concat.nex` and `mlgenetrees.nex` file (`rm concat.nex` `rm mlgenetrees.nex`)
-Copy the `remove` script you created into your new directory (ex. `cp ../rb/remove0.8.sh .`)
-Then run the `remove` script (ex. `. remove0.8.sh`)
-Copy the `crunch.py` file from the `rb` directory into the current directory. (`cp ../rb/crunch.py .`)
+Then do the following by hand:<br>
+`cd ..`<br>
+Make a new directory and name it appropriately (ex. `mkdir smc-0.8-cutoff`)<br>
+Copy all the loci from the `astral` directory into your new directory (ex. `cp astral/*.nex smc-0.8-cutoff`)<br>
+`cd` into your new directory.<br>
+Remove the `concat.nex` and `mlgenetrees.nex` file (`rm concat.nex` `rm mlgenetrees.nex`)<br>
+Copy the `remove` script you created into your new directory (ex. `cp ../rb/remove0.8.sh .`)<br>
+Then run the `remove` script (ex. `. remove0.8.sh`)<br>
+Copy the `crunch.py` file from the `rb` directory into the current directory. (`cp ../rb/crunch.py .`)<br>
 
-Now you are ready to run the SMC analyses. You will need to run under the prior and posterior.
+Now you are ready to run the SMC analyses. You will need to run under the prior and posterior.<br>
 
-You will need to copy and modify the `proj.conf` file:
-`cp ../smc/proj.conf .`
-Open `proj.conf` and change `datafile  = ../sim/sim.nex` to `datafile = ../COMBINED.nex`
+You will need to copy and modify the `proj.conf` file:<br>
+`cp ../smc/proj.conf .`<br>
+Open `proj.conf` and change `datafile  = ../sim/sim.nex` to `datafile = ../COMBINED.nex`<br>
 
-The last thing is to change the `relative_rates` line of the `proj.conf` to reflect the deleted loci. Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel-rates.py .` Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:
+The last thing is to change the `relative_rates` line of the `proj.conf` to reflect the deleted loci:<br>
+Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel-rates.py .`<br>
+Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:<br>
 
 `rm locus1.nex<br>
 rm locus2.nex<br>
