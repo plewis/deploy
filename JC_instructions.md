@@ -356,7 +356,7 @@ cp ../../td-true.slurm .`
 Now calculate information content:
 `cp ../../calculate-information-slow.py .`\
 Run this file:\
-`python3 calculate-information-slow.py`\
+`python3 calculate-information-slow.py`<br>
 
 This will write the information data to a file called `info.txt`. \
 `cat info.txt` to see this number and record it.
