@@ -20,7 +20,7 @@ try:
 			if float(line) < float(cutoff_value):
 				print(line)
 				with open (my_file, "a") as f:
-					str_to_write = "rm gene" + str(count) + ".nex" + "\n"
+					str_to_write = "rm locus" + str(count) + ".nex" + "\n"
 					f.write(str_to_write)
 			count = count + 1
 except FileNotFoundError:
