@@ -1,2 +1,3 @@
 test <- read.delim("bhvdists.txt", header=T)
 cat(mean(test$geodesic))
+cat("\n")
