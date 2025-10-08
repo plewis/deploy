@@ -354,14 +354,14 @@ This will write the information data to a file called `info.txt`. `cat info.txt`
 
 Ideally, you will do this for different cutoff values and end up with a table like this:
 
-    | cutoff value     | accuracy   | information    |
-    | 0.1   | xx | xx   |
-    | 0.2  | xx  | xx   |
-	| 0.3  | xx  | xx   |
-	| 0.4  | xx  | xx   |
-	| 0.5  | xx  | xx   |
-	| 0.6  | xx  | xx   |
-	| 0.7  | xx  | xx   |
-	| 0.8  | xx  | xx   |
-	| 0.9  | xx  | xx   |
-	| 1.0  | xx  | xx   |
+    | cutoff value      | accuracy   | information  |
+    | 0.1   			| xx 		 | xx   		|
+    | 0.2  				| xx  		 | xx   		|
+	| 0.3  				| xx  		 | xx   		|
+	| 0.4  				| xx  		 | xx   		|
+	| 0.5  				| xx  		 | xx   		|
+	| 0.6  				| xx  		 | xx   		|
+	| 0.7  				| xx  		 | xx   		|
+	| 0.8  				| xx  		 | xx   		|
+	| 0.9  				| xx  		 | xx   		|
+	| 1.0  				| xx  		 | xx   		|
