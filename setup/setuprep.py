@@ -628,8 +628,9 @@ def run(rep, nreps, maindir, repdir, rnseed):
     ##############################
     # Set up the "rb" directory #
     ##############################
-    infile  = os.path.join(outer_rbdir, 'calc-info-radius-rb.py' % setupmain.user)
+    infile  = os.path.join(outer_rbdir, 'calc-info-radius-rb.py')
     outfile = infile
+    print(infile)
     setupsubst.substitutions({
         '__NLOCI__': nloci
     }, infile, outfile)
