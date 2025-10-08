@@ -271,95 +271,97 @@ Open `proj.conf` and change `datafile  = ../sim/sim.nex` to `datafile = ../COMBI
 
 The last thing is to change the `relative_rates` line of the `proj.conf` to reflect the deleted loci. Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel-rates.py .` Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:
 
-`rm locus1.nex\
-rm locus2.nex\
-rm locus3.nex\
-rm locus4.nex`\
+`rm locus1.nex<br>
+rm locus2.nex<br>
+rm locus3.nex<br>
+rm locus4.nex`<br>
 
-This means 4 of the 5 slow loci were removed, and 0 of the 5 faster loci were removed.\
-The first two lines of the `calc-adjusted-rel-rates.py` file should say:\
+This means 4 of the 5 slow loci were removed, and 0 of the 5 faster loci were removed.<br>
+The first two lines of the `calc-adjusted-rel-rates.py` file should say:<br>
 
-`nslow = 1\
-nfast = 5`\
+`nslow = 1<br>
+nfast = 5`<br>
 
-Copy the output and replace the line `relative_rates = ` in the `proj.conf` file with the new output.\
+Copy the output and replace the line `relative_rates = ` in the `proj.conf` file with the new output.<br>
 
-The total number of new loci equals `nslow + nfast`.\
-Remove any extra subsets from the `proj.conf` file.\
-For example, if the top of the `proj.conf` file looked like this previously:\
+The total number of new loci equals `nslow + nfast`.<br>
+Remove any extra subsets from the `proj.conf` file.<br>
+For example, if the top of the `proj.conf` file looked like this previously:<br>
 
-`subset = locus1[nucleotide]:1-1000\
-subset = locus2[nucleotide]:1001-2000\
-subset = locus3[nucleotide]:2001-3000\
-subset = locus4[nucleotide]:3001-4000\
-subset = locus5[nucleotide]:4001-5000\
-subset = locus6[nucleotide]:5001-6000\
-subset = locus7[nucleotide]:6001-7000\
-subset = locus8[nucleotide]:7001-8000\
-subset = locus9[nucleotide]:8001-9000\
-subset = locus10[nucleotide]:9001-10000`\
+`subset = locus1[nucleotide]:1-1000<br>
+subset = locus2[nucleotide]:1001-2000<br>
+subset = locus3[nucleotide]:2001-3000<br>
+subset = locus4[nucleotide]:3001-4000<br>
+subset = locus5[nucleotide]:4001-5000<br>
+subset = locus6[nucleotide]:5001-6000<br>
+subset = locus7[nucleotide]:6001-7000<br>
+subset = locus8[nucleotide]:7001-8000<br>
+subset = locus9[nucleotide]:8001-9000<br>
+subset = locus10[nucleotide]:9001-10000`<br>
 
-You will need to delete loci 7-10 so the correct number of subsets remain:
-`subset = locus1[nucleotide]:1-1000\
-subset = locus2[nucleotide]:1001-2000\
-subset = locus3[nucleotide]:2001-3000\
-subset = locus4[nucleotide]:3001-4000\
-subset = locus5[nucleotide]:4001-5000\
-subset = locus6[nucleotide]:5001-6000`\
+You will need to delete loci 7-10 so the correct number of subsets remain:<br>
+`subset = locus1[nucleotide]:1-1000<br>
+subset = locus2[nucleotide]:1001-2000<br>
+subset = locus3[nucleotide]:2001-3000<br>
+subset = locus4[nucleotide]:3001-4000<br>
+subset = locus5[nucleotide]:4001-5000<br>
+subset = locus6[nucleotide]:5001-6000`<br>
 
-Now make one directory called `posterior` and one called `prior`.\
-Copy the `proj.conf` file into both (`cp proj.conf posterior` `cp proj.conf prior`.\
+Now make one directory called `posterior` and one called `prior`.<br>
+Copy the `proj.conf` file into both (`cp proj.conf posterior` `cp proj.conf prior`.<br>
 
-cd into the `posterior` directory.\
-Copy the `smc.slurm` file from the `g` directory: `cp ../../../smc.slurm .`\
-Edit this file to reflect the current directory by removing the line `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc` since you will run this in the current directory.\
-Also remove the line `#SBATCH --array=1xxx` since there is only one job to run now. Then start the analysis (`sbatch smc.slurm`).\
+cd into the `posterior` directory.<br>
+Copy the `smc.slurm` file from the `g` directory: `cp ../../../smc.slurm .`<br>
+Edit this file to reflect the current directory by removing the line `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc` since you will run this in the current directory.<br>
+Also remove the line `#SBATCH --array=1xxx` since there is only one job to run now. Then start the analysis (`sbatch smc.slurm`).<br>
 
-Once this analysis is done, run the treedistance program on the results:\
-`cp ../../../td.slurm .`\
-`cp ../../../td-true.slurm .`\
+Once this analysis is done, run the treedistance program on the results:<br>
+`cp ../../../td.slurm .`<br>
+`cp ../../../td-true.slurm .`<br>
 
-Make a new tree file that the treedistance program can read:\
-`cp species_trees.trees bhv_trees.tre`\
+Make a new tree file that the treedistance program can read:<br>
+`cp species_trees.trees bhv_trees.tre`<br>
 
-Now get the true species tree file:\
-`cat ../../sim/true-species-tree.tre`\
-Copy the output line `tree test = [&R]..... );`\
-Open the `bhv_trees.tre` file and insert it as the first line after the `begin trees;` line.\
+Now get the true species tree file:<br>
+`cat ../../sim/true-species-tree.tre`<br>
+Copy the output line `tree test = [&R]..... );`<br>
+Open the `bhv_trees.tre` file and insert it as the first line after the `begin trees;` line.<br>
 
-Now edit the `td.slurm` and `td-true.slurm` files:\
-delete the lines `#SBATCH --array=1xxx` and `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc`\
+Now edit the `td.slurm` and `td-true.slurm` files:<br>
+delete the lines `#SBATCH --array=1xxx` and `cd $HOME/g/rep${SLURM_ARRAY_TASK_ID}/smc`<br>
 
-Then run these analyses:\
-`sbatch td.slurm`\
-`sbatch td-true.slurm`\
+Then run these analyses:<br>
+`sbatch td.slurm`<br>
+`sbatch td-true.slurm`<br>
 
-When these analyses are done, get the average distance to the true tree:\
-`cp ../../rb/get-bhv-mean.Rmd .`\
-`Rscript get-bhv-mean.Rmd`\
+When these analyses are done, get the average distance to the true tree:<br>
+`cp ../../rb/get-bhv-mean.Rmd .`<br>
+`Rscript get-bhv-mean.Rmd`<br>
 
-Record this number. This is the species tree accuracy.\
+Record this number. This is the species tree accuracy.<br>
 
-cd into the `prior` directory (`cd ../prior`).\
-Modify the line in the `proj.conf` file that says `sample_from_prior = False` to `sample_from_prior = True`.\ Copy the `smc.slurm` file from `posterior` into the current `prior` directory (`cp ../posterior/smc.slurm .`)\ Run the `smc.slurm` file (`sbatch smc.slurm`)\
+cd into the `prior` directory (`cd ../prior`).<br>
+Modify the line in the `proj.conf` file that says `sample_from_prior = False` to `sample_from_prior = True`.<br>
+Copy the `smc.slurm` file from `posterior` into the current `prior` directory (`cp ../posterior/smc.slurm .`)<br>
+Run the `smc.slurm` file (`sbatch smc.slurm`)<br>
 
-Also copy the `td.slurm` file from the `posterior` directory (`cp ../posterior/td.slurm .`) Then run this analyses:\
-`sbatch td.slurm`\
+Also copy the `td.slurm` file from the `posterior` directory (`cp ../posterior/td.slurm .`) Then run this analyses:<br>
+`sbatch td.slurm`<br>
 
-Once these analysis are done, `cd ..` (back into the `smc-xx-cutoff` directory)
+Once these analysis are done, `cd ..` (back into the `smc-xx-cutoff` directory) <br>
 
-Now you will run the treedistance program again on these results to get information content and accuracy for the species trees sampled:
+Now you will run the treedistance program again on these results to get information content and accuracy for the species trees sampled:<br>
 
-`cp ../../td.slurm .`\
-cp ../../td-true.slurm .`
+`cp ../../td.slurm .`<br>
+cp ../../td-true.slurm .`<br>
 
-Now calculate information content:
-`cp ../../calculate-information-slow.py .`\
-Run this file:\
+Now calculate information content:<br>
+`cp ../../calculate-information-slow.py .`<br>
+Run this file:<br>
 `python3 calculate-information-slow.py`<br>
 
-This will write the information data to a file called `info.txt`. \
-`cat info.txt` to see this number and record it.
+This will write the information data to a file called `info.txt`. <br>
+`cat info.txt` to see this number and record it.<br>
 
 Ideally, you will do this for different cutoff values and end up with a table like this:
 
