@@ -359,7 +359,7 @@ Once these analysis are done, `cd ..` (back into the `smc-xx-cutoff` directory) 
 Now you will run the treedistance program again on these results to get information content and accuracy for the species trees sampled:<br>
 
 `cp ../../td.slurm .`<br>
-cp ../../td-true.slurm .`<br>
+`cp ../../td-true.slurm .`<br>
 
 Now calculate information content:<br>
 `cp ../../calculate-information-slow.py .`<br>
