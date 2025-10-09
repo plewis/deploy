@@ -273,7 +273,7 @@ You will need to copy and modify the `proj.conf` file:<br>
 `cp ../smc/proj.conf .`<br>
 Open `proj.conf` and change `datafile  = ../sim/sim.nex` to `datafile = ../COMBINED.nex`<br>
 
-The last thing is to change the `relative_rates` line of the `proj.conf` to reflect the deleted loci:<br>
+You will also need to change the `relative_rates` line of the `proj.conf` to reflect the deleted loci:<br>
 Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel-rates.py .`<br>
 Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:<br>
 
