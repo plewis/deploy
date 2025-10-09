@@ -277,16 +277,16 @@ The last thing is to change the `relative_rates` line of the `proj.conf` to refl
 Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel-rates.py .`<br>
 Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:<br>
 
-`rm locus1.nex<br>
-rm locus2.nex<br>
-rm locus3.nex<br>
-rm locus4.nex`<br>
+`rm locus1.nex`<br>
+`rm locus2.nex<br`>
+`rm locus3.nex`<br>
+`rm locus4.nex`<br>
 
 This means 4 of the 5 slow loci were removed, and 0 of the 5 faster loci were removed.<br>
 The first two lines of the `calc-adjusted-rel-rates.py` file should say:<br>
 
-`nslow = 1<br>
-nfast = 5`<br>
+`nslow = 1`<br>
+`nfast = 5`<br>
 
 Copy the output and replace the line `relative_rates = ` in the `proj.conf` file with the new output.<br>
 
