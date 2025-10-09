@@ -288,7 +288,7 @@ The first two lines of the `calc-adjusted-rel-rates.py` file should say:<br>
 `nslow = 1`<br>
 `nfast = 5`<br>
 
-Copy the output and replace the line `relative_rates = ` in the `proj.conf` file with the new output.<br>
+Run the file: `python3 calc-adjusted-rel-rates.py`. Copy the output and replace the line `relative_rates = ` in the `proj.conf` file with the new output.<br>
 
 The total number of new loci equals `nslow + nfast`.<br>
 Remove any extra subsets from the `proj.conf` file.<br>
