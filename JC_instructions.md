@@ -368,7 +368,7 @@ Run this file:<br>
 This will write the information data to a file called `info.txt`. <br>
 `cat info.txt` to see this number and record it.<br>
 
-Ideally, you will do this for different cutoff values and end up with a table like this:
+Ideally, you will do this for different cutoff values (you will not have to run the revbayes part again) and end up with a table like this:
 
     | cutoff value      | accuracy   | information  |
     | 0.1   			| xx 		 | xx   		|
