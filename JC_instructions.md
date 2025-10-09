@@ -351,7 +351,7 @@ Modify the line in the `proj.conf` file that says `sample_from_prior = False` to
 Copy the `smc.slurm` file from `posterior` into the current `prior` directory (`cp ../posterior/smc.slurm .`)<br>
 Run the `smc.slurm` file (`sbatch smc.slurm`)<br>
 
-Also copy the `td.slurm` file from the `posterior` directory (`cp ../posterior/td.slurm .`) Then run this analyses:<br>
+Also copy the `td.slurm` file from the `posterior` directory (`cp ../posterior/td.slurm .`) Then run this analysis:<br>
 `sbatch td.slurm`<br>
 
 Once these analysis are done, `cd ..` (back into the `smc-xx-cutoff` directory) <br>
