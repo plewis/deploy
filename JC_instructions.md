@@ -265,6 +265,7 @@ Remove the `concat.nex` and `mlgenetrees.nex` file (`rm concat.nex` `rm mlgenetr
 Copy the `remove` script you created into your new directory (ex. `cp ../rb/remove0.8.sh .`)<br>
 Then run the `remove` script (ex. `. remove0.8.sh`)<br>
 Copy the `crunch.py` file from the `rb` directory into the current directory. (`cp ../rb/crunch.py .`)<br>
+Run this file: `python3 crunch.py`. This will create a file called `COMBINED.nex` that only contains the loci with information content above the cutoff.<br>
 
 Now you are ready to run the SMC analyses. You will need to run under the prior and posterior.<br>
 
