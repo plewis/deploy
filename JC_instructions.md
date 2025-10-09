@@ -278,7 +278,7 @@ Copy the corresponding file from the `rb` directory: `cp ../rb/calc-adjusted-rel
 Modify this file to have the correct number of slow and fast loci. You can look in the `removexx.sh` file to figure this out. Remember the first half of the original loci are the slow rates ones (if there were 10 loci originally, the first 5 were slow). For example, if the `removexx.sh` file says this, and there were 10 loci originally:<br>
 
 `rm locus1.nex`<br>
-`rm locus2.nex<br`>
+`rm locus2.nex`<br>
 `rm locus3.nex`<br>
 `rm locus4.nex`<br>
 
