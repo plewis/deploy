@@ -1,4 +1,3 @@
-cd ..
 for v in {0..9}
 do
 	mkdir smc-cutoff-0.$v
