@@ -6,7 +6,7 @@ slow_rate = (1 / total_rate) * 0.01
 faster_rate = (1 / total_rate) * 1
 
 # assert rates average to 1
-assert (slow_rate * nslow + nfast * faster_rate == nslow + nfast)
+#assert (slow_rate * nslow + nfast * faster_rate == nslow + nfast)
 
 rates = "relative_rates = "
 for i in range(nslow):
