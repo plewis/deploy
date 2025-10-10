@@ -7,5 +7,6 @@ do
 		cp ../gene$l/locus$l.nex .
 	done
 	cp ../remove0.$v.sh .
+	. remove0.$v.sh
 	cd ..
 done
