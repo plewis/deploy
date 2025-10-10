@@ -9,5 +9,6 @@ do
 	cp ../remove0.$v.sh .
 	. remove0.$v.sh
 	python3 ../crunch.py
+	cp ../../smc/proj.conf .
 	cd ..
 done
