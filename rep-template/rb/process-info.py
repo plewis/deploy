@@ -2,6 +2,7 @@ import os
 
 cutoff_values = (0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 
+
 filename = "info.txt"
 for value in cutoff_values:
 	cutoff_value = value
@@ -29,3 +30,10 @@ for value in cutoff_values:
 		print(f"Error: The file '{filename}' was not found.")
 	except Exception as e:
 		print(f"An unexpected error occurred: {e}")
+
+	#if nothing was written to the file, create a blank file
+	try:
+		with open(my_file, 'x') as f:
+			f.write("")
+	except FileExistsError:
+    		print(f"File '{my_file}' already exists. No action taken.")
