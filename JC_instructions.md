@@ -376,4 +376,3 @@ Ideally, you will do this for different cutoff values (you will not have to run 
 	| 0.7  				| xx  		 | xx   		|
 	| 0.8  				| xx  		 | xx   		|
 	| 0.9  				| xx  		 | xx   		|
-	| 1.0  				| xx  		 | xx   		|
