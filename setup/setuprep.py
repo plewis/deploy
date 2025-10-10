@@ -633,6 +633,12 @@ def run(rep, nreps, maindir, repdir, rnseed):
     setupsubst.substitutions({
         '__NLOCI__': nloci
     }, infile, outfile)
+
+    infile  = os.path.join(outer_rbdir, 'make-cutoff-folders.sh')
+    outfile = infile
+    setupsubst.substitutions({
+        '__NLOCI__': nloci
+    }, infile, outfile)
     
     #################################
     # Set up the "astral" directory #
