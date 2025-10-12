@@ -38,5 +38,11 @@ do
 		fi
 	fi
 	done
+
+	# TODO: calculate relative rates and replace in conf file
+	# TODO: remove extra subsets
+	# TODO: create a prior and posterior folder
 	cd ..
 done
+
+# TODO: create smc.slurm and td.slurm and td-true.slurm files
