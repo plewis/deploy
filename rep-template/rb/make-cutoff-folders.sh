@@ -167,4 +167,23 @@ echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-prior.slurm
 echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> td-prior.slurm
 echo "td --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-prior.slurm
 
+# create td-true.slurm script for calculating distance between sampled trees and true tree
+echo "#!/bin/bash" >> td-true.slurm
+echo "#SBATCH -p priority" >> td-true.slurm
+echo "#SBATCH -q pol02003sky" >> td-true.slurm
+echo "#SBATCH -A pol02003" >> td-true.slurm
+echo "#SBATCH --nodes=1" >> td-true.slurm
+echo "#SBATCH --ntasks=1" >> td-true.slurm
+echo "#SBATCH --cpus-per-task=5" >> td-true.slurm
+echo "#SBATCH --array=0-9%10" >> td-true.slurm
+echo "#SBATCH --job-name=tdtrue" >> td-true.slurm
+echo "#SBATCH -o tdtrue-%a.out" >> td-true.slurm
+echo "#SBATCH -e tdtrue-%a.err" >> td-true.slurm
+echo "#SBATCH --mem=50G" >> td-true.slurm
+echo " " >> td-true.slurm
+echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-true.slurm
+echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-true.slurm
+echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-true.slurm
+echo "td --treefile bhv_trees.tre --refdist --prefix bhvdists" >> td-true.slurm
+
 # TODO: create new td-true script, get average bhv script, and calc info script
