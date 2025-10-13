@@ -88,8 +88,6 @@ do
 	new_string="sample_from_prior = True"
 	sed -i "s/$old_string/$new_string/g" prior/proj.conf
 	cd ..
-	
-	cd ..
 done
 
 # make new smc.slurm files
@@ -185,5 +183,3 @@ echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-true.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-true.slurm
 echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-true.slurm
 echo "td --treefile bhv_trees.tre --refdist --prefix bhvdists" >> td-true.slurm
-
-# TODO: create new td-true script, get average bhv script, and calc info script
