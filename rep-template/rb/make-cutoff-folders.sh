@@ -39,7 +39,33 @@ do
 	fi
 	done
 
-	# TODO: calculate relative rates and replace in conf file
+	# calculate relative rates
+	numerator=$(echo "scale=4; (0.01 * $nslow_loci) + $nfast_loci" | bc)
+	denominator=$(echo "scale=4; $nslow_loci + $nfast_loci" | bc)
+	total_rate=$(echo "scale=4; $numerator / $denominator" | bc)
+	faster_rate=$(echo "scale=4; 1 / $total_rate" | bc)
+	slow_rate=$(echo "scale=4; $faster_rate * 0.01" | bc)
+
+	rates="relative_rates = "
+	for ((i=1; i<=$nslow_loci; i++))
+	do
+		rates+="${slow_rate} , "
+	done
+
+	nfast_loci_minus_one=$(echo "scale =4; $nfast_loci - 1" | bc)
+
+	for ((l=1; l<=$nslow_loci; l++))
+	do
+		if (( l < $nfast_loci_minus_one )); then
+			rates+="${faster_rate} , "
+		else
+			rates+="$faster_rate"
+		fi
+	done
+	echo $rates
+
+	# TODO: replace relative rates in conf file
+	
 	# TODO: remove extra subsets
 	# TODO: create a prior and posterior folder
 	cd ..
