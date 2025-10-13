@@ -23,7 +23,7 @@ do
 
 	# copy and edit the proj.conf file
 	cp ../../smc/proj.conf .
-	sed -i 's#../sim/sim.nex#COMBINED.nex#g' proj.conf
+	sed -i 's#../sim/sim.nex#../COMBINED.nex#g' proj.conf
 
 	# calculate the number of slow and fast loci
 	for filename in *; do
