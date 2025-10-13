@@ -56,13 +56,12 @@ do
 
 	for ((l=1; l<=$nslow_loci; l++))
 	do
-		if (( l < $nfast_loci_minus_one )); then
+		if (( l < $nfast_loci )); then
 			rates+="${faster_rate} , "
 		else
 			rates+="$faster_rate"
 		fi
 	done
-	echo $rates
 
 	# TODO: replace relative rates in conf file
 	
