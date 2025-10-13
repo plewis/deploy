@@ -103,9 +103,9 @@ echo "#SBATCH --nodes=1" >> smc-post.slurm
 echo "#SBATCH --ntasks=1" >> smc-post.slurm
 echo "#SBATCH --cpus-per-task=5" >> smc-post.slurm
 echo "#SBATCH --array=0-9%10" >> smc-post.slurm
-echo "#SBATCH --job-name=smc" >> smc-post.slurm
-echo "#SBATCH -o smc-%a.out" >> smc-post.slurm
-echo "#SBATCH -e smc-%a.err" >> smc-post.slurm
+echo "#SBATCH --job-name=smcpost" >> smc-post.slurm
+echo "#SBATCH -o smcpost-%a.out" >> smc-post.slurm
+echo "#SBATCH -e smcpost-%a.err" >> smc-post.slurm
 echo "#SBATCH --mem=50G" >> smc-post.slurm
 echo " " >> smc-post.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-post.slurm
@@ -121,9 +121,9 @@ echo "#SBATCH --nodes=1" >> smc-prior.slurm
 echo "#SBATCH --ntasks=1" >> smc-prior.slurm
 echo "#SBATCH --cpus-per-task=5" >> smc-prior.slurm
 echo "#SBATCH --array=0-9%10" >> smc-prior.slurm
-echo "#SBATCH --job-name=smc" >> smc-prior.slurm
-echo "#SBATCH -o smc-%a.out" >> smc-prior.slurm
-echo "#SBATCH -e smc-%a.err" >> smc-prior.slurm
+echo "#SBATCH --job-name=smcprior" >> smc-prior.slurm
+echo "#SBATCH -o smcprior-%a.out" >> smc-prior.slurm
+echo "#SBATCH -e smcprior-=%a.err" >> smc-prior.slurm
 echo "#SBATCH --mem=50G" >> smc-prior.slurm
 echo " " >> smc-prior.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-prior.slurm
