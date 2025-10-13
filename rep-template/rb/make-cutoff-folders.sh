@@ -131,4 +131,42 @@ echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-prior.slurm
 echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> smc-prior.slurm
 echo "time mixing-smc" >> smc-prior.slurm
 
-# TODO: create smc.slurm and td.slurm and td-true.slurm files
+
+# make new td.slurm files
+echo "#!/bin/bash" >> td-post.slurm
+echo "#SBATCH -p priority" >> td-post.slurm
+echo "#SBATCH -q pol02003sky" >> td-post.slurm
+echo "#SBATCH -A pol02003" >> td-post.slurm
+echo "#SBATCH --nodes=1" >> td-post.slurm
+echo "#SBATCH --ntasks=1" >> td-post.slurm
+echo "#SBATCH --cpus-per-task=5" >> td-post.slurm
+echo "#SBATCH --array=0-9%10" >> td-post.slurm
+echo "#SBATCH --job-name=smcpost" >> td-post.slurm
+echo "#SBATCH -o smcpost-%a.out" >> td-post.slurm
+echo "#SBATCH -e smcpost-%a.err" >> td-post.slurm
+echo "#SBATCH --mem=50G" >> td-post.slurm
+echo " " >> td-post.slurm
+echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-post.slurm
+echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-post.slurm
+echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-post.slurm
+echo "td --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-post.slurm
+
+echo "#!/bin/bash" >> td-prior.slurm
+echo "#SBATCH -p priority" >> td-prior.slurm
+echo "#SBATCH -q pol02003sky" >> td-prior.slurm
+echo "#SBATCH -A pol02003" >> td-prior.slurm
+echo "#SBATCH --nodes=1" >> td-prior.slurm
+echo "#SBATCH --ntasks=1" >> td-prior.slurm
+echo "#SBATCH --cpus-per-task=5" >> td-prior.slurm
+echo "#SBATCH --array=0-9%10" >> td-prior.slurm
+echo "#SBATCH --job-name=smcprior" >> td-prior.slurm
+echo "#SBATCH -o smcprior-%a.out" >> td-prior.slurm
+echo "#SBATCH -e smcprior-%a.err" >> td-prior.slurm
+echo "#SBATCH --mem=50G" >> td-prior.slurm
+echo " " >> td-prior.slurm
+echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-prior.slurm
+echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-prior.slurm
+echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> td-prior.slurm
+echo "td --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-prior.slurm
+
+# TODO: create new td-true script, get average bhv script, and calc info script
