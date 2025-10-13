@@ -1,7 +1,7 @@
 import sys, re, os, subprocess as sub
 from math import log
 
-# this file calculates BHV info after td program has been run
+# this file calculates BHV info on revbayes results after td program has been run
 
 nreps = __NLOCI__
 
