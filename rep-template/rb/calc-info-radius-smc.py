@@ -9,7 +9,7 @@ prior_lengths = []
 posterior_lengths = []
 
 for rep in range(10):
-  fn = 'smc-cutoff-0.%d/prior/mean.txt' % rep
+	fn = 'smc-cutoff-0.%d/prior/mean.txt' % rep
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% radius =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	assert m1 is not None
@@ -21,7 +21,7 @@ for rep in range(10):
 	prior_lengths.append(prior_length)
 
 for rep in range(10):
-  fn = 'smc-cutoff-0.%d/posterior/mean.txt' % rep
+	fn = 'smc-cutoff-0.%d/posterior/mean.txt' % rep
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% radius =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	radius = float(m1.group(1))
