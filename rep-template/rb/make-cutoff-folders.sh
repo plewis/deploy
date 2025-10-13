@@ -52,9 +52,7 @@ do
 		rates+="${slow_rate} , "
 	done
 
-	nfast_loci_minus_one=$(echo "scale =4; $nfast_loci - 1" | bc)
-
-	for ((l=1; l<=$nslow_loci; l++))
+	for ((l=1; l<=$nfast_loci; l++))
 	do
 		if (( l < $nfast_loci )); then
 			rates+="${faster_rate} , "
