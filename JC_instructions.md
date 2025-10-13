@@ -389,3 +389,5 @@ Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
 `sbatch td-post.slurm` `sbatch td-prior.slurm`
 
 `python3 calc-info-radius-smc.py`
+`python3 create-bhv-trees.py`
+`sbatch td-true.slurm`
