@@ -141,9 +141,9 @@ echo "#SBATCH --nodes=1" >> td-post.slurm
 echo "#SBATCH --ntasks=1" >> td-post.slurm
 echo "#SBATCH --cpus-per-task=5" >> td-post.slurm
 echo "#SBATCH --array=0-9%10" >> td-post.slurm
-echo "#SBATCH --job-name=smcpost" >> td-post.slurm
-echo "#SBATCH -o smcpost-%a.out" >> td-post.slurm
-echo "#SBATCH -e smcpost-%a.err" >> td-post.slurm
+echo "#SBATCH --job-name=tdpost" >> td-post.slurm
+echo "#SBATCH -o tdpost-%a.out" >> td-post.slurm
+echo "#SBATCH -e tdpost-%a.err" >> td-post.slurm
 echo "#SBATCH --mem=50G" >> td-post.slurm
 echo " " >> td-post.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-post.slurm
@@ -159,9 +159,9 @@ echo "#SBATCH --nodes=1" >> td-prior.slurm
 echo "#SBATCH --ntasks=1" >> td-prior.slurm
 echo "#SBATCH --cpus-per-task=5" >> td-prior.slurm
 echo "#SBATCH --array=0-9%10" >> td-prior.slurm
-echo "#SBATCH --job-name=smcprior" >> td-prior.slurm
-echo "#SBATCH -o smcprior-%a.out" >> td-prior.slurm
-echo "#SBATCH -e smcprior-%a.err" >> td-prior.slurm
+echo "#SBATCH --job-name=tdprior" >> td-prior.slurm
+echo "#SBATCH -o tdprior-%a.out" >> td-prior.slurm
+echo "#SBATCH -e tdprior-%a.err" >> td-prior.slurm
 echo "#SBATCH --mem=50G" >> td-prior.slurm
 echo " " >> td-prior.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-prior.slurm
