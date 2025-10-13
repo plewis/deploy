@@ -65,8 +65,21 @@ do
 
 	# replace relative rates in conf file
 	sed -i "/^relative_rates/c\\$rates" proj.conf
-	
-	# TODO: remove extra subsets
+
+	# remove all subset lines and rewrite them
+	ntotal_loci=$(echo "scale=4; $nslow_loci + $nfast_loci" | bc)
+	sed -i "/^subset/d" proj.conf
+
+	begin_subset=1
+	end_subset=1000 # for now, assuming all loci are 1000 bp's
+	for (( v = 1; v <=$ntotal_loci; v++ ))
+	do
+		string="subset = locus$v[nucleotide]:$begin_subset-$end_subset"
+		(( begin_subset+=1000 ))
+		(( end_subset+=1000 ))
+		echo $string >> proj.conf
+	done
+
 	# TODO: create a prior and posterior folder
 	cd ..
 done
