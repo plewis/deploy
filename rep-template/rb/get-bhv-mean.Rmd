@@ -1,3 +1,8 @@
-test <- read.delim("bhvdists.txt", header=T)
-cat(mean(test$geodesic))
-cat("\n")
+bhv_means = c()
+
+for (i in 0:9) {
+	file_path <- paste("smc-cutoff-0.", i, "/posterior/bhvdists.txt", sep="")
+	dists <- read.delim(file_path, header=T)
+	bhv_means <- c(bhv_means, mean(dists$geodesic))
+}
+dput(bhv_means, file="species_tree_accuracy.txt")
