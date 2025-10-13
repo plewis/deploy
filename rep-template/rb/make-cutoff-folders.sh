@@ -80,7 +80,17 @@ do
 		echo $string >> proj.conf
 	done
 
-	# TODO: create a prior and posterior folder
+	# create a prior and posterior folder
+	mkdir posterior
+	cp proj.conf posterior/.
+
+	mkdir prior
+	cp proj.conf prior/.
+	old_string="sample_from_prior = False" # modify proj.conf to sample from the prior
+	new_string="sample_from_prior = True"
+	sed -i "s/$old_string/$new_string/g" prior/proj.conf
+	cd ..
+	
 	cd ..
 done
 
