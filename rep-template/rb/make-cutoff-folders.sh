@@ -63,7 +63,8 @@ do
 		fi
 	done
 
-	# TODO: replace relative rates in conf file
+	# replace relative rates in conf file
+	sed -i "/^relative_rates/c\\$rates" proj.conf
 	
 	# TODO: remove extra subsets
 	# TODO: create a prior and posterior folder
