@@ -2,7 +2,7 @@ import os
 import re
 
 for i in range(10):
-	file_path = 'smc-cutoff-0.%d/posterior/bhv_trees.tre' % rep
+	file_path = 'smc-cutoff-0.%d/posterior/bhv_trees.tre' % i
 	try:
 		if os.path.exists(file_path):
 			os.remove(file_path)
@@ -26,7 +26,7 @@ for i in range(10):
 				file.write(line)
 
 
-		posterior_file_path = 'smc-cutoff-0.%d/posterior/species_trees.trees' % rep
+		posterior_file_path = 'smc-cutoff-0.%d/posterior/species_trees.trees' % i
 		posterior_file = open(posterior_file_path)
 		posterior_file_lines = posterior_file.readlines()
 
