@@ -391,3 +391,5 @@ Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
 `python3 calc-info-radius-smc.py`
 `python3 create-bhv-trees.py`
 `sbatch td-true.slurm`
+`Rscript get-bhv-mean.Rmd`
+
