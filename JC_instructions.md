@@ -381,7 +381,9 @@ Ideally, you will do this for different cutoff values (you will not have to run 
 
 
 # automating slow loci -- Jessica - ignore this part
-after creating `rb` directory and obtaining the `info.txt` file from running RevBayes and treedistance, `cd` into the `rep1/rb` directory and run `python3 process-info.py`
+after creating `rb` directory and obtaining the `info.txt` file from running RevBayes and treedistance, `cd` into the `rep1/rb` directory. If you want to do this in other directories, just change the paths in the `.slurm` files you will create.
+
+Run `python3 process-info.py`
 Then `.make-cutoff-folders.sh`
 Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
 `sbatch td-post.slurm` `sbatch td-prior.slurm`
