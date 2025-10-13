@@ -94,4 +94,48 @@ do
 	cd ..
 done
 
+# make new smc.slurm files
+echo "#!/bin/bash" >> smc-post.slurm
+echo "#SBATCH -p priority" >> smc-post.slurm
+echo "#SBATCH -q pol02003sky" >> smc-post.slurm
+echo "#SBATCH -A pol02003" >> smc-post.slurm
+echo "#SBATCH --nodes=1" >> smc-post.slurm
+echo "#SBATCH --ntasks=1" >> smc-post.slurm
+echo "#SBATCH --cpus-per-task=5" >> smc-post.slurm
+echo "#SBATCH --array=0-9%10" >> smc-post.slurm
+echo "#SBATCH --job-name=smc" >> smc-post.slurm
+echo "#SBATCH -o smc-%a.out" >> smc-post.slurm
+echo "#SBATCH -e smc-%a.err" >> smc-post.slurm
+echo "#SBATCH --mem=50G" >> smc-post.slurm
+echo " " >> smc-post.slurm
+echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-post.slurm
+echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-post.slurm
+echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> smc-post.slurm
+echo "time mixing-smc" >> smc-post.slurm
+
+echo "#!/bin/bash" >> smc-prior.slurm
+echo "#SBATCH -p priority" >> smc-prior.slurm
+echo "#SBATCH -q pol02003sky" >> smc-prior.slurm
+echo "#SBATCH -A pol02003" >> smc-prior.slurm
+echo "#SBATCH --nodes=1" >> smc-prior.slurm
+echo "#SBATCH --ntasks=1" >> smc-prior.slurm
+echo "#SBATCH --cpus-per-task=5" >> smc-prior.slurm
+echo "#SBATCH --array=0-9%10" >> smc-prior.slurm
+echo "#SBATCH --job-name=smc" >> smc-prior.slurm
+echo "#SBATCH -o smc-%a.out" >> smc-prior.slurm
+echo "#SBATCH -e smc-%a.err" >> smc-prior.slurm
+echo "#SBATCH --mem=50G" >> smc-prior.slurm
+echo " " >> smc-prior.slurm
+echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-prior.slurm
+echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-prior.slurm
+echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> smc-prior.slurm
+echo "time mixing-smc" >> smc-prior.slurm
+
+cp ../../smc.slurm .
+# delete unnecessary lines
+sed -i "/^#SBATCH --array/d" smc.slurm
+sed -i "/^cd/d" smc.slurm
+sed -i "/^time/d" smc.slurm
+echo
+
 # TODO: create smc.slurm and td.slurm and td-true.slurm files
