@@ -123,19 +123,12 @@ echo "#SBATCH --cpus-per-task=5" >> smc-prior.slurm
 echo "#SBATCH --array=0-9%10" >> smc-prior.slurm
 echo "#SBATCH --job-name=smcprior" >> smc-prior.slurm
 echo "#SBATCH -o smcprior-%a.out" >> smc-prior.slurm
-echo "#SBATCH -e smcprior-=%a.err" >> smc-prior.slurm
+echo "#SBATCH -e smcprior-%a.err" >> smc-prior.slurm
 echo "#SBATCH --mem=50G" >> smc-prior.slurm
 echo " " >> smc-prior.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-prior.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-prior.slurm
 echo 'cd $HOME/g/rep1/rb/smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> smc-prior.slurm
 echo "time mixing-smc" >> smc-prior.slurm
-
-cp ../../smc.slurm .
-# delete unnecessary lines
-sed -i "/^#SBATCH --array/d" smc.slurm
-sed -i "/^cd/d" smc.slurm
-sed -i "/^time/d" smc.slurm
-echo
 
 # TODO: create smc.slurm and td.slurm and td-true.slurm files
