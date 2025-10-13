@@ -378,3 +378,12 @@ Ideally, you will do this for different cutoff values (you will not have to run 
 	| 0.7  				| xx  		 | xx   		|
 	| 0.8  				| xx  		 | xx   		|
 	| 0.9  				| xx  		 | xx   		|
+
+
+# automating slow loci -- Jessica - ignore this part
+after creating `rb` directory and obtainign the `info.txt` file from running RevBayes and treedistance, run `python3 process-info.py`
+Then `.make-cutoff-folders.sh`
+Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
+`sbatch td-post.slurm` `sbatch td-prior.slurm`
+
+`python3 calc-info-radius-smc.py`
