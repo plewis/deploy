@@ -45,6 +45,6 @@ for rep in range(10):
 	# LCR = log(prior_var) - log(post_var)
 	# info_list.append(LCR)
 
-with open('info.txt', 'w') as file:
+with open('info-species.txt', 'w') as file:
 	for i in info_list:
 		file.write(str(i) + ',' + '\n')
