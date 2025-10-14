@@ -393,5 +393,5 @@ Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
 `sbatch td-true.slurm`
 `Rscript get-bhv-mean.Rmd`
 
-Look for accuracy in `species_tree_accuracy.txt` and info in `info-smc.txt`
+Look for accuracy in `species_tree_accuracy.txt` and info in `info-species.txt`
 
