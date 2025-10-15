@@ -385,7 +385,7 @@ Open `rep-template/sim/.conf` and modify with the correct number of slow loci an
 
 After setting up the g directory, run `. create-rb-folders.sh`<br>
 
-Within each rb replicate (e.g. `cd rep1/rb`), run:
+Within each rb replicate (e.g. `cd rep1/rb`), run:<br>
 `sbatch rb-prior.slurm`<br>
 `sbatch rb-post.slurm`<br>
 
