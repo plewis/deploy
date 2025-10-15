@@ -637,7 +637,9 @@ def run(rep, nreps, maindir, repdir, rnseed):
     infile  = os.path.join(outer_rbdir, 'make-cutoff-folders.sh')
     outfile = infile
     setupsubst.substitutions({
-        '__NLOCI__': nloci
+        '__NLOCI__': nloci,
+        '__SMCPATH__': setupmain.smc_path,
+        '__TDPATH__': setupmain.td_path
     }, infile, outfile)
     
     #################################
