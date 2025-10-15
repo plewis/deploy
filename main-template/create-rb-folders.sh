@@ -3,73 +3,73 @@ for i in {1..__NREPS__}
 do
 	cd rep$i/rb
 
-		echo '#!/bin/bash' >> rb-post.slurm
-		echo '#SBATCH -p priority' >> rb-post.slurm
-		echo '#SBATCH -q pol02003sky' >> rb-post.slurm
-		echo '#SBATCH -A pol02003' >> rb-post.slurm
-		echo '#SBATCH --nodes=1' >> rb-post.slurm
-		echo '#SBATCH --ntasks=1' >> rb-post.slurm
-		echo '#SBATCH --cpus-per-task=5' >> rb-post.slurm
-		echo '#SBATCH --array=1-$nloci%10' >> rb-post.slurm
-		echo '#SBATCH --job-name=rbpost' >> rb-post.slurm
-		echo '#SBATCH -o rbpost-%a.out' >> rb-post.slurm
-		echo '#SBATCH -e rbpost-%a.err' >> rb-post.slurm
-		echo '#SBATCH --mem=150G' >> rb-post.slurm
-		echo ' ' >> rb-post.slurm
-		echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> rb-post.slurm
-		echo 'cd gene${SLURM_ARRAY_TASK_ID}' >> rb-post.slurm
-		echo 'rb jc-post.Rev' >> rb-post.slurm
+	echo '#!/bin/bash' >> rb-post.slurm
+	echo '#SBATCH -p priority' >> rb-post.slurm
+	echo '#SBATCH -q pol02003sky' >> rb-post.slurm
+	echo '#SBATCH -A pol02003' >> rb-post.slurm
+	echo '#SBATCH --nodes=1' >> rb-post.slurm
+	echo '#SBATCH --ntasks=1' >> rb-post.slurm
+	echo '#SBATCH --cpus-per-task=5' >> rb-post.slurm
+	echo "#SBATCH --array=1-$nloci%10" >> rb-post.slurm
+	echo '#SBATCH --job-name=rbpost' >> rb-post.slurm
+	echo '#SBATCH -o rbpost-%a.out' >> rb-post.slurm
+	echo '#SBATCH -e rbpost-%a.err' >> rb-post.slurm
+	echo '#SBATCH --mem=150G' >> rb-post.slurm
+	echo ' ' >> rb-post.slurm
+	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> rb-post.slurm
+	echo 'cd gene${SLURM_ARRAY_TASK_ID}' >> rb-post.slurm
+	echo 'rb jc-post.Rev' >> rb-post.slurm
 
-		echo '#!/bin/bash' >> rb-prior.slurm
-		echo '#SBATCH -p priority' >> rb-prior.slurm
-		echo '#SBATCH -q pol02003sky' >> rb-prior.slurm
-		echo '#SBATCH -A pol02003' >> rb-prior.slurm
-		echo '#SBATCH --nodes=1' >> rb-prior.slurm
-		echo '#SBATCH --ntasks=1' >> rb-prior.slurm
-		echo '#SBATCH --cpus-per-task=5' >> rb-prior.slurm
-		echo '#SBATCH --array=1-$nloci%10' >> rb-prior.slurm
-		echo '#SBATCH --job-name=rbprior' >> rb-prior.slurm
-		echo '#SBATCH -o rbprior-%a.out' >> rb-prior.slurm
-		echo '#SBATCH -e rbprior-%a.err' >> rb-prior.slurm
-		echo '#SBATCH --mem=150G' >> rb-prior.slurm
-		echo ' ' >> rb-prior.slurm
-		echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> rb-prior.slurm
-		echo 'cd gene${SLURM_ARRAY_TASK_ID}' >> rb-prior.slurm
-		echo 'rb jc-prior.Rev' >> rb-prior.slurm
+	echo '#!/bin/bash' >> rb-prior.slurm
+	echo '#SBATCH -p priority' >> rb-prior.slurm
+	echo '#SBATCH -q pol02003sky' >> rb-prior.slurm
+	echo '#SBATCH -A pol02003' >> rb-prior.slurm
+	echo '#SBATCH --nodes=1' >> rb-prior.slurm
+	echo '#SBATCH --ntasks=1' >> rb-prior.slurm
+	echo '#SBATCH --cpus-per-task=5' >> rb-prior.slurm
+	echo "#SBATCH --array=1-$nloci%10" >> rb-prior.slurm
+	echo '#SBATCH --job-name=rbprior' >> rb-prior.slurm
+	echo '#SBATCH -o rbprior-%a.out' >> rb-prior.slurm
+	echo '#SBATCH -e rbprior-%a.err' >> rb-prior.slurm
+	echo '#SBATCH --mem=150G' >> rb-prior.slurm
+	echo ' ' >> rb-prior.slurm
+	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> rb-prior.slurm
+	echo 'cd gene${SLURM_ARRAY_TASK_ID}' >> rb-prior.slurm
+	echo 'rb jc-prior.Rev' >> rb-prior.slurm
 
-		echo '#!/bin/bash' >> td-rb-prior.slurm
-		echo '#SBATCH -p priority' >> td-rb-prior.slurm
-		echo '#SBATCH -q pol02003sky' >> td-rb-prior.slurm
-		echo '#SBATCH -A pol02003' >> td-rb-prior.slurm
-		echo '#SBATCH --nodes=1' >> td-rb-prior.slurm
-		echo '#SBATCH --ntasks=1' >> td-rb-prior.slurm
-		echo '#SBATCH --cpus-per-task=5' >> td-rb-prior.slurm
-		echo '#SBATCH --array=1-$nloci%10' >> td-rb-prior.slurm
-		echo '#SBATCH --job-name=tdrbprior' >> td-rb-prior.slurm
-		echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-prior.slurm
-		echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-prior.slurm
-		echo '#SBATCH --mem=150G' >> td-rb-prior.slurm
-		echo ' ' >> td-rb-prior.slurm
-		echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-prior.slurm
-		echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-prior' >> td-rb-prior.slurm
-		echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-prior.slurm
+	echo '#!/bin/bash' >> td-rb-prior.slurm
+	echo '#SBATCH -p priority' >> td-rb-prior.slurm
+	echo '#SBATCH -q pol02003sky' >> td-rb-prior.slurm
+	echo '#SBATCH -A pol02003' >> td-rb-prior.slurm
+	echo '#SBATCH --nodes=1' >> td-rb-prior.slurm
+	echo '#SBATCH --ntasks=1' >> td-rb-prior.slurm
+	echo '#SBATCH --cpus-per-task=5' >> td-rb-prior.slurm
+	echo "#SBATCH --array=1-$nloci%10" >> td-rb-prior.slurm
+	echo '#SBATCH --job-name=tdrbprior' >> td-rb-prior.slurm
+	echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-prior.slurm
+	echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-prior.slurm
+	echo '#SBATCH --mem=150G' >> td-rb-prior.slurm
+	echo ' ' >> td-rb-prior.slurm
+	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-prior.slurm
+	echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-prior' >> td-rb-prior.slurm
+	echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-prior.slurm
 
-		echo '#!/bin/bash' >> td-rb-post.slurm
-		echo '#SBATCH -p priority' >> td-rb-post.slurm
-		echo '#SBATCH -q pol02003sky' >> td-rb-post.slurm
-		echo '#SBATCH -A pol02003' >> td-rb-post.slurm
-		echo '#SBATCH --nodes=1' >> td-rb-post.slurm
-		echo '#SBATCH --ntasks=1' >> td-rb-post.slurm
-		echo '#SBATCH --cpus-per-task=5' >> td-rb-post.slurm
-		echo '#SBATCH --array=1-$nloci%10' >> td-rb-post.slurm
-		echo '#SBATCH --job-name=tdrbprior' >> td-rb-post.slurm
-		echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-post.slurm
-		echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-post.slurm
-		echo '#SBATCH --mem=150G' >> td-rb-post.slurm
-		echo ' ' >> td-rb-post.slurm
-		echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-post.slurm
-		echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-posterior' >> td-rb-post.slurm
-		echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-post.slurm
+	echo '#!/bin/bash' >> td-rb-post.slurm
+	echo '#SBATCH -p priority' >> td-rb-post.slurm
+	echo '#SBATCH -q pol02003sky' >> td-rb-post.slurm
+	echo '#SBATCH -A pol02003' >> td-rb-post.slurm
+	echo '#SBATCH --nodes=1' >> td-rb-post.slurm
+	echo '#SBATCH --ntasks=1' >> td-rb-post.slurm
+	echo '#SBATCH --cpus-per-task=5' >> td-rb-post.slurm
+	echo "#SBATCH --array=1-$nloci%10" >> td-rb-post.slurm
+	echo '#SBATCH --job-name=tdrbprior' >> td-rb-post.slurm
+	echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-post.slurm
+	echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-post.slurm
+	echo '#SBATCH --mem=150G' >> td-rb-post.slurm
+	echo ' ' >> td-rb-post.slurm
+	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-post.slurm
+	echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-posterior' >> td-rb-post.slurm
+	echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-post.slurm
 
 
 	for (( l=1; l<=$nloci; l++ ))
