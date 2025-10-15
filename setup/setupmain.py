@@ -492,5 +492,5 @@ def run(maindir, nreps):
     setupsubst.substitutions({
         '__NREPS__': nreps,
 		'__NLOCI__': min_n_loci,
-		'__TDPATH__': tdpath,
+		'__TDPATH__': td_path,
         }, create_rb_path, create_rb_path)
