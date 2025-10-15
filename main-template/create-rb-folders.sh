@@ -1,4 +1,6 @@
 nloci=__NLOCI__
+tdpath=__TDPATH__
+
 for i in {1..__NREPS__}
 do
 	cd rep$i/rb
@@ -52,7 +54,7 @@ do
 	echo ' ' >> td-rb-prior.slurm
 	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-prior.slurm
 	echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-prior' >> td-rb-prior.slurm
-	echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-prior.slurm
+	echo "$tdpath --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-rb-prior.slurm
 
 	echo '#!/bin/bash' >> td-rb-post.slurm
 	echo '#SBATCH -p priority' >> td-rb-post.slurm
@@ -69,7 +71,7 @@ do
 	echo ' ' >> td-rb-post.slurm
 	echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-rb-post.slurm
 	echo 'cd gene${SLURM_ARRAY_TASK_ID}/output-posterior' >> td-rb-post.slurm
-	echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-post.slurm
+	echo "$tdpath --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-rb-post.slurm
 
 
 	for (( l=1; l<=$nloci; l++ ))
