@@ -106,7 +106,7 @@ echo "#SBATCH --mem=50G" >> smc-post.slurm
 echo " " >> smc-post.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-post.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-post.slurm
-echo "cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior" >> smc-post.slurm
+echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> smc-post.slurm
 echo "time mixing-smc" >> smc-post.slurm
 
 echo "#!/bin/bash" >> smc-prior.slurm
@@ -124,7 +124,7 @@ echo "#SBATCH --mem=50G" >> smc-prior.slurm
 echo " " >> smc-prior.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> smc-prior.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> smc-prior.slurm
-echo "cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior" >> smc-prior.slurm
+echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> smc-prior.slurm
 echo "time mixing-smc" >> smc-prior.slurm
 
 
@@ -144,7 +144,7 @@ echo "#SBATCH --mem=50G" >> td-post.slurm
 echo " " >> td-post.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-post.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-post.slurm
-echo "cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior" >> td-post.slurm
+echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-post.slurm
 echo "td --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-post.slurm
 
 echo "#!/bin/bash" >> td-prior.slurm
@@ -162,7 +162,7 @@ echo "#SBATCH --mem=50G" >> td-prior.slurm
 echo " " >> td-prior.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-prior.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-prior.slurm
-echo "cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior" >> td-prior.slurm
+echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/prior' >> td-prior.slurm
 echo "td --treefile species_trees.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001" >> td-prior.slurm
 
 # create td-true.slurm script for calculating distance between sampled trees and true tree
@@ -181,5 +181,5 @@ echo "#SBATCH --mem=50G" >> td-true.slurm
 echo " " >> td-true.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-true.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-true.slurm
-echo "cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior" >> td-true.slurm
+echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-true.slurm
 echo "td --treefile bhv_trees.tre --refdist --prefix bhvdists" >> td-true.slurm
