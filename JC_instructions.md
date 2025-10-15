@@ -396,15 +396,17 @@ Within each rb replicate (e.g. `cd rep1/rb`), run:
 
 This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.<br>
 
-Run `python3 process-info.py`
-Then `.make-cutoff-folders.sh`
-Then `sbatch smc-post.slurm` and `sbatch smc-prior.slurm`
-`sbatch td-post.slurm` `sbatch td-prior.slurm`
+Run `python3 process-info.py`<br>
+`.make-cutoff-folders.sh`<br>
+`sbatch smc-post.slurm`<br>
+`sbatch smc-prior.slurm`<br>
+`sbatch td-post.slurm` <br>
+`sbatch td-prior.slurm`<br>
 
-`python3 calc-info-radius-smc.py`
-`python3 create-bhv-trees.py`
-`sbatch td-true.slurm`
-`Rscript get-bhv-mean.Rmd`
+`python3 calc-info-radius-smc.py`<br>
+`python3 create-bhv-trees.py`<br>
+`sbatch td-true.slurm`<br>
+`Rscript get-bhv-mean.Rmd`<br>
 
 Look for accuracy in `species_tree_accuracy.txt` and info in `info-species.txt`
 
