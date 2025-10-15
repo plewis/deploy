@@ -3,8 +3,6 @@ for i in {1..__NREPS__}
 do
 	cd rep$i/rb
 
-	echo "rep$i" >> rep.txt
-
 	echo '#!/bin/bash' >> rb-post.slurm
 	echo '#SBATCH -p priority' >> rb-post.slurm
 	echo '#SBATCH -q pol02003sky' >> rb-post.slurm
