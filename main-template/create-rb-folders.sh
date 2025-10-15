@@ -10,7 +10,7 @@ do
 		echo '#SBATCH --nodes=1' >> rb-post.slurm
 		echo '#SBATCH --ntasks=1' >> rb-post.slurm
 		echo '#SBATCH --cpus-per-task=5' >> rb-post.slurm
-		echo '#SBATCH --array=1-__NLOCI__%10' >> rb-post.slurm
+		echo '#SBATCH --array=1-$nloci%10' >> rb-post.slurm
 		echo '#SBATCH --job-name=rbpost' >> rb-post.slurm
 		echo '#SBATCH -o rbpost-%a.out' >> rb-post.slurm
 		echo '#SBATCH -e rbpost-%a.err' >> rb-post.slurm
@@ -27,7 +27,7 @@ do
 		echo '#SBATCH --nodes=1' >> rb-prior.slurm
 		echo '#SBATCH --ntasks=1' >> rb-prior.slurm
 		echo '#SBATCH --cpus-per-task=5' >> rb-prior.slurm
-		echo '#SBATCH --array=1-__NLOCI__%10' >> rb-prior.slurm
+		echo '#SBATCH --array=1-$nloci%10' >> rb-prior.slurm
 		echo '#SBATCH --job-name=rbprior' >> rb-prior.slurm
 		echo '#SBATCH -o rbprior-%a.out' >> rb-prior.slurm
 		echo '#SBATCH -e rbprior-%a.err' >> rb-prior.slurm
@@ -44,7 +44,7 @@ do
 		echo '#SBATCH --nodes=1' >> td-rb-prior.slurm
 		echo '#SBATCH --ntasks=1' >> td-rb-prior.slurm
 		echo '#SBATCH --cpus-per-task=5' >> td-rb-prior.slurm
-		echo '#SBATCH --array=1-__NLOCI__%10' >> td-rb-prior.slurm
+		echo '#SBATCH --array=1-$nloci%10' >> td-rb-prior.slurm
 		echo '#SBATCH --job-name=tdrbprior' >> td-rb-prior.slurm
 		echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-prior.slurm
 		echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-prior.slurm
@@ -61,7 +61,7 @@ do
 		echo '#SBATCH --nodes=1' >> td-rb-post.slurm
 		echo '#SBATCH --ntasks=1' >> td-rb-post.slurm
 		echo '#SBATCH --cpus-per-task=5' >> td-rb-post.slurm
-		echo '#SBATCH --array=1-__NLOCI__%10' >> td-rb-post.slurm
+		echo '#SBATCH --array=1-$nloci%10' >> td-rb-post.slurm
 		echo '#SBATCH --job-name=tdrbprior' >> td-rb-post.slurm
 		echo '#SBATCH -o tdrbprior-%a.out' >> td-rb-post.slurm
 		echo '#SBATCH -e tdrbprior-%a.err' >> td-rb-post.slurm
