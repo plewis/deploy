@@ -238,6 +238,7 @@ do
 		echo '# you may want to quit RevBayes now' >> jc-prior.Rev
 		echo 'q()' >> jc-prior.Rev
 
+		echo "rep$i" >> rep.txt
 
 		cd ..
 	done
