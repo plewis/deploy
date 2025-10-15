@@ -1,3 +1,4 @@
+nloci=__NLOCI__
 for i in {1..__NREPS__}
 do
 	cd rep$i/rb
@@ -71,7 +72,7 @@ do
 		echo 'td --treefile gene${SLURM_ARRAY_TASK_ID}.trees --frechetmean --prefix mean  --frechet-k 1000000 --frechet-n 10 --frechet-e 0.00001' >> td-rb-post.slurm
 
 
-	for l in {1..__NLOCI__}
+	for (( l=1; l<=$nloci; l++ ))
 	do
 		mkdir gene$l
 		mv locus$l.nex gene$l
