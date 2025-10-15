@@ -1,3 +1,6 @@
+smcpath=__SMCPATH__
+tdpath=__TDPATH__
+
 for v in {0..9}
 do
 
