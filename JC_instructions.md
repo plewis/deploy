@@ -381,7 +381,20 @@ Ideally, you will do this for different cutoff values (you will not have to run 
 
 
 # automating slow loci -- Jessica - ignore this part
-after creating `rb` directory and obtaining the `info.txt` file from running RevBayes and treedistance, `cd` into the `rep1/rb` directory. If you want to do this in other directories, just change the paths in the `.slurm` files you will create.
+Open `rep-template/sim/.conf` and modify with the correct number of slow loci and comment out the existing number.<br>
+
+After setting up the g directory, run `. create-rb-folders.sh`<br>
+
+Within each rb replicate (e.g. `cd rep1/rb`), run:
+`sbatch rb-prior.slurm`<br>
+`sbatch rb-post.slurm`<br>
+
+`sbatch td-rb-prior.slurm`<br>
+`sbatch td-rb-post.slurm`<br>
+
+`python3 calc-info-radius-rb.py`<br>
+
+This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.<br>
 
 Run `python3 process-info.py`
 Then `.make-cutoff-folders.sh`
