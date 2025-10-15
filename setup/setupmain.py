@@ -8,7 +8,7 @@ import setupsubst
 user = 'aam21005'
 
 # Specify local = True if testing on your local laptop; if running on cluster set local = False
-local = True
+local = False
 
 # This directory will be created and will contain the master slurm scripts as well
 # as a subdirectory for every simulation replicate
@@ -16,7 +16,7 @@ maindir = 'g'
 
 # Specify the master pseudorandom number seed
 #master_seed = 1235
-master_seed = 1
+master_seed = 123
 
 # Specify whether grid should be theta vs lambda or theta/2 vs T (=species tree height)
 theta_vs_lambda = False
@@ -88,8 +88,8 @@ nreps = 1
 
 # number of loci varies among simulations
 #nloci           = 10
-min_n_loci = 10
-max_n_loci = 10
+min_n_loci = 100
+max_n_loci = 100
 
 min_sites_per_locus = 1000
 max_sites_per_locus = 1000
