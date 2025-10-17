@@ -380,7 +380,7 @@ Ideally, you will do this for different cutoff values (you will not have to run 
 	| 0.9  				| xx  		 | xx   		|
 
 
-# automating slow loci -- Jessica - ignore this part
+# automating slow loci
 Open `rep-template/sim/.conf` and modify with the correct number of slow loci and comment out the existing number.<br>
 
 After setting up the g directory, run `. create-rb-folders.sh`<br>
