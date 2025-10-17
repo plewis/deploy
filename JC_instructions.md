@@ -396,6 +396,10 @@ Within each rb replicate (e.g. `cd rep1/rb`), run:<br>
 
 This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.<br>
 
+*****************************************************************************************************************
+****************** start here if you already have the info.txt file from the RevBayes analyses ******************
+*****************************************************************************************************************
+
 Run `python3 process-info.py`<br>
 `.make-cutoff-folders.sh`<br>
 `sbatch smc-post.slurm`<br>
