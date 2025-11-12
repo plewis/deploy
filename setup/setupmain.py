@@ -485,6 +485,14 @@ def run(maindir, nreps):
         '__NREPS__': nreps,
         }, info_path_hpd, info_path_hpd)
 
+	#########################################
+    # Set up calculate-information-radius.py script #
+    #########################################
+    info_path_hpd = os.path.join(maindir, 'calculate-information-radius.py')
+    setupsubst.substitutions({
+        '__NREPS__': nreps,
+        }, info_path_hpd, info_path_hpd)
+
     #########################################
     # Set up create-rb-folders.sh script #
     #########################################
