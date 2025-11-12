@@ -14,7 +14,7 @@ for rep in range(nreps):
 	rep_plus_one = rep + 1
 
 	# Extract rank
-	fn = 'g-prior/rep%d/smc/mean.txt' % rep_plus_one
+	fn = 'g-prior/rep%d/smc/mean.R' % rep_plus_one
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	assert m1 is not None
@@ -32,7 +32,7 @@ for rep in range(nreps):
 	rep_plus_one = rep + 1
 
 	# Extract rank
-	fn = 'g-posterior/rep%d/smc/mean.txt' % rep_plus_one
+	fn = 'g-posterior/rep%d/smc/mean.R' % rep_plus_one
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% HPD lower =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	hpd_lower = float(m1.group(1))
