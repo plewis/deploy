@@ -11,7 +11,7 @@ for rep in range(nreps):
 	rep_plus_one = rep + 1
 
 	# Extract rank
-	fn = 'g-prior/rep%d/smc/mean.txt' % rep_plus_one
+	fn = 'g-prior/rep%d/smc/mean.R' % rep_plus_one
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'variance =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	prior_var = m1.group(1)
@@ -21,7 +21,7 @@ for rep in range(nreps):
 	rep_plus_one = rep + 1
 
 	# Extract rank
-	fn = 'g-posterior/rep%d/smc/mean.txt' % rep_plus_one
+	fn = 'g-posterior/rep%d/smc/mean.R' % rep_plus_one
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'variance =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	post_var = m1.group(1)
