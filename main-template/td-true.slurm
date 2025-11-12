@@ -15,4 +15,4 @@
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"
 export TIMEFORMAT="user-seconds %3U"
 cd $HOME/__MAINDIR__/rep${SLURM_ARRAY_TASK_ID}/smc
-__TD_PATH__ --treefile bhv_trees.tre --refdist --prefix bhvdists
+__TD_PATH__ --treefile bhv_trees.tre --refdist --prefix bhvdists  --rooted true
