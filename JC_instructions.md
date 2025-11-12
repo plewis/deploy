@@ -215,7 +215,7 @@ Run second set of analyses under the posterior and rename the directory g-poster
 
 For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
 
-Create a new directory (`g-bhv`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-hpd.py' into this directory from `g-prior` (mv g-prior/calculate-information-hpd.py .)
+Create a new directory (`g-bhv`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-radius.py' into this directory from `g-prior` (mv g-prior/calculate-information-radius.py .)
 
 Before running the smc analyses, you will have to modify the following files with their correct path:
 in `g-posterior`:
