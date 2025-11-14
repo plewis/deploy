@@ -209,7 +209,7 @@ After running all the above scripts, run:
 # BHV information content
 To use the new BHV geodesic distance metric:
 
-Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in `setup/setupmain.py` that says `sample_from_prior = false` to `sample_from_prior = true`. If conditioning on true gene trees, also set 'gene_newicks = True` for posterior analyses and `gene_newicks = False` for prior analyses.
+Run one set of analyses under the prior and rename the directory g-prior. (to run analyses under the prior, modify the line in `setup/setupmain.py` that says `sample_from_prior = false` to `sample_from_prior = true`. If conditioning on true gene trees, also set 'gene_newicks = True` for posterior analyses and `gene_newicks = False` for prior analyses. If conditioning on true gene trees, set smc_nparticles = 1000 for prior analyses, and smc_nspeciesparticles = 1 and n_speciesparticles = 1000 for posterior analyses.
 
 Run second set of analyses under the posterior and rename the directory g-posterior.
 
