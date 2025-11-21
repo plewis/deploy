@@ -213,7 +213,7 @@ Run one set of analyses under the prior and rename the directory g-prior. (to ru
 
 Run second set of analyses under the posterior and rename the directory g-posterior.
 
-For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.txt in each 'smc' replicate directory.
+For each directory, run sbatch td.slurm. This will run the treedistance program and create a file called mean.R in each 'smc' replicate directory.
 
 Create a new directory (`g-bhv`) and move both `g-prior` and `g-posterior` into this directory. Move 'calculate-information-radius.py' into this directory from `g-prior` (mv g-prior/calculate-information-radius.py .)
 
