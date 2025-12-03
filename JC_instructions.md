@@ -251,7 +251,7 @@ cd into `rep1/rb` directory and run `python3 calc-info-radius-rb.py`<br>
 
 This will create a file called `info.txt` that lists information content in each locus. The first half are the slow rate loci.<br>
 
-********* start here for future information analyses *******
+********* the following are manual instructions for information analyses; ignore and move to the automating slow loci section *******
 
 Open the file `process-info.py` and replace `cutoff_value` with the value you want.<br>
 Then run `python3 process-info.py`.<br>
