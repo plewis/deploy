@@ -185,4 +185,4 @@ echo " " >> td-true.slurm
 echo 'LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib"' >> td-true.slurm
 echo "export TIMEFORMAT=\"user-seconds %3U\"" >> td-true.slurm
 echo 'cd smc-cutoff-0.${SLURM_ARRAY_TASK_ID}/posterior' >> td-true.slurm
-echo "$tdpath --treefile bhv_trees.tre --refdist --prefix bhvdists" >> td-true.slurm
+echo "$tdpath --treefile bhv_trees.tre --refdist --prefix bhvdists --rooted true" >> td-true.slurm
