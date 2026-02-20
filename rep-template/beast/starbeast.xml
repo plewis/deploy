@@ -61,7 +61,7 @@ __SPECIESCOALESCENT__
                 </prior>
                 <prior id="speciationRatePrior.t:Species" name="distribution" x="@speciationRate.t:Species">
                     <LogNormal id="LogNormalDistributionModel.4" meanInRealSpace="true" name="distr">
-                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="__LAMBDA1__">__</parameter>
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name=__LAMBDA1__>__</parameter>
                         <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="S" upper="5.0">1.0E-4</parameter>
                     </LogNormal>
                 </prior>
