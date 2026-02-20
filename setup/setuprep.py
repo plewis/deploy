@@ -591,10 +591,13 @@ def run(rep, nreps, maindir, repdir, rnseed):
         beast_lambda2 = '__SVDQ_EST_LAMBDA2__'
         beast_lambda3 = '__SVDQ_EST_LAMBDA3__'
     else:
-        beast_theta_mean = setupmain.beast_thetamean
-        beast_lambda1 = setupmain.beast_lambda
-        beast_lambda2 = setupmain.beast_lambda
-        beast_lambda3 = setupmain.beast_lambda
+        beast_theta_mean = theta_mean / 4.0
+        beast_lambda1 = speciation_rate
+        beast_lambda2 = speciation_rate
+        beast_lambda3 = speciation_rate
+        #beast_lambda1 = setupmain.beast_lambda
+        #beast_lambda2 = setupmain.beast_lambda
+        #beast_lambda3 = setupmain.beast_lambda
 
     infile = os.path.join(outer_beastdir, 'starbeast.xml')
     outfile = infile
@@ -620,8 +623,8 @@ def run(rep, nreps, maindir, repdir, rnseed):
         '__TREETOP__': treetop,
         '__LOGGERLOCUS__': loggerlocus,
         '__LAMBDA1__': beast_lambda1,
-        '__LAMBDA2__': beast_lambda2,
-        '__LAMBDA3__': beast_lambda3,
+        #'__LAMBDA2__': beast_lambda2,
+        #'__LAMBDA3__': beast_lambda3,
         '__THETAMEAN__': beast_theta_mean
         }, infile, outfile)
 
