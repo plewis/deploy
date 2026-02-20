@@ -30,13 +30,13 @@ __SEQUENCES__
 __TAXONSET__
                 </taxonset>
             </stateNode>
+            <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
             <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
             <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
 __LOCI__
         </state>
-        <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
+        <init id="SBI" spec="starbeast3.core.StarBeastStartState" birthRate="@speciationRate.t:Species" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
 __SBI__
-                        <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" estimate="false" lower="__LAMBDA1__" name="birthRate" upper="__LAMBDA2__">__LAMBDA3__</parameter>
             <speciesTreePrior id="SpeciesTreePopSize.Species" spec="starbeast3.evolution.speciation.SpeciesTreePrior" bottomPopSize="@popSize" gammaParameter="@popMean" taxonset="@taxonsuperset" tree="@Tree.t:Species">
                 <populationModel id="speciesTreePopulationModel" spec="starbeast3.evolution.speciation.ConstantPopulations" populationSizes="@popSize" speciesTree="@Tree.t:Species"/>
                 <treePrior id="YuleModel.t:Species" spec="beast.base.evolution.speciation.YuleModel" birthDiffRate="@speciationRate.t:Species" tree="@Tree.t:Species"/>
@@ -58,6 +58,12 @@ __SPECIESCOALESCENT__
                     <Exponential id="Exponential.11" name="distr">
                         <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">__THETAMEAN__</parameter>
                     </Exponential>
+                </prior>
+                <prior id="speciationRatePrior.t:Species" name="distribution" x="@speciationRate.t:Species">
+                    <LogNormal id="LogNormalDistributionModel.4" meanInRealSpace="true" name="distr">
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="__LAMBDA__">__</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="S" upper="5.0">1.0E-4</parameter>
+                    </LogNormal>
                 </prior>
             </distribution>
             <distribution id="vectorPrior" spec="CompoundDistribution">
@@ -97,12 +103,6 @@ __TREE__
         </operator>
         <operator id="PopSizeGibbsSampler.Species" spec="starbeast3.operators.PopSizeGibbsSampler" gammaprior="@popPriorDistr.InverseGamma" popSizes="@popSize" weight="50.0">
 __TREEPRIOR4__
-        </operator>
-        <operator id="AdaptableOperatorSampler.popmean:Species" spec="AdaptableOperatorSampler" weight="5.0">
-            <parameter idref="popMean"/>
-            <operator id="Scale.popmean" spec="kernel.BactrianScaleOperator" parameter="@popMean" upper="10.0" weight="1.0"/>
-            <operator idref="updown.all"/>
-            <operator id="SampleFromPriorOperator.popmean" spec="orc.operators.SampleFromPriorOperator" parameter="@popMean" prior2="@popMean.prior" weight="1.0"/>
         </operator>
         <operator id="ParallelMCMCTreeOperator" spec="starbeast3.operators.ParallelMCMCTreeOperator" chainCoverage="1.0" learning="false" nregression="50" otherState="@state" runtime="1000.0" speciesTree="@Tree.t:Species" targetCPU="0.0" weight="1.0">
 __PARALLEL__        
