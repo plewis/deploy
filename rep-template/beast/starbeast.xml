@@ -30,12 +30,12 @@ __SEQUENCES__
 __TAXONSET__
                 </taxonset>
             </stateNode>
-            <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="false">__LAMBDA1__</parameter>
             <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
             <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
 __LOCI__
         </state>
-        <init id="SBI" spec="starbeast3.core.StarBeastStartState" birthRate="@speciationRate.t:Species" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
+        <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
 __SBI__
             <speciesTreePrior id="SpeciesTreePopSize.Species" spec="starbeast3.evolution.speciation.SpeciesTreePrior" bottomPopSize="@popSize" gammaParameter="@popMean" taxonset="@taxonsuperset" tree="@Tree.t:Species">
                 <populationModel id="speciesTreePopulationModel" spec="starbeast3.evolution.speciation.ConstantPopulations" populationSizes="@popSize" speciesTree="@Tree.t:Species"/>
