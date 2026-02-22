@@ -623,7 +623,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         '__TREETOP__': treetop,
         '__LOGGERLOCUS__': loggerlocus,
         '__LAMBDA1__': beast_lambda1,
-        #'__LAMBDA2__': beast_lambda2,
+        '__LAMBDA2__': beast_lambda2,
         #'__LAMBDA3__': beast_lambda3,
         '__THETAMEAN__': beast_theta_mean
         }, infile, outfile)
