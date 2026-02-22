@@ -88,8 +88,8 @@ nreps = 1
 
 # number of loci varies among simulations
 #nloci           = 10
-min_n_loci = 100
-max_n_loci = 100
+min_n_loci = 10
+max_n_loci = 10
 
 min_sites_per_locus = 1000
 max_sites_per_locus = 1000
