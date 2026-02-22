@@ -591,7 +591,7 @@ def run(rep, nreps, maindir, repdir, rnseed):
         beast_lambda2 = '__SVDQ_EST_LAMBDA2__'
         beast_lambda3 = '__SVDQ_EST_LAMBDA3__'
     else:
-        beast_theta_mean = theta_mean / 4.0
+        beast_theta_mean = theta_mean / 2.0 # for diploid data, beast multiplies by 2 for ploidy
         beast_lambda1 = speciation_rate
         beast_lambda2 = speciation_rate
         beast_lambda3 = speciation_rate
