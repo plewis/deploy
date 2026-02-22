@@ -32,7 +32,7 @@ __TAXONSET__
             </stateNode>
             <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="false">__LAMBDA1__</parameter>
             <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
-            <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="false">__THETAMEAN2__</parameter>
 __LOCI__
         </state>
         <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
@@ -55,8 +55,8 @@ __SPECIESCOALESCENT__
             <distribution id="prior" spec="CompoundDistribution">
                 <distribution idref="YuleModel.t:Species"/>
                 <prior id="popMean.prior" name="distribution" x="@popMean">
-                    <Exponential id="Exponential.11" name="distr">
-                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">__THETAMEAN__</parameter>
+                    <Exponential id="Exponential.2" name="distr">
+                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">__THETAMEAN1__</parameter>
                     </Exponential>
                 </prior>
                 <prior id="speciationRatePrior.t:Species" name="distribution" x="@speciationRate.t:Species">
