@@ -31,11 +31,11 @@ __TAXONSET__
                 </taxonset>
             </stateNode>
             <parameter id="speciationRate.t:Species" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="false">__LAMBDA1__</parameter>
-            <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="popSize" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="true">1.0</parameter>
             <parameter id="popMean" spec="parameter.RealParameter" lower="0.0" name="stateNode" estimate="false">__THETAMEAN2__</parameter>
 __LOCI__
         </state>
-        <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" popMean="@popMean" speciesTree="@Tree.t:Species">
+        <init id="SBI" spec="starbeast3.core.StarBeastStartState" estimate="false" speciesTree="@Tree.t:Species">
 __SBI__
             <speciesTreePrior id="SpeciesTreePopSize.Species" spec="starbeast3.evolution.speciation.SpeciesTreePrior" bottomPopSize="@popSize" gammaParameter="@popMean" taxonset="@taxonsuperset" tree="@Tree.t:Species">
                 <populationModel id="speciesTreePopulationModel" spec="starbeast3.evolution.speciation.ConstantPopulations" populationSizes="@popSize" speciesTree="@Tree.t:Species"/>
@@ -97,7 +97,6 @@ __TREEPRIOR3__
             <operator id="updown.all" spec="operator.kernel.BactrianUpDownOperator" scaleFactor="0.75" weight="1.0">
                 <down idref="Tree.t:Species"/>
                 <down idref="popSize"/>
-                <down idref="popMean"/>
 __TREE__                
             </operator>
         </operator>
