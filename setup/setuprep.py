@@ -625,7 +625,8 @@ def run(rep, nreps, maindir, repdir, rnseed):
         '__LAMBDA1__': beast_lambda1,
         '__LAMBDA2__': beast_lambda2,
         #'__LAMBDA3__': beast_lambda3,
-        '__THETAMEAN__': beast_theta_mean
+        '__THETAMEAN1__': beast_theta_mean,
+        '__THETAMEAN2__': beast_theta_mean
         }, infile, outfile)
 
     ##############################
