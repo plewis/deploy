@@ -50,20 +50,23 @@ for rep in range(nreps):
       assert rep_info is not None, 'could not extract bhv info from info.txt file'
       smc_info = float(rep_info)
 
-      # extract SMC BHV means
-      fn = 'rep%d/smc/bhvdists.txt' % rep_plus_one
-      assert (os.path.exists(fn))
-      lines = open(fn, 'r').readlines()
-      smcbhvsum = 0.0
-      smcbhvnum = 0
-      for line in lines[1:]:
-          parts = line.strip().split()
-          assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-          smcbhvnum += 1
-          smcbhvsum += float(parts[1])
-          smc_bhv = smcbhvsum/smcbhvnum
+     # extract SMC BHV means
+     distances = []
+     # Regular expression to find bhvdist = value
+     # \[bhvdist\s*=\s*  : matches "[bhvdist =" with optional spaces
+     # ([\d\.]+)        : captures digits and decimal points
+     # \]               : matches closing bracket "]"
+     pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
+
+     filename = "bhvdists.tre"
+     with open(filename, 'r') as f:
+	     for line in f:
+		     match = pattern.search(line)
+		     if match:
+			     distances.append(float(match.group(1)))
+	     average = sum(distances) / len(distances)
             
-      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':smc_bhv})
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
 
       
   elif __JJC23002__:
@@ -97,20 +100,22 @@ for rep in range(nreps):
       smc_info = float(rep_info)
 
       # extract SMC BHV means
-      fn = 'rep%d/smc/bhvdists.txt' % rep_plus_one
-      assert (os.path.exists(fn))
-      lines = open(fn, 'r').readlines()
-      smcbhvsum = 0.0
-      smcbhvnum = 0
-      for line in lines[1:]:
-          parts = line.strip().split()
-          assert len(parts) == 2, 'expecting 2 parts but found %d in file "%s"' % (len(parts), fn)
-          smcbhvnum += 1
-          smcbhvsum += float(parts[1])
-          smc_bhv = smcbhvsum/smcbhvnum
-            
-      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':smc_bhv})
+     distances = []
+     # Regular expression to find bhvdist = value
+     # \[bhvdist\s*=\s*  : matches "[bhvdist =" with optional spaces
+     # ([\d\.]+)        : captures digits and decimal points
+     # \]               : matches closing bracket "]"
+     pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
 
+     filename = "bhvdists.tre"
+     with open(filename, 'r') as f:
+	     for line in f:
+		     match = pattern.search(line)
+		     if match:
+			     distances.append(float(match.group(1)))
+	     average = sum(distances) / len(distances)
+            
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
                   
   elif __POL02003__:
       # extract deep coalescences
