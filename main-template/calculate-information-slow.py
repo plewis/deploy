@@ -13,7 +13,7 @@ posterior_lengths = []
 for rep in range(nreps):
 	rep_plus_one = rep + 1
 
-	fn = 'prior/mean.R'
+	fn = 'prior/outfile.R'
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% radius =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	assert m1 is not None
@@ -27,7 +27,7 @@ for rep in range(nreps):
 for rep in range(nreps):
 	rep_plus_one = rep + 1
 
-	fn = 'posterior/mean.R'
+	fn = 'posterior/outfile.R'
 	stuff = open(fn, 'r').read()
 	m1 = re.search(r'# 95% radius =\s*(\d+(?:\.\d+)?)', stuff, re.M | re.S)
 	radius = float(m1.group(1))
