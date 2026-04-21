@@ -58,13 +58,13 @@ for rep in range(nreps):
      # \]               : matches closing bracket "]"
      pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
 
-     filename = "bhvdists.tre"
+     filename = 'rep%d/smc/bhvdists.tre' % rep_plus_one
      with open(filename, 'r') as f:
-	     for line in f:
-		     match = pattern.search(line)
-		     if match:
-			     distances.append(float(match.group(1)))
-	     average = sum(distances) / len(distances)
+          for line in f:
+               match = pattern.search(line)
+               if match:
+                    distances.append(float(match.group(1)))
+                    average = sum(distances) / len(distances)
             
       summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
 
@@ -107,13 +107,13 @@ for rep in range(nreps):
      # \]               : matches closing bracket "]"
      pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
 
-     filename = "bhvdists.tre"
+     filename = 'rep%d/smc/bhvdists.tre' % rep_plus_one
      with open(filename, 'r') as f:
-	     for line in f:
-		     match = pattern.search(line)
-		     if match:
-			     distances.append(float(match.group(1)))
-	     average = sum(distances) / len(distances)
+          for line in f:
+               match = pattern.search(line)
+               if match:
+                    distances.append(float(match.group(1)))
+                    average = sum(distances) / len(distances)
             
       summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
                   
