@@ -1,8 +1,24 @@
-bhv_means = c()
+import sys, re, os, subprocess as sub
 
-for (i in 0:9) {
-	file_path <- paste("smc-cutoff-0.", i, "/posterior/bhvdists.txt", sep="")
-	dists <- read.delim(file_path, header=T)
-	bhv_means <- c(bhv_means, mean(dists$geodesic))
-}
-dput(bhv_means, file="species_tree_accuracy.txt")
+averages = []
+for rep in range(9):
+	filename = 'smc-cutoff-0.%d/posterior/bhvdists.tre' % rep
+
+	# extract SMC BHV means
+	distances = []
+	# Regular expression to find bhvdist = value
+	# \[bhvdist\s*=\s*  : matches "[bhvdist =" with optional spaces
+	# ([\d\.]+)        : captures digits and decimal points
+	# \]               : matches closing bracket "]"
+	pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
+
+	with open(filename, 'r') as f:
+		for line in f:
+			match = pattern.search(line)
+			if match:
+				distances.append(float(match.group(1)))
+				average = sum(distances) / len(distances)
+		averages.append(average)
+with open('species_tree_accuracy.txt', 'w') as f:
+    for item in averages:
+        f.write(f"{item}\n")
