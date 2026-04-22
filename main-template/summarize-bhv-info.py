@@ -20,7 +20,7 @@ nreps = __NREPS__
 for rep in range(nreps):
   rep_plus_one = rep + 1
           
-  if True:
+  if __AAM21005__:
       # extract deep coalescences
       fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
       maxdeep = 0
