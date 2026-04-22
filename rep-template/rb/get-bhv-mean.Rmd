@@ -1,7 +1,7 @@
 import sys, re, os, subprocess as sub
 
 averages = []
-for rep in range(9):
+for rep in range(10):
 	filename = 'smc-cutoff-0.%d/posterior/bhvdists.tre' % rep
 
 	# extract SMC BHV means
