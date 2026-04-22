@@ -10,17 +10,17 @@ if len(sys.argv) > 1:
     
 summary = []
 
-
 print('Creating BHV info plot...')
 
 with open('info.txt', 'r') as file:
      info_lines = lines = file.readlines()
 
 nreps = __NREPS__
+
 for rep in range(nreps):
   rep_plus_one = rep + 1
           
-  if __AAM21005__:
+  if True:
       # extract deep coalescences
       fn = 'rep%d/sim/deep_coalescences.txt' % rep_plus_one
       maxdeep = 0
@@ -107,7 +107,7 @@ for rep in range(nreps):
       # \]               : matches closing bracket "]"
       pattern = re.compile(r'\[bhvdist\s*=\s*([\d\.]+)\]')
 
-      filename = 'rep%d/smc/bhvdists.tre' % rep_plus_one
+      filename = "bhvdists.tre"
       with open(filename, 'r') as f:
            for line in f:
                 match = pattern.search(line)
@@ -115,7 +115,7 @@ for rep in range(nreps):
                      distances.append(float(match.group(1)))
                      average = sum(distances) / len(distances)
             
-       summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
+      summary.append({'theta':theta,'lambda':lamBda,'numdeep':numdeep,'maxdeep':maxdeep,'sppTreeObsHt':stoheight, 'sppTreeExpHt':stxheight, 'smc_info':smc_info, 'smc_bhv':average})
                   
   elif __POL02003__:
       # extract deep coalescences
